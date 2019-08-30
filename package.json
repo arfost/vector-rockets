@@ -1,5 +1,5 @@
 {
-  "name": "escape-from-space",
+  "name": "vector rockets",
   "version": "1.0.0",
   "description": "This is a small game based on a board game a saw one time.",
   "main": "sw.js",
@@ -14,15 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arfost/escape-from-space.git"
+    "url": "git+https://github.com/arfost/vector-rockets.git"
   },
   "keywords": [],
   "author": "Arfost",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/arfost/escape-from-space/issues"
+    "url": "https://github.com/arfost/vector-rockets/issues"
   },
-  "homepage": "https://github.com/arfost/escape-from-space#readme",
+  "homepage": "https://github.com/arfost/vector-rockets#readme",
   "devDependencies": {
     "@babel/core": "^7.1.5",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
