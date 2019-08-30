@@ -182,7 +182,6 @@ class VrgGame extends VrgBase {
                                 <h3>Preparing</h3>
                                 <p>You can invite people to this game by giving this token above. There is no chat for now, so use any other messaging system you'd like for that.</p>
                                 <p>When ready, click the button on the right.</p>
-                                <p>By the way, everybody is roger for now but you are the red one, futur version should change that.</p>
                                 ${this.displayToken()}
                             </div>
                             <div>
