@@ -3,7 +3,7 @@ import { LoginReference } from '../../futur-lib/data.js'
 import * as firebase from 'firebase/app';
 import 'firebase/functions';
 
-export class EfsLogin extends LoginReference {
+export class VrgLogin extends LoginReference {
 
     get actions(){
         let actions = super.actions;

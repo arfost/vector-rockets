@@ -1,5 +1,5 @@
 import { html, css } from 'lit-element';
-import { EfsBase } from '../efs-base.js';
+import { VrgBase } from '../vrg-base.js';
 import Datavault from '../datavault.js';
 
 import '../components/game-popin.js';
@@ -17,7 +17,7 @@ const EXITGATE = {
     picture:"https://dummyimage.com/150x150/d10fd1/0011ff.png&text=Escape pod"
 }
 
-class EfsGame extends EfsBase {
+class VrgGame extends VrgBase {
 
     constructor(){
         super();
@@ -198,4 +198,4 @@ class EfsGame extends EfsBase {
     }
 }
 
-customElements.define('efs-game', EfsGame); //
+customElements.define('vrg-game', VrgGame); //

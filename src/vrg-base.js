@@ -1,6 +1,6 @@
 import { html, css, LitElement } from 'lit-element';
 
-export class EfsBase extends LitElement {
+export class VrgBase extends LitElement {
 
     emit(type, params){
         let event = new CustomEvent(type, {
@@ -141,10 +141,10 @@ export class EfsBase extends LitElement {
                 background-color: #6c757d;
                 border-color: #6c757d;
             }
-            .efs-textfield > input {
+            .vrg-textfield > input {
                 height: 32px;
             }
-            .efs-textfield > input, .efs-textfield > textarea {
+            .vrg-textfield > input, .vrg-textfield > textarea {
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
                 display: block;
@@ -163,7 +163,7 @@ export class EfsBase extends LitElement {
                 line-height: inherit;
                 background-image: none;
             }
-            .efs-textfield > input {
+            .vrg-textfield > input {
                 animation-duration: 0.0001s;
                 animation-name: mui-textfield-inserted;
             }

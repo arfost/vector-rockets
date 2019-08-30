@@ -1,11 +1,11 @@
 import { html, css } from 'lit-element';
 import Datavault from '../datavault.js';
-import { EfsBase } from '../efs-base.js';
+import { VrgBase } from '../vrg-base.js';
 
 import  '../components/btn-loader.js';
 import '../components/fab-img.js'
 
-class EfsNogame extends EfsBase {
+class VrgNogame extends VrgBase {
 
     constructor() {
         super();
@@ -84,7 +84,7 @@ class EfsNogame extends EfsBase {
                             Enter the token given by the creator below.
                         </p>
                         <div class="flex-box f-horizontal">
-                            <div class="efs-textfield mr-1">
+                            <div class="vrg-textfield mr-1">
                                 <input type="text" id="token">
                             </div>
                             <btn-loader id="join-game" @click="${this.joinGame}">
@@ -107,4 +107,4 @@ class EfsNogame extends EfsBase {
     }
 }
 
-customElements.define('efs-nogame', EfsNogame); //
+customElements.define('vrg-nogame', VrgNogame); //

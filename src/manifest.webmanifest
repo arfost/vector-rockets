@@ -1,6 +1,6 @@
 {
-    "name": "Escape from space",
-    "short_name": "efs",
+    "name": "Vector rockets game",
+    "short_name": "vrg",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#2A3443",

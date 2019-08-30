@@ -1,5 +1,5 @@
 import { Dao } from '../futur-lib/data.js'
-import { EfsLogin } from './Entities/EfsLogin.js'
+import { VrgLogin } from './Entities/VrgLogin.js'
 import { Game } from './Entities/Game.js'
 import { News } from './Entities/News.js'
 
@@ -10,7 +10,7 @@ export default new Dao([
 },
 {
     name: 'User',
-    classDef: EfsLogin
+    classDef: VrgLogin
 },{
     name: 'Game',
     classDef: Game

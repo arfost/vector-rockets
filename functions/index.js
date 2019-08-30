@@ -2,7 +2,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
-const efsHelper = require('./efsHelper.js');
+const VrgHelper = require('./VrgHelper.js');
 
 admin.initializeApp();
 
@@ -81,12 +81,12 @@ exports.launchGame = functions.https.onCall((key, context)=>{
     let gameRef = admin.database().ref('games/'+key);
     let cellsRef = admin.database().ref('cells/'+key);
     
-    cellsRef.set(efsHelper.newMap());
+    cellsRef.set(VrgHelper.newMap());
     
     return gameRef.once('value').then(snap=>{
         let game = snap.val();
 
-        game.liveChars = efsHelper.getChars();
+        game.liveChars = VrgHelper.getChars();
         game.deadChars = [];
 
         delete game.exitedChar;
@@ -98,9 +98,9 @@ exports.launchGame = functions.https.onCall((key, context)=>{
             roomKey.push(i+1);
         }
 
-        charsKey = efsHelper.shuffleArray(charsKey);
-        roomKey = efsHelper.shuffleArray(roomKey);
-        game.players = efsHelper.shuffleArray(game.players);
+        charsKey = VrgHelper.shuffleArray(charsKey);
+        roomKey = VrgHelper.shuffleArray(roomKey);
+        game.players = VrgHelper.shuffleArray(game.players);
 
         game.players = game.players.map((player)=>{
             player.chars = [charsKey.shift(), charsKey.shift()];

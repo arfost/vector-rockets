@@ -1,4 +1,4 @@
-import { EfsBase } from '../efs-base.js'
+import { VrgBase } from '../vrg-base.js'
 import { html, css, LitElement } from 'lit-element';
 
 export class FabImg extends LitElement {
