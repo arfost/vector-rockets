@@ -10,6 +10,7 @@ export class Game extends FireReference {
         super();
         this.id = id;
         this.initConnection();
+        console.log("game entity dibe", id)
     }
 
     get sources() {
@@ -126,10 +127,8 @@ export class Game extends FireReference {
     }
 
     formatDatas({ game, cells }) {
+        console.log("datas", game)
         let data = {
-            deadChars: game.deadChars || [],
-            liveChars: game.liveChars || [],
-            exitedChar: game.exitedChar,
             cells: cells || [],
             players: game.players || [],
             gameInfo: game.gameInfo || {
@@ -137,8 +136,11 @@ export class Game extends FireReference {
                 toPlay: 0,
                 votes: 0
             },
+            mapInfos: game.mapInfos || {
+                height:-1,
+                width:-1
+            },
             ready: game.ready,
-            score: game.score,
             loaded: game.loaded,
             finished: game.finished,
             key:this.id

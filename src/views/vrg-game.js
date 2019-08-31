@@ -1,6 +1,7 @@
 import { html, css } from 'lit-element';
 import { VrgBase } from '../vrg-base.js';
 import Datavault from '../datavault.js';
+import drawMap from '../drawMapUtils.js'
 
 import '../components/game-popin.js';
 import  '../components/btn-loader.js';
@@ -25,23 +26,23 @@ class VrgGame extends VrgBase {
             loaded:false
         }
         this.selectable = [];
-        this.mode = DEFAULTEVENT;
     }
 
     get selfStyles() {
         return css`
         .map {
-            display:grid;
-            grid-template-columns: repeat(17, 1fr);
-            grid-template-rows: repeat(17, 1fr);
-            width:95vh;
+            width:75vw;
             height:95vh;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-            background-color:black;
-            background-image:url("/img/game/2k_stars.jpg");
+            background-color:white;
             background-position: center;
             background-repeat: no-repeat;
             background-size: 100% 100%; 
+        }
+
+        .map > canvas{
+            width:100%;
+            height:100%;
         }
         
         .self {
@@ -59,16 +60,39 @@ class VrgGame extends VrgBase {
         }
     }
 
+    updated(){
+        if(this.user && !this.gameRef){
+            this.gameRef = Datavault.refGetter.getGame(this.user.game);
+            this.game = this.gameRef.getDefaultValue();
+            this.gameRef.on("value", game => {
+                this.game = game;
+            });
+        }
+    }
+
+    drawMap(){
+        setTimeout(()=>{
+            let canvas = this.shadowRoot.getElementById('hexmap');
+            let ctx = canvas.getContext('2d');
+            if (canvas.getContext){
+                ctx = canvas.getContext('2d');
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+                drawMap(ctx, {height:canvas.height, width:canvas.width}, 0, this.game.mapInfos, this.game.cells);
+            }else{
+                console.log("ha peu pas marché");
+            }
+        })
+        return html`<canvas id="hexmap"></canvas>`
+    }
+
     launchGame(){
-        this.shadowRoot.getElementById('relaunch').textMode = false;
         this.shadowRoot.getElementById('launch').textMode = false;
         this.gameRef.actions.launchGame(this.user.game).then(()=>{
             this.emit('toast-msg', 'Game started');
-            this.shadowRoot.getElementById('relaunch').textMode = true;
             this.shadowRoot.getElementById('launch').textMode = true;
         }).catch(e=>{
             this.emit('toast-msg', 'Error : the game could not be started');
-            this.shadowRoot.getElementById('relaunch').textMode = true;
             this.shadowRoot.getElementById('launch').textMode = true;
         });
     }
@@ -128,6 +152,7 @@ class VrgGame extends VrgBase {
     }
 
     render() {
+        console.log(this)
         return html`
             ${this.styles}
             ${
@@ -137,7 +162,7 @@ class VrgGame extends VrgBase {
                     <div class="flex-box f-horizontal p-0 h-100">
                         <div class="flex-box f-vertical f-j-center w-80 scroll f-a-center">
                             <div class="map">
-                                map here
+                                ${this.drawMap()}
                             </div>
                         </div>
                         <div class="flex-box f-vertical w-20 list-deads scroll">
@@ -146,7 +171,7 @@ class VrgGame extends VrgBase {
                                     <h4>Game infos : </h4>
                                     <p>You are ${this.game.players.find(player => player.uid === this.user.uid).name}</p>
                                     <p>Turn ${this.game.gameInfo.turn}</p>
-                                    <p>Turn of ${this.game.players[this.game.gameInfo.toPlay].name}</p>
+                                    <p>${this.game.gameInfo.toPlay} have yet to validate his turn.</p>
                                 </div>`:
                         `loading`
                     }
@@ -191,7 +216,7 @@ class VrgGame extends VrgBase {
                             </div>
                         </div>
                     </game-popin>`:
-                html`<game-popin>loading</game-popin>`
+                html`<game-popin ?hidden=${this.game.loaded}>loading</game-popin>`
             }
         `;
     }
