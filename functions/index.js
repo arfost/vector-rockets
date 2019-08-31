@@ -36,7 +36,7 @@ exports.createGame = functions.https.onCall(async(datas, context)=>{
     
 });
 
-exports.joinGame = functions.https.onCall((key, context)=>{
+exports.joinGame = functions.https.onCall(async(key, context)=>{
     // Grab the current value of what was written to the Realtime Database.
     const uid = context.auth.uid;
     let gameRef = admin.database().ref('games/'+key);
@@ -57,7 +57,7 @@ exports.joinGame = functions.https.onCall((key, context)=>{
     });
 });
 
-exports.quitGame = functions.https.onCall((key, context)=>{
+exports.quitGame = functions.https.onCall(async(key, context)=>{
     // Grab the current value of what was written to the Realtime Database.
     const uid = context.auth.uid;
     let gameRef = admin.database().ref('games/'+key);
@@ -74,7 +74,7 @@ exports.quitGame = functions.https.onCall((key, context)=>{
     });
 });
 
-exports.launchGame = functions.https.onCall((key, context)=>{
+exports.launchGame = functions.https.onCall(async(key, context)=>{
     // Grab the current value of what was written to the Realtime Database.
     const uid = context.auth.uid;
     let gameRef = admin.database().ref('games/'+key);

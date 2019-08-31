@@ -3,11 +3,10 @@ import 'firebase/database';
 import 'firebase/auth';
 import 'firebase/functions';
 
-firebase.initializeApp({
-    apiKey: "AIzaSyDPO-yGJev7gxGLCGkOKDMlDlZsjlZ--i0",
-    authDomain: "escape-from-space.firebaseapp.com",
-    databaseURL: "https://escape-from-space.firebaseio.com",
-    projectId: "escape-from-space",
-    storageBucket: "escape-from-space.appspot.com",
-    appId: "1:1016708495078:web:7a9b748c8e29383e"
-});
+firebase.initializeApp( {
+    apiKey: "AIzaSyDOiPhHo90at0CcWb-km6lZKzAxb7Kv-YE",
+    authDomain: "gameengineconfigurator.firebaseapp.com",
+    databaseURL: "https://gameengineconfigurator.firebaseio.com",
+    projectId: "gameengineconfigurator",
+    appId: "1:458364371343:web:793667275075bca2"
+  });

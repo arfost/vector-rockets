@@ -1,12 +1,12 @@
 import { html, css } from 'lit-element';
-import { EfsBase } from '../efs-base.js'
+import { VrgBase } from '../vrg-base.js'
 import Datavault from '../datavault.js'
 
 import '../components/fab-img.js'
-import '../views/efs-nogame.js'
-import '../views/efs-game.js'
+import '../views/vrg-nogame.js'
+import '../views/vrg-game.js'
 
-class EfsMain extends EfsBase {
+class VrgMain extends VrgBase {
 
     constructor() {
         super();
@@ -100,11 +100,11 @@ class EfsMain extends EfsBase {
         return html`
             ${this.styles}
             ${this.user.game ? 
-                html`<efs-game .user="${this.user}" @toast-msg="${this.showToast}"></efs-game>`:
-                html`<efs-nogame .user="${this.user}" @toast-msg="${this.showToast}"></efs-nogame>`}
+                html`<vrg-game .user="${this.user}" @toast-msg="${this.showToast}"></vrg-game>`:
+                html`<vrg-nogame .user="${this.user}" @toast-msg="${this.showToast}"></vrg-nogame>`}
             <fab-img @click="${this.toggleLogin}" .src="${this.user.photoURL}"></fab-img>
             <div id="snackbar">${this.toastMsg}</div>`;
     }
 }
 
-customElements.define('efs-main', EfsMain); //
+customElements.define('vrg-main', VrgMain); //

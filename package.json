@@ -1,5 +1,5 @@
 {
-  "name": "vector rockets",
+  "name": "vector-rockets",
   "version": "1.0.0",
   "description": "This is a small game based on a board game a saw one time.",
   "main": "sw.js",

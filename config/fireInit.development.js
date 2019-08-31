@@ -8,8 +8,6 @@ firebase.initializeApp( {
     authDomain: "gameengineconfigurator.firebaseapp.com",
     databaseURL: "https://gameengineconfigurator.firebaseio.com",
     projectId: "gameengineconfigurator",
-    storageBucket: "gameengineconfigurator.appspot.com",
-    messagingSenderId: "458364371343",
     appId: "1:458364371343:web:793667275075bca2"
   });
 
