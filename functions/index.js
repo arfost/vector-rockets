@@ -95,6 +95,7 @@ exports.launchGame = functions.https.onCall(async(key, context)=>{
         toPlay:game.players.length,
         votes:0
     }
+    game.mapInfos = scenario.mapInfos;
 
     game.ready = true;
     game.finished = false;

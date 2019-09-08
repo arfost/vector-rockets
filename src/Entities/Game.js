@@ -127,7 +127,6 @@ export class Game extends FireReference {
     }
 
     formatDatas({ game, cells }) {
-        console.log("datas", game)
         let data = {
             cells: cells || [],
             players: game.players || [],

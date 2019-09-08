@@ -2,13 +2,34 @@
 const NS = 'NS';
 const EO = 'EO';
 
-module.exports.newMap = function () {
+module.exports.newScenario = function () {
     return {
-        cells:[],
+        cells:[ {
+            "actif" : false,
+            "apparence" : {
+              "color" : "0066ff",
+              "radius" : 7
+            },
+            "name" : "earth",
+            "type" : "planet",
+            "x" : 10,
+            "y" : 10
+          }, {
+            "actif" : false,
+            "apparence" : {
+              "color" : "ff6600",
+              "radius" : 6
+            },
+            "name" : "mars",
+            "type" : "planet",
+            "x" : 15,
+            "y" : 19
+          } ],
         mapInfos:{
             width:51,
-            height:35
-        }
+            height:35,
+            navigable:true
+        },
     }
 }
 

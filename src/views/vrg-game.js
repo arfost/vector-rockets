@@ -1,7 +1,7 @@
 import { html, css } from 'lit-element';
 import { VrgBase } from '../vrg-base.js';
 import Datavault from '../datavault.js';
-import drawMap from '../drawMapUtils.js'
+import MapRenderer from '../drawMapUtils.js'
 
 import '../components/game-popin.js';
 import  '../components/btn-loader.js';
@@ -65,25 +65,33 @@ class VrgGame extends VrgBase {
             this.gameRef = Datavault.refGetter.getGame(this.user.game);
             this.game = this.gameRef.getDefaultValue();
             this.gameRef.on("value", game => {
+                console.log("datas", game)
                 this.game = game;
+                if(this.mapRenderer){
+                    this.mapRenderer.setCells(game.cells);
+                    this.mapRenderer.setMapInfos(game.mapInfos);
+                }
             });
         }
     }
 
     drawMap(){
         setTimeout(()=>{
-            let canvas = this.shadowRoot.getElementById('hexmap');
-            let ctx = canvas.getContext('2d');
-            if (canvas.getContext){
-                ctx = canvas.getContext('2d');
-                canvas.width = canvas.clientWidth;
-                canvas.height = canvas.clientHeight;
-                drawMap(ctx, {height:canvas.height, width:canvas.width}, 0, this.game.mapInfos, this.game.cells);
-            }else{
-                console.log("ha peu pas marché");
+            let mapContainer = this.shadowRoot.getElementById('map');
+            if(!this.mapRenderer){
+                this.mapRenderer = new MapRenderer();
+                this.mapRenderer.setAffSize({height:mapContainer.clientHeight, width:mapContainer.clientWidth});
+                this.mapRenderer.setMapInfos(this.game.mapInfos);
+                this.mapRenderer.setCells(this.game.cells);
             }
+            window.addEventListener('resize',()=>{
+                this.mapRenderer.setAffSize({height:mapContainer.clientHeight, width:mapContainer.clientWidth});
+                //let map = this.mapRenderer.getView();
+                //mapContainer.replaceChild(map, mapContainer.firstChild);
+            });
+            let map = this.mapRenderer.getView();
+            mapContainer.replaceChild(map, mapContainer.firstChild);
         })
-        return html`<canvas id="hexmap"></canvas>`
     }
 
     launchGame(){
@@ -161,7 +169,7 @@ class VrgGame extends VrgBase {
                     ${this.displayTooltip()}
                     <div class="flex-box f-horizontal p-0 h-100">
                         <div class="flex-box f-vertical f-j-center w-80 scroll f-a-center">
-                            <div class="map">
+                            <div class="map" id="map" @resize="${this.resizeMap}">
                                 ${this.drawMap()}
                             </div>
                         </div>

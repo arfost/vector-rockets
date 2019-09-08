@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "gameengineconfigurator",
+  "private_key_id": "0a66938107ae7becf6711b4590042c6ec2237538",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDU3AcReccFNqnZ\nXt0O2Mo1nOsO+BDoJTPscWNW7vQQkFoHGSNax53IyEc9cuEZFJOOWbMrvuH4y2Un\nWmT82ii+orUHMzjONtK21oC9LLmnHgR0PeHpFCSvH8O8/2SEINZuHdO1QGU/IUIk\nvPhrKVNmrRlLElsCOyzhvC966vnemMDtfLsz4qsoIGkv4/UX8tbOONBfhXWcVlN6\nAGbFLzhwc1iKVjjRwlXpVEgS7iZFURd11QjX/n81i8Rfy1awvM/lu039NYqqXuzY\nFsJLVbgrQCQbZFBJDTOs7V0nzXslSXzFZCEqKl/MTdt7RzJuBHlny4FwImUJy3cx\nMIFWdU1xAgMBAAECggEARgt5j/ig00hfsBYVbFNOh0Hx3+Ulux6y7XWKmQrc6a52\n0asmBTN26qFtP/1TsWsh+0/tM9IGjlZwHPkUDljD26ezJoFmigVkZaJEjvvuw92O\n3amXc5mbUL2FLeZk703XAjlyd0yPhKyvFWPR44Gf3kPL9PY/WIaciFPi0/IK84J7\nJoL9ZGc1Gc8TSy2+Z8S08rZjzgbWM3GlNiHFC4cP4NB+MWmQS0x51gnygTG1BirI\n7buYSXUuAeH+2+VvjMRkImmBORdRW18xi9w6HGWLAK10PMxrMTWzcyfzML2iZgwS\niUfVc9C8J5ZFHK/WeIz6rPL9f+eBDdPP9BqFxd/oGQKBgQDrdMAK8RA30hZudVfm\nKHzVppQuKZPtMN+DiUlXH+gz3UcDcYaRYDjlgTc11gLKtp1c3FWivRz2isblYyRs\nxhCUyb8mMHTR+2QrFbByS47NdZERL39DNc4nYTN93sw7JUSayp7I01u5pvGV07Tq\nbjpKEuw/KsngfCXYdZT5Y3lFUwKBgQDnbozsMNG4by2+fpzA1ULnvCzUfUcd4+eG\n8GslnUyUkOO+df9ssqZFYbrTAH7t+FokDSJbevGW0++esodkZPzMIk3sjwsYzY0u\nUJZvnWXq/fJAEvDl4hFi2Hhj5QV8ctlbwVY6Z9/05CmTm+EoukI6nAEbun79nfJg\npqN2R/UlqwKBgFbnf55KPV8tBqR8YRYNKY497oFfTT8Fg+nruQsUNsM1z+kgdLeh\nmT50Q+l19Q/W+Rv2IxFu1YrVy/WMczxGmoYgNJIm3mdGb0FLvxVgd/Ozifia3FD1\nQgLc6IFzw1OtPLYZRSQAhuFuEcroGeVRC+idNV9XLq3RhLJxK6wkn/ULAoGBAJPp\npgu2z/MOq6/agBkGtDIjpItSXkeOR4WI1xI9TJqPV998zvkL3RTu91awNG+nkQUF\nl/Xbx9hcMAO/mqThnmhhbGhKrA74IMl/HAbOFDtyfofRE0H5kJ8aNyexUiZNyPnJ\nwXCmvw5nXONId0lucbG/zz2Hnm49qpF3L3YDW3ztAoGAHCuFXnDhDEw45K5vxcU4\n7fAKUVtHcKK33t0WN31pSMtYW9f0K4mTXGPNRNCuKgkJpY/ziuN8LX7P2wsqZWTQ\n2PIbbf657orLGhu9nVArkpnpjmz3k3LaPfxqnqL7ZxedOJ1nKiXLtTuePnCsq7ra\nVsqoLkGkIuReAvWn+YU7Rio=\n-----END PRIVATE KEY-----\n",
+  "client_email": "gameengineconfigurator@appspot.gserviceaccount.com",
+  "client_id": "",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gameengineconfigurator%40appspot.gserviceaccount.com"
+}
