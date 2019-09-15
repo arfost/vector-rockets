@@ -36,7 +36,6 @@ export class VrgBase extends LitElement {
             .flex-box{
                 justify-content: space-between;
                 display: flex;
-                padding:1em;
             }
             .f-horizontal{
                 flex-direction:row;
@@ -187,6 +186,9 @@ export class VrgBase extends LitElement {
             }
             :focus{
                 outline:none;
+            }
+            .p-1{
+                padding:1em;
             }`
     }
 

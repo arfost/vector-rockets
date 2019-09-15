@@ -47,6 +47,26 @@ class VrgGame extends VrgBase {
         
         .self {
             color:red
+        }
+        .tooltip {
+            position:fixed;
+            bottom:1vh;
+            left:1vh;
+            min-height:30vh;
+            min-width:10vh;
+            z-index:200;
+        }
+        .action{
+            color:black;
+            display: flex;
+            background-color: lightgrey;
+            padding: 0.5em;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+        .action:hover{
+            display: flex;
+            background-color: grey;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 2px 3px rgba(0,0,0,0.24);
         }`
     }
 
@@ -56,7 +76,8 @@ class VrgGame extends VrgBase {
             game: Object,
             selectable: Array,
             mode: Object,
-            tooltip:Object
+            selectedElement:Object,
+            selectedAction:Object,
         }
     }
 
@@ -68,7 +89,7 @@ class VrgGame extends VrgBase {
                 console.log("datas", game)
                 this.game = game;
                 if(this.mapRenderer){
-                    this.mapRenderer.setCells(game.cells);
+                    this.mapRenderer.setElements(game.elements);
                     this.mapRenderer.setMapInfos(game.mapInfos);
                 }
             });
@@ -79,10 +100,16 @@ class VrgGame extends VrgBase {
         setTimeout(()=>{
             let mapContainer = this.shadowRoot.getElementById('map');
             if(!this.mapRenderer){
-                this.mapRenderer = new MapRenderer();
+                this.mapRenderer = new MapRenderer(element=>{
+                    this.selectedElement = element;
+                },result=>{
+                    this.selectedAction.result = result;
+                    this.gameRef.actions.playAction(this.selectedAction);
+                    this.selectedAction = undefined;
+                });
                 this.mapRenderer.setAffSize({height:mapContainer.clientHeight, width:mapContainer.clientWidth});
                 this.mapRenderer.setMapInfos(this.game.mapInfos);
-                this.mapRenderer.setCells(this.game.cells);
+                this.mapRenderer.setElements(this.game.elements);
             }
             window.addEventListener('resize',()=>{
                 this.mapRenderer.setAffSize({height:mapContainer.clientHeight, width:mapContainer.clientWidth});
@@ -128,7 +155,7 @@ class VrgGame extends VrgBase {
          return html`<p>Token : ${this.user.game}<img class="ml-1" src='img/game/clipboard-text.png' @click="${this.copyStringToClipboard}"></p>`
      }
 
-    quitGame() {
+     quitGame() {
         this.shadowRoot.getElementById('quit').textMode = false;
         Datavault.refGetter.getUser().actions.quitGame(this.game.key).then(ret=>{
             this.shadowRoot.getElementById('quit').textMode = true;
@@ -141,26 +168,82 @@ class VrgGame extends VrgBase {
                 detail:err.message
             });
         });
-      
+    }
+
+    validateTurn() {
+        this.shadowRoot.getElementById('validate').textMode = false;
+        this.gameRef.actions.validateTurn(this.game.key).then(ret=>{
+            this.shadowRoot.getElementById('validate').textMode = true;
+            this.emit('toast-msg', 'Turn validated');
+        }).catch(err=>{
+            this.shadowRoot.getElementById('validate').textMode = true;
+            this.emit('toast-msg', err.message);
+        });
+    }
+
+    actionSelect(action, selectedElement){
+        console.log('hey ho', action, selectedElement)
+        if(action.direct){
+            this.gameRef.actions.playAction(action)
+        }else{
+            this.selectedAction = action;
+            this.mapRenderer.setAction(action, selectedElement);
+        }
+
     }
   
     displayTooltip(){
-        if(this.tooltip){
-            return html`<div class="flex-box f-vertical f-j-space f-a-end tooltip card" style="background-image:url('${this.tooltip.picture}')" @mouseout="${e=>this.configureTooltip(false)}">
-                            <h4 @mouseout="${e=>e.stopPropagation()}">${this.tooltip.name}</h4>
-                            <p @mouseout="${e=>e.stopPropagation()}">${this.tooltip.desc}</p>
+        if(this.selectedElement && this.selectedElement.length>0){
+            return html`<div class="flex-box f-vertical f-j-space tooltip card">
+                            <h4>${this.selectedElement[0].name}</h4>
+                            <p>${this.selectedElement[0].type}</p>
+                            ${this.selectedElement[0].fuel !== undefined ? html`<p>fuel : ${this.selectedElement[0].fuel}</p>` : ``}
+                            ${this.drawActions(this.selectedElement[0])}
+                            ${this.drawPlannedActions(this.selectedElement[0])}
                         </div>`
         }
         return '';
     }
 
-    //useless as is, but in a futur we should check infos format;
-    configureTooltip(infos){
-        this.tooltip = infos;
+    getPlayer(){
+        if(!this.game || !this.game.players){
+            return {}
+        }else{
+            return this.game.players.find(player=>player.uid == this.user.uid)
+        }
+    }
+
+    drawActions(selectedElement){
+        if(selectedElement.actions){
+            return html`<div class="flex-box f-vertical f-j-space"><span>Actions : </span>
+            ${selectedElement.actions.map(action=>html`<div class="action flex-box f-horizontal f-j-space" @click="${()=>this.actionSelect(action, selectedElement)}">
+                                            ${action.name}${this.selectedAction && this.selectedAction.id == action.id ? html`<span @click="${e=>{
+                                                e.stopPropagation();
+                                                this.selectedAction = undefined;
+                                                this.mapRenderer.cancelAction()
+                                            }}">X</span>` : ``}
+                                        </div>`)}
+            </div>`
+        }else{
+            return html`No actions availables`
+        }
+    }
+
+    drawPlannedActions(selectedElement){
+        if(selectedElement.plannedActions){
+            return html`<div class="flex-box f-vertical f-j-space"><span>Planned actions : </span>
+            ${selectedElement.plannedActions.map(action=>html`<div class="action flex-box f-horizontal f-j-space">
+                                            ${action.name}<span @click="${e=>{
+                                                this.gameRef.actions.cancelAction(action);
+                                            }}">X</span>
+                                        </div>`)}
+            </div>`
+        }else{
+            return html`No actions planned`
+        }
     }
 
     render() {
-        console.log(this)
         return html`
             ${this.styles}
             ${
@@ -180,6 +263,12 @@ class VrgGame extends VrgBase {
                                     <p>You are ${this.game.players.find(player => player.uid === this.user.uid).name}</p>
                                     <p>Turn ${this.game.gameInfo.turn}</p>
                                     <p>${this.game.gameInfo.toPlay} have yet to validate his turn.</p>
+                                    ${this.getPlayer().validated ? 
+                                    html`You have validated your turn` : 
+                                    html`<btn-loader id="validate" @click="${this.validateTurn}">
+                                            validate turn
+                                        </btn-loader>`}
+                                    
                                 </div>`:
                         `loading`
                     }
@@ -221,6 +310,18 @@ class VrgGame extends VrgBase {
                                 <btn-loader id="launch" @click="${this.launchGame}">
                                     launch
                                 </btn-loader>
+                            </div>
+                        </div>
+                    </game-popin>
+                    <game-popin ?hidden=${!this.game.inTurn}>
+                        <div class="flex-box f-vertical">
+                            <div class="flex-box f-horizontal f-j-center">
+                                <p>
+                                    in turn
+                                </p>
+                            </div>
+                            <div class="flex-box f-horizontal">
+                                Pleas wait for turn resolution
                             </div>
                         </div>
                     </game-popin>`:

@@ -16,7 +16,7 @@ export class Game extends FireReference {
     get sources() {
         return {
             game: "games/" + this.id,
-            cells: "cells/" + this.id,
+            elements: "elements/" + this.id,
         };
     }
     get actions() {
@@ -24,111 +24,39 @@ export class Game extends FireReference {
             launchGame: async (key) => {
                 const res = await firebase.functions().httpsCallable('launchGame')(key);
             },
-            moveChar: (oldRoomId, roomId, charId, uid) => {
-                if (this.data.game.players[this.data.game.gameInfo.toPlay].uid !== uid) {
-                    throw new Error('It\'s not your turn');
+
+            playAction: (action) => {
+                console.log(action);
+                let actionnable = this.data.elements.find(cell => cell.id == action.elementId);
+                actionnable.actions = actionnable.actions.filter(a=>a.id !== action.id)
+                if(actionnable.plannedActions){
+                    actionnable.plannedActions.push(action)
+                }else{
+                    actionnable.plannedActions = [action]
                 }
-
-                if (oldRoomId === roomId) {
-                    let room = this.data.cells.find(cell => cell.id == oldRoomId);
-                    if (!room.chest || !room.exit) {
-                        throw new Error('You can\'t exit by this room');
-                    }
-                    this.data.game.exitedChar = this.data.game.liveChars.find(c => c.id == charId);
-                    this.data.game.liveChars = this.data.game.liveChars.filter(c => c.id !== charId);
-                    room.chest = false;
-                }
-                //for each char living, change position if the one we move
-                this.data.game.liveChars = this.data.game.liveChars.map(char => {
-                    if(char.id == charId){
-                        char.pos = roomId;
-                    }
-                    return char;
-                });
-
-                //if chest is in the room, move it with char
-                let oldRoom = this.data.cells.find(cell => cell.id == oldRoomId);
-                console.log(oldRoom)
-                if (oldRoom.chest) {
-                    oldRoom.chest = false;
-                    let newRoom = this.data.cells.find(cell => cell.id == roomId);
-                    newRoom.chest = true;
-                }
-
-
-
-                this.data.game = this.passTurn(this.data.game);
                 this.save();
             },
-            killChar: (char, uid) => {
-                if (this.data.game.players[this.data.game.gameInfo.toPlay].uid !== uid) {
-                    throw new Error('It\'s not your turn');
+            cancelAction: (action) => {
+                console.log(action);
+                let actionnable = this.data.elements.find(cell => cell.id == action.elementId);
+                actionnable.plannedActions = actionnable.plannedActions.filter(a=>a.id !== action.id);
+                action.result = null
+                if(actionnable.actions){
+                    actionnable.actions.push(action)
+                }else{
+                    actionnable.actions = [action]
                 }
-
-                this.data.game.liveChars = this.data.game.liveChars.filter(c => c.id !== char.id);
-
-                this.data.game.deadChars = this.data.game.deadChars ? [...this.data.game.deadChars, char] : [char];
-
-                this.data.game = this.passTurn(this.data.game);
-
                 this.save();
+            },
+            validateTurn: async (key) => {
+                const res = await firebase.functions().httpsCallable('validateTurn')(key);
             }
         }
     }
 
-    passTurn(game) {
-        if (this.data.game.liveChars.length === 1) {
-            game = this.finishGame(game);
-        } else {
-            game.gameInfo.turn++;
-            game.gameInfo.toPlay++;
-            if (game.gameInfo.toPlay >= game.players.length) {
-                game.gameInfo.toPlay = 0;
-            }
-        }
-        
-
-        return game;
-    }
-
-    finishGame(game) {
-        game.deadChars.push(game.liveChars.shift());
-        if (game.exitedChar) {
-            game.deadChars.push(game.exitedChar);
-        }
-
-        if (game.score) {
-            for (let player in game.score) {
-                game.score[player].manche = 0;
-            }
-        } else {
-            game.score = {}
-            for (let player of game.players) {
-                game.score[player.name] = {
-                    manche: 0,
-                    total: 0
-                }
-            }
-        }
-        let done = 0;
-        let deadCharsCopy = [...game.deadChars]
-        while (done < game.players.length) {
-            let char = deadCharsCopy.pop();
-            for (let player of game.players) {
-                if (player.chars.includes(char.id) && game.score[player.name].manche === 0) {
-                    game.score[player.name].manche = deadCharsCopy.length;
-                    game.score[player.name].total += game.score[player.name].manche;
-                    done++;
-                }
-            }
-        }
-        game.finished = true;
-        return game;
-    }
-
-    formatDatas({ game, cells }) {
+    formatDatas({ game, elements}) {
         let data = {
-            cells: cells || [],
+            elements: elements || [],
             players: game.players || [],
             gameInfo: game.gameInfo || {
                 turn: 1,
@@ -149,11 +77,11 @@ export class Game extends FireReference {
 
     presave({
         game,
-        cells
+        elements
     }) {
         let data = {
             game,
-            cells
+            elements
         };
         return data;
     }
@@ -163,7 +91,7 @@ export class Game extends FireReference {
             game: {
                 loaded: false,
             },
-            cells: []
+            elements: [],
         };
     }
 }
