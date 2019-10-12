@@ -86,9 +86,11 @@ exports.launchGame = functions.https.onCall(async(key, context)=>{
 
     let scenario = VrgHelper.newScenario();
     
-    elementsRef.set(scenario.elements);
-
     let game = (await gameRef.once('value')).val();
+
+    scenario.init(game.players);
+    
+    elementsRef.set(scenario.elements);
     
     game.gameInfo = {
         turn: 1,
@@ -127,10 +129,14 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
 
         let elementsRef = admin.database().ref('elements/'+key);
         let elements = (await elementsRef.once('value')).val();
+        let positionedElement = elements.reduce((acc, el)=>{
+            acc[el.x+':'+el.y] = acc[el.x+':'+el.y] ? [el, ...acc[el.x+':'+el.y]] : [el];
+            return acc
+        }, {})
         console.log(elements);
         for(let element of elements){
             if(element.actif){
-                element = VrgHelper.playElement(element);
+                element = VrgHelper.playElement(element, positionedElement);
             }
         }
         elementsRef.set(elements);

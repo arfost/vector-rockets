@@ -214,7 +214,8 @@ class VrgGame extends VrgBase {
     }
 
     drawActions(selectedElement){
-        if(selectedElement.actions){
+        console.log(selectedElement.owner, this.user.uid, selectedElement.owner == this.user.uid)
+        if(selectedElement.actions && selectedElement.owner == this.user.uid){
             return html`<div class="flex-box f-vertical f-j-space"><span>Actions : </span>
             ${selectedElement.actions.map(action=>html`<div class="action flex-box f-horizontal f-j-space" @click="${()=>this.actionSelect(action, selectedElement)}">
                                             ${action.name}${this.selectedAction && this.selectedAction.id == action.id ? html`<span @click="${e=>{
