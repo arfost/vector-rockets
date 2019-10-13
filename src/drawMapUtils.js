@@ -70,8 +70,18 @@ export default class MapRenderer {
     return {
       burn: (action, selectedElement) => {
         this.currentAction = Object.assign({}, action);
+        let totalInertia = {
+            q:selectedElement.inertia.q,
+            r:selectedElement.inertia.r,
+            s:selectedElement.inertia.s
+        }
+        for (let displacement of selectedElement.displacement || []) {
+            totalInertia.q = totalInertia.q + displacement.q;
+            totalInertia.r = totalInertia.r + displacement.r;
+            totalInertia.s = totalInertia.s + displacement.s;
+        }
         this.currentAction.baseHex = inertiaToHex(
-          selectedElement.inertia,
+            totalInertia,
           this.Hex(selectedElement.x, selectedElement.y),
           this.Hex
         );
@@ -405,9 +415,19 @@ class ElementRenderer {
     ship.endFill();
     ship.position.set(point.x, point.y);
 
+    let totalInertia = {
+        q:element.inertia.q,
+        r:element.inertia.r,
+        s:element.inertia.s
+    }
+    for (let displacement of element.displacement || []) {
+        totalInertia.q = totalInertia.q + displacement.q;
+        totalInertia.r = totalInertia.r + displacement.r;
+        totalInertia.s = totalInertia.s + displacement.s;
+    }
     //draw rotation
     let destHex = inertiaToHex(
-      element.inertia,
+        totalInertia,
       grid.get([element.x, element.y]),
       this.Hex
     );
@@ -428,9 +448,9 @@ class ElementRenderer {
     if (burn) {
       let burnDestHex = grid.get([element.x, element.y]);
       burnDestHex = inertiaToHex({
-        q:element.inertia.q-burn.result.q,
-        r:element.inertia.r-burn.result.r,
-        s:element.inertia.s-burn.result.s
+        q:totalInertia.q-burn.result.q,
+        r:totalInertia.r-burn.result.r,
+        s:totalInertia.s-burn.result.s
         }, burnDestHex, this.Hex);
       const burnDestPoint = burnDestHex
         .toPoint()
@@ -500,12 +520,12 @@ class ElementRenderer {
     arrow.beginFill("0xD000000", 1);
     let [start, ...points] = [
       { x: 0, y: -11 },
-      { x: 8, y: 3 },
-      { x: 3, y: 3 },
-      { x: 3, y: 10 },
-      { x: -3, y: 10 },
-      { x: -3, y: 3 },
-      { x: -8, y: 3 }
+      { x: 5, y: -4 },
+      { x: 2, y: -4 },
+      { x: 2, y: 2 },
+      { x: -2, y: 2 },
+      { x: -2, y: -4 },
+      { x: -5, y: -4 }
     ].map(p => {
       return { x: p.x * camera.zoom, y: p.y * camera.zoom };
     });

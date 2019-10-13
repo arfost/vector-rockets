@@ -194,12 +194,13 @@ class VrgGame extends VrgBase {
   
     displayTooltip(){
         if(this.selectedElement && this.selectedElement.length>0){
+            let elem = this.selectedElement.filter(el => el.actif || this.selectedElement.length===1)
             return html`<div class="flex-box f-vertical f-j-space tooltip card">
-                            <h4>${this.selectedElement[0].name}</h4>
-                            <p>${this.selectedElement[0].type}</p>
-                            ${this.selectedElement[0].fuel !== undefined ? html`<p>fuel : ${this.selectedElement[0].fuel}</p>` : ``}
-                            ${this.drawActions(this.selectedElement[0])}
-                            ${this.drawPlannedActions(this.selectedElement[0])}
+                            <h4>${elem[0].name}</h4>
+                            <p>${elem[0].type}</p>
+                            ${elem[0].fuel !== undefined ? html`<p>fuel : ${elem[0].fuel}</p>` : ``}
+                            ${this.drawActions(elem[0])}
+                            ${this.drawPlannedActions(elem[0])}
                         </div>`
         }
         return '';
