@@ -4,6 +4,10 @@ const admin = require('firebase-admin');
 
 const VrgHelper = require('./VrgHelper.js');
 
+admin.initializeApp({
+    credential: admin.credential.cert(require('../config/gameengineconfigurator-0a66938107ae.json')),
+    databaseURL: "https://gameengineconfigurator.firebaseio.com"
+  });
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
