@@ -22,7 +22,6 @@ exports.createGame = functions.https.onCall(async(datas, context)=>{
     let gameRef = admin.database().ref('games').push();
 
     let user = (await admin.database().ref('users/'+uid).once('value')).val();
-    console.log(user)
 
     let game = {
         players : [{
@@ -133,10 +132,9 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
             acc[el.x+':'+el.y] = acc[el.x+':'+el.y] ? [el, ...acc[el.x+':'+el.y]] : [el];
             return acc
         }, {})
-        console.log(elements);
         for(let element of elements){
             if(element.actif){
-                element = VrgHelper.playElement(element, positionedElement);
+                element = VrgHelper.playElement(element, positionedElement, game);
             }
         }
         elementsRef.set(elements);
@@ -148,7 +146,6 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
     }else{
         game.gameInfo.toPlay = game.players.length - validatedPlayer;
     }
-
     
     return admin.database().ref('games/'+key).set(game).then(res=>{
         return key;

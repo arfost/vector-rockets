@@ -5,19 +5,6 @@ import MapRenderer from '../drawMapUtils.js'
 
 import '../components/game-popin.js';
 import  '../components/btn-loader.js';
-
-const CHESTDESC = {
-    name:"Energy cell",
-    desc:"This cell is used to power the escape pod. Bring them togethers to escape and survive.",
-    picture:"https://dummyimage.com/150x150/d10fd1/0011ff.png&text=Cell"
-}
-
-const EXITGATE = {
-    name:"Escape pod",
-    desc:"This is the escape pod, bring the energy cell to it to escape.",
-    picture:"https://dummyimage.com/150x150/d10fd1/0011ff.png&text=Escape pod"
-}
-
 class VrgGame extends VrgBase {
 
     constructor(){
@@ -62,6 +49,7 @@ class VrgGame extends VrgBase {
             background-color: lightgrey;
             padding: 0.5em;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            margin-top:1em;
         }
         .action:hover{
             display: flex;
@@ -76,8 +64,9 @@ class VrgGame extends VrgBase {
             game: Object,
             selectable: Array,
             mode: Object,
-            selectedElement:Object,
+            selectedHexElements:Object,
             selectedAction:Object,
+            elementViewedIndex:Number,
         }
     }
 
@@ -86,7 +75,6 @@ class VrgGame extends VrgBase {
             this.gameRef = Datavault.refGetter.getGame(this.user.game);
             this.game = this.gameRef.getDefaultValue();
             this.gameRef.on("value", game => {
-                console.log("datas", game)
                 this.game = game;
                 if(this.mapRenderer){
                     this.mapRenderer.setElements(game.elements);
@@ -101,7 +89,19 @@ class VrgGame extends VrgBase {
             let mapContainer = this.shadowRoot.getElementById('map');
             if(!this.mapRenderer){
                 this.mapRenderer = new MapRenderer(element=>{
-                    this.selectedElement = element;
+                    this.selectedHexElements = element
+                    if(this.selectedHexElements){
+                        this.selectedHexElements.sort((a,b)=>{
+                            if((a.actif && b.actif) || (!a.actif && !b.actif)){
+                                return 0;
+                            }
+                            if(!a.actif){
+                                return 1;
+                            }
+                            return -1;
+                        });
+                    }
+                    this.elementViewedIndex = 0;
                 },result=>{
                     this.selectedAction.result = result;
                     this.gameRef.actions.playAction(this.selectedAction);
@@ -182,25 +182,37 @@ class VrgGame extends VrgBase {
     }
 
     actionSelect(action, selectedElement){
-        console.log('hey ho', action, selectedElement)
         if(action.direct){
             this.gameRef.actions.playAction(action)
         }else{
             this.selectedAction = action;
             this.mapRenderer.setAction(action, selectedElement);
         }
+    }
 
+    increaseElementViewedIndex(){
+        this.elementViewedIndex++;
+        if(this.elementViewedIndex>=this.selectedHexElements.length){
+            this.elementViewedIndex = 0;
+        }
     }
   
+    decreaseElementViewedIndex(){
+        this.elementViewedIndex--;
+        if(this.elementViewedIndex<=0){
+            this.elementViewedIndex = this.selectedHexElements.length-1;
+        }
+    }
+
     displayTooltip(){
-        if(this.selectedElement && this.selectedElement.length>0){
-            let elem = this.selectedElement.filter(el => el.actif || this.selectedElement.length===1)
+        if(this.selectedHexElements && this.selectedHexElements.length>0){
+            let elem = this.selectedHexElements[this.elementViewedIndex];
             return html`<div class="flex-box f-vertical f-j-space tooltip card">
-                            <h4>${elem[0].name}</h4>
-                            <p>${elem[0].type}</p>
-                            ${elem[0].fuel !== undefined ? html`<p>fuel : ${elem[0].fuel}</p>` : ``}
-                            ${this.drawActions(elem[0])}
-                            ${this.drawPlannedActions(elem[0])}
+                            <h4>${this.selectedHexElements.length>1 ? html`<span @click=${this.decreaseElementViewedIndex}>🡄</span>`:``}${elem.name}${this.selectedHexElements.length>1 ? html`<span @click=${this.increaseElementViewedIndex}>🡆</span>`:``}</h4>
+                            <p>${elem.desc}</p>
+                            ${elem.fuel !== undefined ? html`<p>fuel : ${elem.fuel}/${elem.fuelMax}</p>` : ``}
+                            ${this.drawActions(elem)}
+                            ${this.drawPlannedActions(elem)}
                         </div>`
         }
         return '';
@@ -215,7 +227,6 @@ class VrgGame extends VrgBase {
     }
 
     drawActions(selectedElement){
-        console.log(selectedElement.owner, this.user.uid, selectedElement.owner == this.user.uid)
         if(selectedElement.actions && selectedElement.owner == this.user.uid){
             return html`<div class="flex-box f-vertical f-j-space"><span>Actions : </span>
             ${selectedElement.actions.map(action=>html`<div class="action flex-box f-horizontal f-j-space" @click="${()=>this.actionSelect(action, selectedElement)}">
@@ -264,6 +275,9 @@ class VrgGame extends VrgBase {
                                     <h4>Game infos : </h4>
                                     <p>You are ${this.game.players.find(player => player.uid === this.user.uid).name}</p>
                                     <p>Turn ${this.game.gameInfo.turn}</p>
+                                    <div class="flex-box f-vertical scroll">
+                                        ${this.game.messages ? this.game.messages.map(message=>html`<div class="message">${message}</div>`) : html`<div class="message">no infos</div>`}
+                                    </div>
                                     <p>${this.game.gameInfo.toPlay} have yet to validate his turn.</p>
                                     ${this.getPlayer().validated ? 
                                     html`You have validated your turn` : 

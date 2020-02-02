@@ -10,7 +10,6 @@ export class Game extends FireReference {
         super();
         this.id = id;
         this.initConnection();
-        console.log("game entity dibe", id)
     }
 
     get sources() {
@@ -26,7 +25,6 @@ export class Game extends FireReference {
             },
 
             playAction: (action) => {
-                console.log(action);
                 let actionnable = this.data.elements.find(cell => cell.id == action.elementId);
                 actionnable.actions = actionnable.actions.filter(a=>a.id !== action.id)
                 if(actionnable.plannedActions){
@@ -37,7 +35,6 @@ export class Game extends FireReference {
                 this.save();
             },
             cancelAction: (action) => {
-                console.log(action);
                 let actionnable = this.data.elements.find(cell => cell.id == action.elementId);
                 actionnable.plannedActions = actionnable.plannedActions.filter(a=>a.id !== action.id);
                 action.result = null

@@ -175,11 +175,11 @@ export class LoginReference extends FireReference {
                     provider.addScope('https://www.googleapis.com/auth/plus.login');
                     // [END addscopes]
                     // [START signin]
-                    firebase.auth().signInWithRedirect(provider);
+                    return firebase.auth().signInWithRedirect(provider);
                     // [END signin]
                 } else {
                     // [START signout]
-                    firebase.auth().signOut();
+                    return firebase.auth().signOut();
                     // [END signout]
                 }
             },
