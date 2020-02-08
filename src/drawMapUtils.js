@@ -2,7 +2,7 @@ import { defineGrid, extendHex, Point } from "honeycomb-grid";
 import * as PIXI from "pixi.js";
 
 export default class MapRenderer {
-    constructor(elementReceiver, actionReceiver) {
+    constructor(elementReceiver, actionReceiver, playerUid) {
         this.app = new PIXI.Application({ transparent: true, antialias: true });
         this.Hex = extendHex({ size: 14, orientation: "flat" });
         this.camera = {
@@ -10,6 +10,9 @@ export default class MapRenderer {
             x: 0,
             y: 0
         };
+
+        console.log("init uid  ", playerUid)
+        this.playerUid = playerUid;
 
         this.elementReceiver = elementReceiver;
         this.actionReceiver = actionReceiver;
@@ -37,7 +40,7 @@ export default class MapRenderer {
         this.app.view.addEventListener("click", ev => this.setClick(ev));
         this.elements = [];
 
-        this.elementRenderer = new ElementRenderer(this.Hex, this.Grid);
+        this.elementRenderer = new ElementRenderer(this.Hex, this.Grid, this.playerUid);
     }
 
     getView() {
@@ -45,7 +48,11 @@ export default class MapRenderer {
     }
 
     setAction(action, selectedElement) {
-        this.actions[action.type](action, selectedElement);
+        if(this.actions[action.type]){
+            this.actions[action.type](action, selectedElement);
+        }else{
+            this.actions.default();
+        }
     }
     cancelAction() {
         this.currentAction = undefined;
@@ -63,6 +70,11 @@ export default class MapRenderer {
 
     get actions() {
         return {
+            default: () => {
+                this.currentAction = undefined;
+                this.actionReceiver(true);
+                this.drawAction();
+            },
             burn: (action, selectedElement) => {
                 this.currentAction = Object.assign({}, action);
                 let totalInertia = {
@@ -146,6 +158,7 @@ export default class MapRenderer {
             this.currentAction.resolve(hex, this.currentAction);
             return;
         }
+        console.log("click :",hex.x, hex.y)
         this.setClickedHex(hex);
     }
 
@@ -375,13 +388,14 @@ export default class MapRenderer {
 }
 
 class ElementRenderer {
-    constructor(Hex, Grid) {
+    constructor(Hex, Grid, playerUid) {
         this.Hex = Hex;
         this.Grid = Grid;
         this.testgrid = this.Grid.rectangle({
             width: 200,
             height: 200
         });
+        this.playerUid = playerUid;
     }
 
     render(ctx, type, element, hex, camera, grid, selected) {
@@ -400,7 +414,7 @@ class ElementRenderer {
                 break;
             default:
                 this.defaultRenderer(ctx, element, hex, camera);
-                console.error("no renderer for type " + type, element);
+                //console.error("no renderer for type " + type, element);
         }
     }
 
@@ -428,7 +442,7 @@ class ElementRenderer {
 
         //draw ship
         ship.lineStyle(1, 0x999999);
-        ship.beginFill("0xD00ff00", 1);
+        ship.beginFill("0xD"+element.apparence.color, 1);
         let [start, ...points] = element.apparence.path.map(p => {
             return { x: p.x * camera.zoom, y: p.y * camera.zoom };
         });
@@ -470,7 +484,8 @@ class ElementRenderer {
         let burn = element.plannedActions
             ? element.plannedActions.find(a => a.type == "burn")
             : undefined;
-        if (burn) {
+        console.log(element, this.playerUid)
+        if (burn && element.owner === this.playerUid) {
             let burnDestHex = grid.get([element.x, element.y]);
             burnDestHex = inertiaToHex({
                 q: totalInertia.q - burn.result.q,

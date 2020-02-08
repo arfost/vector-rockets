@@ -33,7 +33,7 @@ class VrgGame extends VrgBase {
         }
         
         .self {
-            color:red
+            text-decoration: underline
         }
         .tooltip {
             position:fixed;
@@ -55,6 +55,46 @@ class VrgGame extends VrgBase {
             display: flex;
             background-color: grey;
             box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 2px 3px rgba(0,0,0,0.24);
+        }
+        .has-overtip{
+            position: relative;
+            display: inline-block;
+        }
+        .overtip{
+            visibility: hidden;
+            
+            background-color: grey;
+            width: 160px;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            padding:1em;
+            
+            font-weight: 400;
+            font-size: 0.75rem;
+            line-height: 1.5;
+
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -140px; /* Use half of the width (120/2 = 60), to center the tooltip */
+        }
+        .overtip::after {
+            content: " ";
+            position: absolute;
+            top: 100%; /* At the bottom of the tooltip */
+            left: 50%;
+            margin-top: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent grey;
+        }
+        .has-overtip:hover .overtip {
+            visibility: visible;
         }`
     }
 
@@ -88,6 +128,7 @@ class VrgGame extends VrgBase {
         setTimeout(()=>{
             let mapContainer = this.shadowRoot.getElementById('map');
             if(!this.mapRenderer){
+                console.log("hey user ", this.user)
                 this.mapRenderer = new MapRenderer(element=>{
                     this.selectedHexElements = element
                     if(this.selectedHexElements){
@@ -106,7 +147,7 @@ class VrgGame extends VrgBase {
                     this.selectedAction.result = result;
                     this.gameRef.actions.playAction(this.selectedAction);
                     this.selectedAction = undefined;
-                });
+                }, this.user.uid);
                 this.mapRenderer.setAffSize({height:mapContainer.clientHeight, width:mapContainer.clientWidth});
                 this.mapRenderer.setMapInfos(this.game.mapInfos);
                 this.mapRenderer.setElements(this.game.elements);
@@ -208,9 +249,10 @@ class VrgGame extends VrgBase {
         if(this.selectedHexElements && this.selectedHexElements.length>0){
             let elem = this.selectedHexElements[this.elementViewedIndex];
             return html`<div class="flex-box f-vertical f-j-space tooltip card">
-                            <h4>${this.selectedHexElements.length>1 ? html`<span @click=${this.decreaseElementViewedIndex}>🡄</span>`:``}${elem.name}${this.selectedHexElements.length>1 ? html`<span @click=${this.increaseElementViewedIndex}>🡆</span>`:``}</h4>
+                            <h4>${this.selectedHexElements.length>1 ? html`<span @click=${this.decreaseElementViewedIndex}>🡄</span>`:``}<span style="width:100%" class="${elem.overtip ? 'has-overtip' : ''}">${elem.name}${elem.overtip ? html`<div class='overtip'>${elem.overtip}</div>` : ''}</span>${this.selectedHexElements.length>1 ? html`<span @click=${this.increaseElementViewedIndex}>🡆</span>`:``}</h4>
                             <p>${elem.desc}</p>
-                            ${elem.fuel !== undefined ? html`<p>fuel : ${elem.fuel}/${elem.fuelMax}</p>` : ``}
+                            ${elem.fuel !== undefined ? html`<div class="has-overtip">fuel : ${elem.fuel}/${elem.fuelMax} <div class="overtip">When there is no fuel left, you can't burn anymore. Land on a planet to refuel.</div></div>` : ``}
+                            ${elem.damage ? html`<div class="has-overtip">damage : ${elem.damage} <div class="overtip">crew is repairing and ship can't burn for this number of round</div></div>` : ``}
                             ${this.drawActions(elem)}
                             ${this.drawPlannedActions(elem)}
                         </div>`
@@ -238,12 +280,12 @@ class VrgGame extends VrgBase {
                                         </div>`)}
             </div>`
         }else{
-            return html`No actions availables`
+            return html``
         }
     }
 
     drawPlannedActions(selectedElement){
-        if(selectedElement.plannedActions){
+        if(selectedElement.plannedActions && selectedElement.owner == this.user.uid){
             return html`<div class="flex-box f-vertical f-j-space"><span>Planned actions : </span>
             ${selectedElement.plannedActions.map(action=>html`<div class="action flex-box f-horizontal f-j-space">
                                             ${action.name}<span @click="${e=>{
@@ -252,7 +294,7 @@ class VrgGame extends VrgBase {
                                         </div>`)}
             </div>`
         }else{
-            return html`No actions planned`
+            return html``
         }
     }
 
@@ -313,7 +355,7 @@ class VrgGame extends VrgBase {
                             <div class="flex-box f-vertical f-j-start">
                                 <div>Players : </div>
                                 <ul>
-                                    ${this.game.players.map(player=>html`<li class="${player.uid === this.user.uid ? 'self': ''}">${player.name}</li>`)}
+                                    ${this.game.players.map(player=>html`<li style="color:#${player.color}" class="${player.uid === this.user.uid ? 'self': ''}">${player.name}</li>`)}
                                 </ul>
                             </div>
                             <div class="flex-box f-vertical">

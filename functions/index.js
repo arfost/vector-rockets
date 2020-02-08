@@ -22,12 +22,14 @@ exports.createGame = functions.https.onCall(async(datas, context)=>{
     let gameRef = admin.database().ref('games').push();
 
     let user = (await admin.database().ref('users/'+uid).once('value')).val();
-
+    let colorList = VrgHelper.getPlayerColorList();
     let game = {
         players : [{
             uid:uid,
-            name:user.displayName
+            name:user.displayName,
+            color:colorList.pop()
         }],
+        colorList:colorList,
         ready: false,
         loaded:true,
     }
@@ -43,16 +45,17 @@ exports.joinGame = functions.https.onCall(async(key, context)=>{
     // Grab the current value of what was written to the Realtime Database.
     const uid = context.auth.uid;
     let gameRef = admin.database().ref('games/'+key);
-    let user = await admin.database().ref('users/'+uid).once('value').val();
+    let user = (await admin.database().ref('users/'+uid).once('value')).val();
     
-    let game = await gameRef.once('value').val();
+    let game = (await gameRef.once('value')).val();
 
     if(game.players.length >=4){
         throw new Error('This game is at maximum capacity'); //TODO trad
     }
     game.players.push({
         uid:uid,
-        name:user.displayName
+        name:user.displayName,
+        color:game.colorList.pop(),
     })
     
     return admin.database().ref('games/'+key).set(game).then(res=>{
