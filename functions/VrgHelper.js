@@ -608,11 +608,13 @@ const actionLib = {
 
             return ship;
         },
-        sabotage(ship, result) {
+        sabotage(ship, result, pe, game) {
             ship.fuel--;
 
             ship.damage++;
             ship.damageTaken = true;
+            console.log(game)
+            game.messages.push(ship.name+' was erter')
 
             return ship;
         },
@@ -675,14 +677,10 @@ const actionLib = {
                         }
                     }
                 }
-                if(futurHex.x<0 || futurHex.x > game.mapInfos.width || futurHex.y < 0 || futurHex.y > game.mapInfos.height){
+                if((futurHex.x<0 || futurHex.x > game.mapInfos.width || futurHex.y < 0 || futurHex.y > game.mapInfos.height) && !ship.destroyed){
                     ship.destroyed = true;
                     ship.destroyedReason = 'outbound';
-                    if(game.messages){
-                        game.messages.push(ship.name+' was lost in space')
-                    }else{
-                        game.messages = [ship.name+' was lost in space']
-                    }
+                    game.messages.push(ship.name+' was lost in space')
                 }
     
                 ship.x = futurHex.x;
@@ -700,11 +698,7 @@ const actionLib = {
                     if(ship.damage > 6){
                         ship.destroyed = true;
                         ship.destroyedReason = 'damage';
-                        if(game.messages){
-                            game.messages.push(ship.name+' was destroyed in an artistic fireball')
-                        }else{
-                            game.messages = [ship.name+' was destroyed in an artistic fireball']
-                        }
+                        game.messages.push(ship.name+' was destroyed in an artistic fireball')
                     }
                     ship.damageTaken = false;
                 }else{
@@ -719,7 +713,10 @@ const actionLib = {
             if(ship.destroyed){
                 return actions;
             }
-            
+            // actions.push({
+            //     type: "sabotage",
+            //     name: "sabotage"
+            // });
             if (ship.fuel > 0 && !ship.landed && ship.damage===0) {
                 actions.push({
                     type: "burn",

@@ -316,7 +316,7 @@ class VrgGame extends VrgBase {
                                     <p>You are ${this.game.players.find(player => player.uid === this.user.uid).name}</p>
                                     <p>Turn ${this.game.gameInfo.turn}</p>
                                     <div class="flex-box f-vertical scroll">
-                                        ${this.game.messages ? this.game.messages.map(message=>html`<div class="message">${message}</div>`) : html`<div class="message">no infos</div>`}
+                                        ${this.game.messages.slice(-10).map(message=>html`<div class="message">${message}</div>`)}
                                     </div>
                                     <p>${this.game.gameInfo.toPlay} have yet to validate his turn.</p>
                                     ${this.getPlayer().validated ? 

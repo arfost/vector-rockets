@@ -105,6 +105,7 @@ exports.launchGame = functions.https.onCall(async(key, context)=>{
         toPlay:game.players.length
     }
     game.mapInfos = scenario.mapInfos;
+    game.messages = ['Game starting'];
 
     game.ready = true;
     game.finished = false;
@@ -146,12 +147,16 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
                 element = VrgHelper.playElement(element, positionedElement, game);
             }
         }
+        console.log(game)
         elementsRef.set(elements);
         game.players.map(player=>{
             player.validated = false;
             return player;
         })
         game.inTurn = false;
+        
+        game.messages.push(`game turn ${game.gameInfo.turn} finished`);
+        game.gameInfo.turn ++;
     }else{
         game.gameInfo.toPlay = game.players.length - validatedPlayer;
     }

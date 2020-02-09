@@ -60,6 +60,7 @@ export class Game extends FireReference {
                 toPlay: 0,
                 votes: 0
             },
+            messages: game.messages || [],
             mapInfos: game.mapInfos || {
                 height:-1,
                 width:-1
