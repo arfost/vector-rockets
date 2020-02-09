@@ -68,11 +68,17 @@ exports.quitGame = functions.https.onCall(async(key, context)=>{
     const uid = context.auth.uid;
     let gameRef = admin.database().ref('games/'+key);
 
-    let game = await gameRef.once('value').val();
+    let game = (await gameRef.once('value')).val();
     
     game.players = game.players.filter(pl=>pl.uid !== uid);
     if(game.gameInfo.toPlay>=game.players.length){
         game.gameInfo.toPlay = 0;
+    }
+
+    if(game.players.length<=0){
+        game = {};
+        let elementsRef = admin.database().ref('elements/'+key);
+        elementsRef.set([]);
     }
     
     return admin.database().ref('games/'+key).set(game).then(res=>{

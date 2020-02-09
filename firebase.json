@@ -8,12 +8,13 @@
     ],
     "source": "functions"
   },
-  "hosting": {
+  "hosting": [{
     "public": "dist",
+    "site": "vector-rockets",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ]
-  }
+  }]
 }

@@ -127,6 +127,9 @@ class VrgGame extends VrgBase {
     drawMap(){
         setTimeout(()=>{
             let mapContainer = this.shadowRoot.getElementById('map');
+            if(mapContainer == undefined){
+                return;
+            }
             if(!this.mapRenderer){
                 console.log("hey user ", this.user)
                 this.mapRenderer = new MapRenderer(element=>{
@@ -199,15 +202,9 @@ class VrgGame extends VrgBase {
      quitGame() {
         this.shadowRoot.getElementById('quit').textMode = false;
         Datavault.refGetter.getUser().actions.quitGame(this.game.key).then(ret=>{
-            this.shadowRoot.getElementById('quit').textMode = true;
-            this.showToast({
-                detail:'Game quitted'
-            });
+            this.emit('toast-msg', 'Game quitted');
         }).catch(err=>{
-            this.shadowRoot.getElementById('quit').textMode = true;
-            this.showToast({
-                detail:err.message
-            });
+            this.emit('toast-msg', err.message);
         });
     }
 
@@ -313,7 +310,8 @@ class VrgGame extends VrgBase {
                         </div>
                         <div class="flex-box f-vertical w-20 list-deads scroll">
                         ${ this.game.gameInfo ?
-                        html`<div class="flex-box f-vertical f-j-center f-a-center">
+                        html`<div class="flex-box f-vertical f-a-center f-j-space" style="height:100%;padding:1em">
+                                <div class="flex-box f-vertical f-a-center">
                                     <h4>Game infos : </h4>
                                     <p>You are ${this.game.players.find(player => player.uid === this.user.uid).name}</p>
                                     <p>Turn ${this.game.gameInfo.turn}</p>
@@ -326,7 +324,10 @@ class VrgGame extends VrgBase {
                                     html`<btn-loader id="validate" @click="${this.validateTurn}">
                                             validate turn
                                         </btn-loader>`}
-                                    
+                                </div>
+                                <btn-loader style="align-self:bottom" id="quit" @click="${this.quitGame}">
+                                    quit game
+                                </btn-loader>
                                 </div>`:
                         `loading`
                     }

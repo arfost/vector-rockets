@@ -511,7 +511,7 @@ module.exports.newScenario = function () {
             }
 
             for (let player of players) {
-                let ship = actionLib.ship.init(player, this.elements);
+                let ship = actionLib.ship.init(player, {x:17,y:26, landed:true}, this.elements);
                 let positionedElement = this.elements.reduce((acc, el)=>{
                     acc[el.x+':'+el.y] = acc[el.x+':'+el.y] ? [el, ...acc[el.x+':'+el.y]] : [el];
                     return acc
@@ -774,8 +774,9 @@ const actionLib = {
             });
             return actions;
         },
-        init(player, elements) {
+        init(player, base, elements) {
             return {
+                ...base,
                 actif: true,
                 apparence: {
                     color:player.color,
@@ -812,8 +813,7 @@ const actionLib = {
                 },
                 name: player.name + " - 1",
                 type: "ship",
-                x: getDice(20) + 10,
-                y: getDice(20) + 10
+                base,
             };
         }
     },

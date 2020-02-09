@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "gameengineconfigurator"
+  },
+  "targets": {
+    "gameengineconfigurator": {
+      "hosting": {
+        "vector-rockets": [
+          "dist"
+        ]
+      }
+    }
   }
 }
