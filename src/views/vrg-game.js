@@ -131,7 +131,6 @@ class VrgGame extends VrgBase {
                 return;
             }
             if(!this.mapRenderer){
-                console.log("hey user ", this.user)
                 this.mapRenderer = new MapRenderer(element=>{
                     this.selectedHexElements = element
                     if(this.selectedHexElements){

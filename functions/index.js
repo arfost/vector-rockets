@@ -147,7 +147,6 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
                 element = VrgHelper.playElement(element, positionedElement, game);
             }
         }
-        console.log(game)
         elementsRef.set(elements);
         game.players.map(player=>{
             player.validated = false;

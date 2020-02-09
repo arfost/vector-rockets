@@ -11,7 +11,6 @@ export default class MapRenderer {
             y: 0
         };
 
-        console.log("init uid  ", playerUid)
         this.playerUid = playerUid;
 
         this.elementReceiver = elementReceiver;
@@ -484,7 +483,6 @@ class ElementRenderer {
         let burn = element.plannedActions
             ? element.plannedActions.find(a => a.type == "burn")
             : undefined;
-        console.log(element, this.playerUid)
         if (burn && element.owner === this.playerUid) {
             let burnDestHex = grid.get([element.x, element.y]);
             burnDestHex = inertiaToHex({

@@ -613,7 +613,6 @@ const actionLib = {
 
             ship.damage++;
             ship.damageTaken = true;
-            console.log(game)
             game.messages.push(ship.name+' was erter')
 
             return ship;
@@ -648,7 +647,6 @@ const actionLib = {
                 let futurHex = inertiaToHex(ship.inertia, Hex(ship.x, ship.y), Hex);
     
                 let traversedHexs = grid.hexesBetween(Hex(ship.x, ship.y), futurHex);
-                console.log("traversed hex = ", traversedHexs)
                 traversedHexs.shift();
     
                 for (let traversedHex of traversedHexs) {
@@ -663,11 +661,8 @@ const actionLib = {
                                 ship.displacement.push(el.direction);
                             }
                             if (el.type === "dirtySpace") {
-                                if(Math.abs(ship.inertia.q) <= 1 && Math.abs(ship.inertia.r) <= 1 && Math.abs(ship.inertia.s) <= 1){
-                                    console.log("dirty space but speed is good")
-                                }else{
+                                if(!(Math.abs(ship.inertia.q) <= 1 && Math.abs(ship.inertia.r) <= 1 && Math.abs(ship.inertia.s) <= 1)){
                                     let result = getDice(1,6)-4;
-                                    console.log("traversing dirty space : ", result, ship.inertia);
                                     if(result >0){
                                         ship.damage = result;
                                         ship.damageTaken = true;
