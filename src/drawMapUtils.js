@@ -33,10 +33,9 @@ export default class MapRenderer {
         this.hoverGraphics = new PIXI.Graphics();
         this.app.stage.addChild(this.hoverGraphics);
 
-        this.app.view.addEventListener("mousewheel", ev => this.mapZoom(ev));
-
         this.app.view.addEventListener("mousemove", ev => this.setHover(ev));
         this.app.view.addEventListener("click", ev => this.setClick(ev));
+        this.app.view.addEventListener("touch", ev => this.setClick(ev));
         this.elements = [];
 
         this.elementRenderer = new ElementRenderer(this.Hex, this.Grid, this.playerUid);
@@ -211,16 +210,14 @@ export default class MapRenderer {
         this.drawElements();
     }
 
-    mapZoom(ev) {
-        if (!this.mapInfos || !this.mapInfos.navigable) {
-            return;
-        }
-        this.camera.zoom += ev.wheelDelta / 1000;
-        if (this.camera.zoom < 1) {
-            this.camera.zoom = 1;
-        }
-        this.camera.x = this.affSize.width / 2 - ev.clientX;
-        this.camera.y = this.affSize.height / 2 - ev.clientY;
+    mapMove(x, y){
+        this.camera.x = this.camera.x + (x*10);
+        this.camera.y = this.camera.y + (y*10);
+        this.draw();
+    }
+
+    mapZoom(zoom) {
+        this.camera.zoom = this.camera.zoom + (zoom/100);
         this.draw();
     }
 

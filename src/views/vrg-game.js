@@ -5,6 +5,7 @@ import MapRenderer from '../drawMapUtils.js'
 
 import '../components/game-popin.js';
 import  '../components/btn-loader.js';
+import '../components/game-components/vrg-touchpad.js'
 class VrgGame extends VrgBase {
 
     constructor(){
@@ -95,6 +96,11 @@ class VrgGame extends VrgBase {
         }
         .has-overtip:hover .overtip {
             visibility: visible;
+        }
+        .controler{
+            position:absolute;
+            top:1em;
+            right:2em;
         }`
     }
 
@@ -293,6 +299,36 @@ class VrgGame extends VrgBase {
             return html``
         }
     }
+    controlReceived(e){
+        console.log('control : ', e, e.detail)
+        if(!this.mapRenderer){
+            return;
+        }
+        let [type, pad] = e.detail.split(':');
+        switch (type) {
+            case 'zup':
+                this.mapRenderer.mapZoom(-pad);
+                break;
+            case 'zdown':
+                this.mapRenderer.mapZoom(pad);
+                break;
+            case 'left':
+                this.mapRenderer.mapMove(-pad, 0);
+                break;
+            case 'right':
+                this.mapRenderer.mapMove(pad, 0);
+                break;
+            case 'up':
+                this.mapRenderer.mapMove(0, -pad);
+                break;
+            case 'down':
+                this.mapRenderer.mapMove(0, pad);
+                break;
+            default:
+                console.warn("unknow control param : ", param)
+                break;
+        }
+    }
 
     render() {
         return html`
@@ -302,7 +338,8 @@ class VrgGame extends VrgBase {
                 html`
                     ${this.displayTooltip()}
                     <div class="flex-box f-horizontal p-0 h-100">
-                        <div class="flex-box f-vertical f-j-center w-80 scroll f-a-center">
+                        <div class="flex-box f-vertical f-j-center w-80 scroll f-a-center" style="position:relative">
+                            <vrg-touchpad @btn-control="${this.controlReceived}" class="controler"></vrg-touchpad>
                             <div class="map" id="map" @resize="${this.resizeMap}">
                                 ${this.drawMap()}
                             </div>
