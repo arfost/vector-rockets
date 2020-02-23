@@ -11,6 +11,7 @@ export class VrgElementDesc extends VrgBase {
             elementViewedIndex: Number,
             userId:String,
             actionId:Number,
+            open:Boolean,
         }
     }
 
@@ -18,6 +19,7 @@ export class VrgElementDesc extends VrgBase {
         super()
         this.elements = [];
         this.elementViewedIndex = 0;
+        this.open = true;
     }
 
     get selfStyles() {
@@ -73,6 +75,9 @@ export class VrgElementDesc extends VrgBase {
         }
         .has-overtip:hover .overtip {
             visibility: visible;
+        }
+        .hide{
+            display:none;
         }`
     }
 
@@ -94,12 +99,19 @@ export class VrgElementDesc extends VrgBase {
         if (this.elements && this.elements.length > 0) {
             let elem = this.elements[this.elementViewedIndex];
             return html`<div class="flex-box f-vertical f-j-space tooltip card">
-                            <h4>${this.elements.length > 1 ? html`<span @click=${this.decreaseElementViewedIndex}>🡄</span>` : ``}<span style="width:100%" class="${elem.overtip ? 'has-overtip' : ''}">${elem.name}${elem.overtip ? html`<div class='overtip'>${elem.overtip}</div>` : ''}</span>${this.elements.length > 1 ? html`<span @click=${this.increaseElementViewedIndex}>🡆</span>` : ``}</h4>
-                            <p>${elem.desc}</p>
-                            ${elem.fuel !== undefined ? html`<div class="has-overtip">fuel : ${elem.fuel}/${elem.fuelMax} <div class="overtip">When there is no fuel left, you can't burn anymore. Land on a planet to refuel.</div></div>` : ``}
-                            ${elem.damage ? html`<div class="has-overtip">damage : ${elem.damage} <div class="overtip">crew is repairing and ship can't burn for this number of round</div></div>` : ``}
-                            ${this.drawActions(elem)}
-                            ${this.drawPlannedActions(elem)}
+                            <h4>
+                                ${this.elements.length > 1 ? html`<span @click=${this.decreaseElementViewedIndex}>🡄</span>` : ``}
+                                <span style="width:100%" class="${elem.overtip ? 'has-overtip' : ''}">${elem.name}${elem.overtip ? html`<div class='overtip'>${elem.overtip}</div>` : ''}</span>
+                                ${this.elements.length > 1 ? html`<span @click=${this.increaseElementViewedIndex}>🡆</span>` : ``}
+                                <span style="float: right;" @click="${e=>this.open=!this.open}">${this.open ? '▼' : '▲'}</span>
+                            </h4>
+                            <div class="${this.open ? '' : 'hide'}">
+                                <p>${elem.desc}</p>
+                                ${elem.fuel !== undefined ? html`<div class="has-overtip">fuel : ${elem.fuel}/${elem.fuelMax} <div class="overtip">When there is no fuel left, you can't burn anymore. Land on a planet to refuel.</div></div>` : ``}
+                                ${elem.damage ? html`<div class="has-overtip">damage : ${elem.damage} <div class="overtip">crew is repairing and ship can't burn for this number of round</div></div>` : ``}
+                                ${this.drawActions(elem)}
+                                ${this.drawPlannedActions(elem)}
+                            </div>
                         </div>`
         }
         return '';
