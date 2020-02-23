@@ -35,7 +35,11 @@ export default class MapRenderer {
 
         this.app.view.addEventListener("mousemove", ev => this.setHover(ev));
         this.app.view.addEventListener("click", ev => this.setClick(ev));
-        this.app.view.addEventListener("touchend", ev => this.setClick(ev));
+        //this.app.view.addEventListener("touchend", ev => this.setClick(ev));
+        this.app.view.addEventListener("touchstart", ev => {
+            console.log("hey touch")
+            this.setClick(ev)
+        });
         this.elements = [];
 
         this.elementRenderer = new ElementRenderer(this.Hex, this.Grid, this.playerUid);
@@ -139,12 +143,22 @@ export default class MapRenderer {
     }
 
     setClick(e) {
-        let p = Point(e.offsetX, e.offsetY);
+        let p;
+        if(e.offsetX){
+            p = Point(e.offsetX, e.offsetY);
+        }else if(e.touches && e.touches.length>0){
+            let touch = e.touches[0];
+            p = Point(touch.clientX, touch.clientY);
+        }else{
+            console.warn("unknown event type : ", e);
+            return;
+        }
         let hex = this.Hex().fromPoint(
             p
                 .subtract(this.camera.x, this.camera.y)
                 .divide(this.camera.zoom, this.camera.zoom)
         );
+        console.log("click :",hex.x, hex.y)
         if (
             (this.clickHex && hex.x == this.clickHex.x && hex.y == this.clickHex.y) ||
             !this.isInBound(hex)
@@ -156,7 +170,6 @@ export default class MapRenderer {
             this.currentAction.resolve(hex, this.currentAction);
             return;
         }
-        console.log("click :",hex.x, hex.y)
         this.setClickedHex(hex);
     }
 
