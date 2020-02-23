@@ -13,7 +13,7 @@ export class VrgTouchpad extends VrgBase {
     }
 
     constructor(){
-        super()
+        super();
         this.pad = 5;
         this.open = false;
     }

@@ -35,7 +35,7 @@ export default class MapRenderer {
 
         this.app.view.addEventListener("mousemove", ev => this.setHover(ev));
         this.app.view.addEventListener("click", ev => this.setClick(ev));
-        this.app.view.addEventListener("touch", ev => this.setClick(ev));
+        this.app.view.addEventListener("touchend", ev => this.setClick(ev));
         this.elements = [];
 
         this.elementRenderer = new ElementRenderer(this.Hex, this.Grid, this.playerUid);
