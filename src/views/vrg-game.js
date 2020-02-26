@@ -227,7 +227,7 @@ class VrgGame extends VrgBase {
         return html`
             ${this.styles}
             ${
-                this.game.loaded ? 
+                this.game.status === 'ready' ? 
                 html`
                     <vrg-element-desc 
                         class="tooltip" 
@@ -269,25 +269,7 @@ class VrgGame extends VrgBase {
                     }
                         </div>
                     </div>
-                    <game-popin ?hidden=${true}>
-                        <div class="flex-box f-vertical">
-                            <div class="flex-box f-horizontal f-j-center">
-                                <p>
-                                    titre pop in
-                                </p>
-                            </div>
-                            <div class="flex-box f-horizontal">
-                                content
-                            </div>
-                            <div class="flex-box f-vertical f-j-end f-a-center">
-                                buttons
-                                <btn-loader @click="${this.cancel}">
-                                    cancel
-                                </btn-loader>
-                            </div>
-                        </div>
-                    </game-popin>
-                    <game-popin ?hidden=${this.game.ready}>
+                    <game-popin ?hidden=${this.game.status !== 'waitingplayers'}>
                         <div class="flex-box f-horizontal">
                             <div class="flex-box f-vertical f-j-start">
                                 <div>Players : </div>
@@ -308,7 +290,7 @@ class VrgGame extends VrgBase {
                             </div>
                         </div>
                     </game-popin>
-                    <game-popin ?hidden=${!this.game.inTurn}>
+                    <game-popin ?hidden=${this.game.status !== 'loading'}>
                         <div class="flex-box f-vertical">
                             <div class="flex-box f-horizontal f-j-center">
                                 <p>
@@ -320,7 +302,7 @@ class VrgGame extends VrgBase {
                             </div>
                         </div>
                     </game-popin>`:
-                html`<game-popin ?hidden=${this.game.loaded}>loading</game-popin>`
+                html`<game-popin ?hidden=${!this.game.status}>loading</game-popin>`
             }
         `;
     }

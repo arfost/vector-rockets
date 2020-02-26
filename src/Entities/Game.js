@@ -16,6 +16,7 @@ export class Game extends FireReference {
         return {
             game: "games/" + this.id,
             elements: "elements/" + this.id,
+            gameStatus: "status/" + this.id,
         };
     }
     get actions() {
@@ -51,7 +52,7 @@ export class Game extends FireReference {
         }
     }
 
-    formatDatas({ game, elements}) {
+    formatDatas({ game, elements, status}) {
         let data = {
             elements: elements || [],
             players: game.players || [],
@@ -65,10 +66,8 @@ export class Game extends FireReference {
                 height:-1,
                 width:-1
             },
-            ready: game.ready,
-            loaded: game.loaded,
-            finished: game.finished,
-            key:this.id
+            status,
+            key:this.id,
         };
         return data;
     }
