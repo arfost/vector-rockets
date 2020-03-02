@@ -30,12 +30,10 @@ exports.createGame = functions.https.onCall(async(datas, context)=>{
             color:colorList.pop()
         }],
         colorList:colorList,
-        ready: false,
-        loaded:true,
     }
 
     gameRef.set(game);
-
+    admin.database().ref(`status/${gameRef.key}`).set('waitingplayers')
 
     return gameRef.key;
     
@@ -107,11 +105,11 @@ exports.launchGame = functions.https.onCall(async(key, context)=>{
     game.mapInfos = scenario.mapInfos;
     game.messages = ['Game starting'];
 
-    game.ready = true;
-    game.finished = false;
     
     return admin.database().ref('games/'+key).set(game).then(res=>{
-        return key;
+      return admin.database().ref('status/'+key).set('ready')
+    }).then(res=>{
+      return key;
     });
     
 });
@@ -134,7 +132,7 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
     }
 
     if(validatedPlayer === game.players.length){
-        gameRef.child('inTurn').set(true);
+        admin.database().ref('status/'+key).set('inturn');
 
         let elementsRef = admin.database().ref('elements/'+key);
         let elements = (await elementsRef.once('value')).val();
@@ -152,7 +150,6 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
             player.validated = false;
             return player;
         })
-        game.inTurn = false;
         
         game.messages.push(`game turn ${game.gameInfo.turn} finished`);
         game.gameInfo.turn ++;
@@ -161,6 +158,8 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
     }
     
     return admin.database().ref('games/'+key).set(game).then(res=>{
+      return admin.database().ref('status/'+key).set('ready')
+    }).then(res=>{
         return key;
     });
     
