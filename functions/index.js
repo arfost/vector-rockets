@@ -132,7 +132,7 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
     }
 
     if(validatedPlayer === game.players.length){
-        admin.database().ref('status/'+key).set('loading');
+        admin.database().ref('status/'+key).set('inturn');
 
         let elementsRef = admin.database().ref('elements/'+key);
         let elements = (await elementsRef.once('value')).val();

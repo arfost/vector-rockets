@@ -16,7 +16,7 @@ export class Game extends FireReference {
         return {
             game: "games/" + this.id,
             elements: "elements/" + this.id,
-            gameStatus: "status/" + this.id,
+            status: "status/" + this.id,
         };
     }
     get actions() {
