@@ -1,4 +1,5 @@
-const shipReference = require('./shipReference.js')
+const shipReference = require('./shipReference.json')
+const {inertiaToHex, getDice} = require('../tools.js')
 const Honeycomb = require("honeycomb-grid");
 
 const Hex = Honeycomb.extendHex({ size: 14, orientation: "flat" });
@@ -6,87 +7,84 @@ const Hex = Honeycomb.extendHex({ size: 14, orientation: "flat" });
 const grid = Honeycomb.defineGrid().rectangle({ width: 200, height: 200 });
 
 module.exports = class {
-  constructor(base, baseId, type) {
+  
+  init(base, baseId, type, player){
     this._ship = {
-      ...base,
-      ...shipReference[type],
-      id: baseId,
-      inertia: {
-        q: 0,
-        r: 0,
-        s: 0
-      },
-      type: "ship",
-    }
+        ...base,
+        ...shipReference[type],
+        id: baseId,
+        inertia: {
+          q: 0,
+          r: 0,
+          s: 0
+        },
+        type: "ship",
+        name: player.name + " - 1",
+        owner: player.uid
+      }
+      this._ship.apparence.color = player.color;
   }
 
-  get ship() {
+  get id(){
+      return this._ship.id;
+  }
+
+  load(ship){
+      this._ship = ship;
+  }
+
+  get jsonDesc() {
     return this._ship
   }
 
-  baseTurn(positionedElements, scenario) {
-    let trail = {
-      x: this._ship.x,
-      y: this._ship.y,
-      inertia: this._ship.inertia
-    };
+  get futurHex(){
+    if(this._futurHex){
+        return this._futurHex;
+    }
+    throw new Error('futurHex no value for this time')
+  }
+  get traversedHex(){
+    if(this._traversedHexs){
+        return this._traversedHexs;
+    }
+    throw new Error('traversed hex no value for this time')
+  }
 
-    if (
-      this._ship.plannedActions &&
-      this._ship.plannedActions.find(pa => pa.type === "burn")
-    ) {
-      trail.burnType = "burn";
-    }
-    if (this._ship.trails) {
-      this._ship.trails.push(trail);
-    } else {
-      this._ship.trails = [trail];
-    }
+  resolveTurn(positionedElements, scenario) {
+
     if (!this._ship.landed) {
-      for (let displacement of this._ship.displacement || []) {
-        this._ship.inertia.q = this._ship.inertia.q + displacement.q;
-        this._ship.inertia.r = this._ship.inertia.r + displacement.r;
-        this._ship.inertia.s = this._ship.inertia.s + displacement.s;
-      }
 
-      this._ship.displacement = [];
-
-      let futurHex = inertiaToHex(this._ship.inertia, Hex(this._ship.x, this._ship.y), Hex);
-
-      let traversedHexs = grid.hexesBetween(Hex(this._ship.x, this._ship.y), futurHex);
-      traversedHexs.shift();
-
-      for (let traversedHex of traversedHexs) {
+      for (let traversedHex of this._traversedHexs) {
         if (!traversedHex) {
           continue;
         }
-        if (positionedElement[traversedHex.x + ":" + traversedHex.y]) {
-          for (let el of positionedElement[
+        if (positionedElements[traversedHex.x + ":" + traversedHex.y]) {
+          for (let el of positionedElements[
             traversedHex.x + ":" + traversedHex.y
           ]) {
             if (el.type === "gravArrow") {
-              ship.displacement.push(el.direction);
+                this._ship.displacement.push(el.direction);
             }
             if (el.type === "dirtySpace") {
-              if (!(Math.abs(ship.inertia.q) <= 1 && Math.abs(ship.inertia.r) <= 1 && Math.abs(ship.inertia.s) <= 1)) {
+              if (!(Math.abs(this._ship.inertia.q) <= 1 && Math.abs(this._ship.inertia.r) <= 1 && Math.abs(this._ship.inertia.s) <= 1)) {
                 let result = getDice(1, 6) - 4;
                 if (result > 0) {
-                  ship.damage = result;
-                  ship.damageTaken = true;
+                    this._ship.damage = result;
+                    this._ship.damageTaken = true;
                 }
               }
             }
           }
         }
       }
-      if ((futurHex.x < 0 || futurHex.x > game.mapInfos.width || futurHex.y < 0 || futurHex.y > game.mapInfos.height) && !ship.destroyed) {
+      if ((this._futurHex.x < 0 || this._futurHex.x > scenario.scenario.mapInfos.width || this._futurHex.y < 0 || this._futurHex.y > scenario.scenario.mapInfos.height) && !this._ship.destroyed) {
         this._ship.destroyed = true;
         this._ship.destroyedReason = 'outbound';
-        game.messages.push(this._ship.name + ' was lost in space')
+        scenario.addMessage(this._ship.name + ' was lost in space')
       }
 
-      this._ship.x = futurHex.x;
-      this._ship.y = futurHex.y;
+      this._ship.x = this._futurHex.x;
+      this._ship.y = this._futurHex.y;
 
       if (this._ship.takeoff) {
         this._ship.inertia.q = 0;
@@ -100,12 +98,60 @@ module.exports = class {
         if (this._ship.damage > 6) {
           this._ship.destroyed = true;
           this._ship.destroyedReason = 'damage';
-          game.messages.push(this._ship.name + ' was destroyed in an artistic fireball')
+          scenario.addMessage(this._ship.name + ' was destroyed in an artistic fireball')
         }
         this._ship.damageTaken = false;
       } else {
         if (this._ship.damage > 0) this._ship.damage--;
       }
+    }
+  }
+
+  prepareActions(positionedElement, scenario){
+    if (this._ship.plannedActions) {
+        for (let pa of this._ship.plannedActions) {
+            this._ship = this.actions[pa.type].execute(
+                this._ship,
+                pa.result,
+                positionedElement,
+                scenario
+            );
+        }
+    }
+    this._ship.plannedActions = [];
+
+
+    let trail = {
+        x: this._ship.x,
+        y: this._ship.y,
+        inertia: this._ship.inertia
+      };
+  
+      if (
+        this._ship.plannedActions &&
+        this._ship.plannedActions.find(pa => pa.type === "burn")
+      ) {
+        trail.burnType = "burn";
+      }
+      if (this._ship.trails) {
+        this._ship.trails.push(trail);
+      } else {
+        this._ship.trails = [trail];
+      }
+
+    if (!this._ship.landed) {
+      for (let displacement of this._ship.displacement || []) {
+        this._ship.inertia.q = this._ship.inertia.q + displacement.q;
+        this._ship.inertia.r = this._ship.inertia.r + displacement.r;
+        this._ship.inertia.s = this._ship.inertia.s + displacement.s;
+      }
+
+      this._ship.displacement = [];
+
+      this._futurHex = inertiaToHex(this._ship.inertia, Hex(this._ship.x, this._ship.y), Hex);
+
+      this._traversedHexs = grid.hexesBetween(Hex(this._ship.x, this._ship.y), this._futurHex);
+      this._traversedHexs.shift();
     }
   }
 
@@ -143,7 +189,7 @@ module.exports = class {
       
           //TODO add speed test
           if (Math.abs(inertia.q) <= 1 && Math.abs(inertia.r) <= 1 && Math.abs(inertia.s) <= 1) {
-            for (let hex of grid.neighborsOf(Hex(this._ship.x, this._ship.y))) {
+            for (let hex of grid.neighborsOf(Hex(ship.x, ship.y))) {
               if (!hex) {
                 continue;
               }
@@ -219,35 +265,49 @@ module.exports = class {
         }
       },
       sabotage: {
-        execute(ship, result, pe, game) {
+        execute(ship, result, pe, scenario) {
           ship.fuel--;
 
           ship.damage++;
           ship.damageTaken = true;
-          game.messages.push(ship.name + ' was erter')
+          scenario.addMessage(ship.name + ' was saboted')
 
           return ship;
         },
         canDo(positionedElements) {
           return [this._representation]
         },
-        _representation(){
+        get _representation(){
           return {
-            type: "burn",
-            name: "burn"
+            type: "sabotage",
+            name: "sabotage"
           }
         }
       },
     }
   }
+  
 
-  getActions(positionedElements, scenario) {
+  get x(){
+      return this._ship.x;
+  }
+
+  get y(){
+    return this._ship.y
+  }
+
+  get owner(){
+    return this._ship.owner
+  }
+
+  calculateActions(positionedElements, scenario) {
     let actions = [];
     if (this._ship.destroyed) {
-      return actions;
+        this._ship.actions = actions;
+      return;
     }
 
-    for(let action of this.actions){
+    for(let action of Object.values(this.actions)){
       actions = [...actions, ...action.canDo(positionedElements, this._ship)]
     }
     
@@ -258,6 +318,6 @@ module.exports = class {
       action.id = id++;
       return action;
     });
-    return actions;
+    this._ship.actions = actions;
   }
 }

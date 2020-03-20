@@ -1,7 +1,7 @@
 function getScenario(scenario){
   switch(scenario){
-    case "base":
-      return require('./base.js');
+    case "intro":
+      return new (require('./introScenario.js'))();
     default: throw new Error("this scenario doesn't exist");
   }
 }

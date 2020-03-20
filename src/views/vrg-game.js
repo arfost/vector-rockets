@@ -65,10 +65,11 @@ class VrgGame extends VrgBase {
             this.gameRef = Datavault.refGetter.getGame(this.user.game);
             this.game = this.gameRef.getDefaultValue();
             this.gameRef.on("value", game => {
+                console.log("GAME REFFFFFFFF : ", game)
                 this.game = game;
                 if(this.mapRenderer){
                     this.mapRenderer.setElements(game.elements);
-                    this.mapRenderer.setMapInfos(game.mapInfos);
+                    this.mapRenderer.setMapInfos(game.scenario.mapInfos);
                 }
             });
         }
@@ -101,7 +102,7 @@ class VrgGame extends VrgBase {
                     this.selectedAction = undefined;
                 }, this.user.uid);
                 this.mapRenderer.setAffSize({height:mapContainer.clientHeight, width:mapContainer.clientWidth});
-                this.mapRenderer.setMapInfos(this.game.mapInfos);
+                this.mapRenderer.setMapInfos(this.game.scenario.mapInfos);
                 this.mapRenderer.setElements(this.game.elements);
             }
             window.addEventListener('resize',()=>{
@@ -245,14 +246,14 @@ class VrgGame extends VrgBase {
                             </div>
                         </div>
                         <div class="flex-box f-vertical w-20 list-deads scroll">
-                        ${ this.game.gameInfo ?
+                        ${ this.game.status !== "waitingplayers" ?
                         html`<div class="flex-box f-vertical f-a-center f-j-space" style="height:100%;padding:1em">
                                 <div class="flex-box f-vertical f-a-center">
                                     <h4>Game infos : </h4>
                                     <p>You are ${this.game.players.find(player => player.uid === this.user.uid).name}</p>
                                     <p>Turn ${this.game.gameInfo.turn}</p>
                                     <div class="flex-box f-vertical scroll">
-                                        ${this.game.messages.slice(-10).map(message=>html`<div class="message">${message}</div>`)}
+                                        ${this.game.scenario.messages.slice(-10).map(message=>html`<div class="message">${message}</div>`)}
                                     </div>
                                     <p>${this.game.gameInfo.toPlay} have yet to validate his turn.</p>
                                     ${this.getPlayer().validated ? 

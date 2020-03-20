@@ -246,6 +246,7 @@ export default class MapRenderer {
     }
 
     setMapInfos(mapInfos) {
+        console.log("hey mlap infos : ", mapInfos)
         if (!mapInfos) {
             return;
         }
@@ -330,6 +331,8 @@ export default class MapRenderer {
         if (!this.grid) {
             return;
         }
+
+        console.log("hey hey, : ", this.elements)
 
         this.elements.forEach(element => {
             let hex = this.grid.get([element.x, element.y]);
