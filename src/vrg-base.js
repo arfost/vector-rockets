@@ -189,7 +189,47 @@ export class VrgBase extends LitElement {
             }
             .p-1{
                 padding:1em;
-            }`
+            }
+            .has-overtip{
+            position: relative;
+            display: inline-block;
+        }
+        .overtip{
+            visibility: hidden;
+            
+            background-color: grey;
+            width: 160px;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            padding:1em;
+            
+            font-weight: 400;
+            font-size: 0.75rem;
+            line-height: 1.5;
+
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -140px; /* Use half of the width (120/2 = 60), to center the tooltip */
+        }
+        .overtip::after {
+            content: " ";
+            position: absolute;
+            top: 100%; /* At the bottom of the tooltip */
+            left: 50%;
+            margin-top: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent grey;
+        }
+        .has-overtip:hover .overtip {
+            visibility: visible;
+        }`
     }
 
 }
