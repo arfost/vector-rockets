@@ -63,6 +63,8 @@ module.exports = class{
                 return element;
             }
         })
+        this.addMessage("Turn "+this._scenario.turn+" finished");
+        this._scenario.turn++;
     }
 
     init(players){
@@ -97,7 +99,8 @@ module.exports = class{
         this._scenario = {
             messages:["Starting"],
             name: "The solar race",
-            mapInfos:baseMap.infos
+            mapInfos:baseMap.infos,
+            turn: 1
         }
     }
 

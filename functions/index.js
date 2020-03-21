@@ -191,8 +191,6 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
             player.validated = false;
             return player;
         })
-        
-        game.gameInfo.turn ++;
     }else{
         game.gameInfo.toPlay = game.players.length - validatedPlayer;
     }
