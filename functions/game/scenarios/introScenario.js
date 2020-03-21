@@ -127,6 +127,36 @@ module.exports = class{
                 desc:"fly in a least one gravity hex of mars",
                 durable:true,
                 done: false
+            },{
+                name:"close by callisto",
+                code:"cbcallisto",
+                desc:"fly in a least one gravity hex of callisto",
+                durable:true,
+                done: false
+            },{
+                name:"close by ganymede",
+                code:"cbganymede",
+                desc:"fly in a least one gravity hex of ganymede",
+                durable:true,
+                done: false
+            },{
+                name:"close by mercury",
+                code:"cbmercury",
+                desc:"fly in a least one gravity hex of mercury",
+                durable:true,
+                done: false
+            },{
+                name:"close by sun",
+                code:"cbsun",
+                desc:"fly in a least one gravity hex of the sun",
+                durable:true,
+                done: false
+            },{
+                name:"close by jupiter",
+                code:"cbjupiter",
+                desc:"fly in a least one gravity hex of jupiter",
+                durable:true,
+                done: false
             }]
         }
     }
@@ -156,6 +186,21 @@ module.exports = class{
             },
             cbmars:function(ship, positionedElements){
                 return this._checkCloseBy('mars', ship.traversedHex, positionedElements)
+            },
+            cbmercury:function(ship, positionedElements){
+                return this._checkCloseBy('mercury', ship.traversedHex, positionedElements)
+            },
+            cbganymede:function(ship, positionedElements){
+                return this._checkCloseBy('ganymede', ship.traversedHex, positionedElements)
+            },
+            cbcallisto:function(ship, positionedElements){
+                return this._checkCloseBy('callisto', ship.traversedHex, positionedElements)
+            },
+            cbjupiter:function(ship, positionedElements){
+                return this._checkCloseBy('jupiter', ship.traversedHex, positionedElements)
+            },
+            cbsun:function(ship, positionedElements){
+                return this._checkCloseBy('sun', ship.traversedHex, positionedElements)
             },
             bearth:function(ship, positionedElements){
                 let onEarth = false;
