@@ -34,7 +34,7 @@ export class Dao {
 export class FireReference {
 
     constructor() {
-        this.initConnection();
+        this.listeners = [];
     }
 
     get params() {
@@ -65,9 +65,9 @@ export class FireReference {
     }
 
     on(event, listener) {
-        this.listener = listener;
+        this.listeners.push(listener);
         if (this.formattedData) {
-            this.listener(this.formattedData);
+            listener(this.formattedData);
         }
     }
 
@@ -117,8 +117,8 @@ export class FireReference {
         }
         let deepCopiedData = JSON.parse(JSON.stringify(this.data))
         this.formattedData = this.formatDatas(deepCopiedData);
-        if (this.listener) {
-            this.listener(this.formattedData);
+        for(let listener of this.listeners){
+            listener(this.formattedData);
         }
     }
 
