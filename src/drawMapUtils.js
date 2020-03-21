@@ -36,10 +36,7 @@ export default class MapRenderer {
         this.app.view.addEventListener("mousemove", ev => this.setHover(ev));
         this.app.view.addEventListener("click", ev => this.setClick(ev));
         //this.app.view.addEventListener("touchend", ev => this.setClick(ev));
-        this.app.view.addEventListener("touchstart", ev => {
-            console.log("hey touch")
-            this.setClick(ev)
-        });
+        this.app.view.addEventListener("touchstart", ev => this.setClick(ev));
         this.elements = [];
 
         this.elementRenderer = new ElementRenderer(this.Hex, this.Grid, this.playerUid);
@@ -246,7 +243,6 @@ export default class MapRenderer {
     }
 
     setMapInfos(mapInfos) {
-        console.log("hey mlap infos : ", mapInfos)
         if (!mapInfos) {
             return;
         }
@@ -331,8 +327,6 @@ export default class MapRenderer {
         if (!this.grid) {
             return;
         }
-
-        console.log("hey hey, : ", this.elements)
 
         this.elements.forEach(element => {
             let hex = this.grid.get([element.x, element.y]);
