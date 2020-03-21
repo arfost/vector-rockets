@@ -7,6 +7,7 @@ import '../components/game-popin.js';
 import  '../components/btn-loader.js';
 import '../components/game-components/vrg-touchpad.js'
 import '../components/game-components/vrg-element-desc.js'
+import '../components/game-components/vrg-game-info.js'
 class VrgGame extends VrgBase {
 
     constructor(){
@@ -61,6 +62,7 @@ class VrgGame extends VrgBase {
     }
 
     updated(){
+        console.log("hey update : ", this.user)
         if(this.user && !this.gameRef){
             this.gameRef = Datavault.refGetter.getGame(this.user.game);
             this.game = this.gameRef.getDefaultValue();
@@ -149,25 +151,6 @@ class VrgGame extends VrgBase {
          return html`<p>Token : ${this.user.game}<img class="ml-1" src='img/game/clipboard-text.png' @click="${this.copyStringToClipboard}"></p>`
      }
 
-     quitGame() {
-        this.shadowRoot.getElementById('quit').textMode = false;
-        Datavault.refGetter.getUser().actions.quitGame(this.game.key).then(ret=>{
-            this.emit('toast-msg', 'Game quitted');
-        }).catch(err=>{
-            this.emit('toast-msg', err.message);
-        });
-    }
-
-    validateTurn() {
-        this.shadowRoot.getElementById('validate').textMode = false;
-        this.gameRef.actions.validateTurn(this.game.key).then(ret=>{
-            this.shadowRoot.getElementById('validate').textMode = true;
-            this.emit('toast-msg', 'Turn validated');
-        }).catch(err=>{
-            this.shadowRoot.getElementById('validate').textMode = true;
-            this.emit('toast-msg', err.message);
-        });
-    }
 
     actionSelect(action, selectedElement){
         if(action.direct){
@@ -181,18 +164,6 @@ class VrgGame extends VrgBase {
         this.gameRef.actions.cancelAction(action);
     }
 
-
-    getPlayer(){
-        if(!this.game || !this.game.players){
-            return {}
-        }else{
-            return this.game.players.find(player=>player.uid == this.user.uid)
-        }
-    }
-
-    
-
-    
     controlReceived(e){
         console.log('control : ', e, e.detail)
         if(!this.mapRenderer){
@@ -239,35 +210,20 @@ class VrgGame extends VrgBase {
                         .actionId="${this.selectedAction ? this.selectedAction.id : ''}">
                     </vrg-element-desc>
                     <div class="flex-box f-horizontal p-0 h-100">
-                        <div class="flex-box f-vertical f-j-center w-80 scroll f-a-center" style="position:relative">
-                            <vrg-touchpad @btn-control="${this.controlReceived}" class="controler"></vrg-touchpad>
-                            <div class="map" id="map" @resize="${this.resizeMap}">
-                                ${this.drawMap()}
-                            </div>
-                        </div>
-                        <div class="flex-box f-vertical w-20 list-deads scroll">
-                        ${ this.game.status !== "waitingplayers" ?
-                        html`<div class="flex-box f-vertical f-a-center f-j-space" style="height:100%;padding:1em">
-                                <div class="flex-box f-vertical f-a-center">
-                                    <h4>Game infos : </h4>
-                                    <p>You are ${this.game.players.find(player => player.uid === this.user.uid).name}</p>
-                                    <p>Turn ${this.game.gameInfo.turn}</p>
-                                    <div class="flex-box f-vertical scroll">
-                                        ${this.game.scenario.messages.slice(-10).map(message=>html`<div class="message">${message}</div>`)}
+                        ${
+                            this.game.status === "ready" ? 
+                            html`<div class="flex-box f-vertical f-j-center w-80 scroll f-a-center" style="position:relative">
+                                    <vrg-touchpad @btn-control="${this.controlReceived}" class="controler"></vrg-touchpad>
+                                    <div class="map" id="map" @resize="${this.resizeMap}">
+                                        ${this.drawMap()}
                                     </div>
-                                    <p>${this.game.gameInfo.toPlay} have yet to validate his turn.</p>
-                                    ${this.getPlayer().validated ? 
-                                    html`You have validated your turn` : 
-                                    html`<btn-loader id="validate" @click="${this.validateTurn}">
-                                            validate turn
-                                        </btn-loader>`}
-                                </div>
-                                <btn-loader style="align-self:bottom" id="quit" @click="${this.quitGame}">
-                                    quit game
-                                </btn-loader>
-                                </div>`:
-                        `loading`
-                    }
+                                </div>` : 
+                            html`loading`
+                        }
+                        <div class="flex-box f-vertical w-20 list-deads scroll">
+                            <vrg-game-infos 
+                                .user="${this.user}">
+                            </vrg-game-infos>
                         </div>
                     </div>
                     <game-popin ?hidden=${this.game.status !== "waitingplayers"}>
@@ -303,7 +259,7 @@ class VrgGame extends VrgBase {
                             </div>
                         </div>
                     </game-popin>`:
-                html`<game-popin ?hidden=${ this.game.status !== "loading" }>loading</game-popin>`
+                html`<game-popin>loading</game-popin>`
             }
         `;
     }
