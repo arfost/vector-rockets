@@ -1,5 +1,5 @@
 const shipReference = require('./shipReference.json')
-const {inertiaToHex, getDice} = require('../tools.js')
+const {inertiaToHex, hexToInertia, getDice} = require('../tools.js')
 const Honeycomb = require("honeycomb-grid");
 
 const Hex = Honeycomb.extendHex({ size: 14, orientation: "flat" });
@@ -83,7 +83,11 @@ module.exports = class {
         scenario.addMessage(this._ship.name + ' was lost in space')
       }
 
-      this._ship.x = this._futurHex.x;
+      
+    }else{
+        this._ship.fuel = this._ship.fuelMax;
+    }
+    this._ship.x = this._futurHex.x;
       this._ship.y = this._futurHex.y;
 
       if (this._ship.takeoff) {
@@ -104,7 +108,6 @@ module.exports = class {
       } else {
         if (this._ship.damage > 0) this._ship.damage--;
       }
-    }
   }
 
   prepareActions(positionedElement, scenario){
@@ -118,8 +121,6 @@ module.exports = class {
             );
         }
     }
-    this._ship.plannedActions = [];
-
 
     let trail = {
         x: this._ship.x,
@@ -148,11 +149,13 @@ module.exports = class {
 
       this._ship.displacement = [];
 
-      this._futurHex = inertiaToHex(this._ship.inertia, Hex(this._ship.x, this._ship.y), Hex);
-
-      this._traversedHexs = grid.hexesBetween(Hex(this._ship.x, this._ship.y), this._futurHex);
-      this._traversedHexs.shift();
     }
+    this._futurHex = inertiaToHex(this._ship.inertia, Hex(this._ship.x, this._ship.y), Hex);
+
+    this._traversedHexs = grid.hexesBetween(Hex(this._ship.x, this._ship.y), this._futurHex);
+    this._traversedHexs.shift();
+    
+    this._ship.plannedActions = [];
   }
 
   get actions() {
@@ -163,14 +166,9 @@ module.exports = class {
           ship.x = result.x;
           ship.y = result.y;
 
-          ship.inertia.q = 0;
-          ship.inertia.r = 0;
-          ship.inertia.s = 0;
+          ship.inertia = hexToInertia(Hex(ship.x, ship.y), Hex(result.x, result.y), Hex);
 
           ship.displacement = [];
-
-          ship.fuel = ship.fuelMax;
-
 
           return ship;
         },
@@ -298,6 +296,10 @@ module.exports = class {
 
   get owner(){
     return this._ship.owner
+  }
+
+  get destroyed(){
+    return this._ship.destroyed
   }
 
   calculateActions(positionedElements, scenario) {

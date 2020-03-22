@@ -62,12 +62,10 @@ class VrgGame extends VrgBase {
     }
 
     updated(){
-        console.log("hey update : ", this.user)
         if(this.user && !this.gameRef){
             this.gameRef = Datavault.refGetter.getGame(this.user.game);
             this.game = this.gameRef.getDefaultValue();
             this.gameRef.on("value", game => {
-                console.log("GAME REFFFFFFFF : ", game)
                 this.game = game;
                 if(this.mapRenderer){
                     this.mapRenderer.setElements(game.elements);
@@ -165,7 +163,6 @@ class VrgGame extends VrgBase {
     }
 
     controlReceived(e){
-        console.log('control : ', e, e.detail)
         if(!this.mapRenderer){
             return;
         }

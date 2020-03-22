@@ -488,27 +488,36 @@ class ElementRenderer {
 
         //check for burn maneuver
         let burn = element.plannedActions
-            ? element.plannedActions.find(a => a.type == "burn")
+            ? element.plannedActions.find(a => a.type == "burn" || a.type == "takeoff")
             : undefined;
-        if (burn && element.owner === this.playerUid) {
-            let burnDestHex = grid.get([element.x, element.y]);
-            burnDestHex = inertiaToHex({
-                q: totalInertia.q - burn.result.q,
-                r: totalInertia.r - burn.result.r,
-                s: totalInertia.s - burn.result.s
-            }, burnDestHex, this.Hex);
-            const burnDestPoint = burnDestHex
-                .toPoint()
-                .add(burnDestHex.center())
-                .multiply(camera.zoom, camera.zoom)
-                .add(camera.x, camera.y);
-            ctx.lineStyle(2 * camera.zoom, 0xaaaaaa);
-            ctx.moveTo(point.x, point.y);
-            ctx.lineTo(burnDestPoint.x, burnDestPoint.y);
-            ctx.beginFill(0x888888, 1);
-            ctx.drawCircle(burnDestPoint.x, burnDestPoint.y, 3 * camera.zoom);
-            ctx.endFill();
-        }
+            if (burn && element.owner === this.playerUid) {
+                let burnDestHex = grid.get([element.x, element.y]);
+                if(burn.type==="burn"){
+                    burnDestHex = inertiaToHex({
+                        q: totalInertia.q - burn.result.q,
+                        r: totalInertia.r - burn.result.r,
+                        s: totalInertia.s - burn.result.s
+                    }, burnDestHex, this.Hex);
+                }else{
+                    burnDestHex = inertiaToHex({
+                        q: totalInertia.q + burn.result.q,
+                        r: totalInertia.r + burn.result.r,
+                        s: totalInertia.s + burn.result.s
+                    }, burnDestHex, this.Hex);
+                }
+                const burnDestPoint = burnDestHex
+                    .toPoint()
+                    .add(burnDestHex.center())
+                    .multiply(camera.zoom, camera.zoom)
+                    .add(camera.x, camera.y);
+                ctx.lineStyle(2 * camera.zoom, burn.type === "burn" ? 0xaaaaaa : 0xaa0000);
+                ctx.moveTo(point.x, point.y);
+                ctx.lineTo(burnDestPoint.x, burnDestPoint.y);
+                ctx.beginFill(0x888888, 1);
+                ctx.drawCircle(burnDestPoint.x, burnDestPoint.y, 3 * camera.zoom);
+                ctx.endFill();
+            }
+        
 
         //draw trails from previous moves
         if (selected) {

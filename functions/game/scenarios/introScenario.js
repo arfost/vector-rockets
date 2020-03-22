@@ -52,8 +52,17 @@ module.exports = class{
         for(let instance of actifs.values()){
             instance.resolveTurn(this.positionedElement, this);
         }
+        let activePlayer = {};
         for(let instance of actifs.values()){
             instance.calculateActions(this.positionedElement, this);
+            if(!instance.destroyed && instance.owner){
+                activePlayer[instance.owner] = true;
+            }
+        }
+        for(let player of players){
+            if(!activePlayer[player.uid]){
+                player.eliminated = true;
+            }
         }
         this._elements = this._elements.map(element=>{
             let inst = actifs.get(element.id);
@@ -80,7 +89,7 @@ module.exports = class{
             for(let ship of role.shipList){
                 let shipInstance = new ShipClass();
                 shipInstance.init(ship.base, elements.length+shipList.length, ship.type, player);
-                shipList.push(shipInstance)
+                shipList.push(shipInstance);
             }
 
             player.objectives = role.objectives;
@@ -166,6 +175,9 @@ module.exports = class{
             _checkCloseBy(planet, traversedHex, positionedElements){
                 let closeBy = false;
                 for(let thex of traversedHex){
+                    if(!thex){
+                        continue;
+                    }
                     for (let hex of grid.neighborsOf(Hex(thex.x, thex.y))) {
                         if (!hex) {
                           continue;
@@ -200,7 +212,7 @@ module.exports = class{
                 return this._checkCloseBy('jupiter', ship.traversedHex, positionedElements)
             },
             cbsun:function(ship, positionedElements){
-                return this._checkCloseBy('sun', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('sol', ship.traversedHex, positionedElements)
             },
             bearth:function(ship, positionedElements){
                 let onEarth = false;
@@ -217,12 +229,14 @@ module.exports = class{
     }
 
     checkObjectives(player, ship, positionedElement){
+        if(!player){
+            return
+        }
         for(let obj of player.objectives){
             if(obj.durable && obj.done){
                 continue;
             }
             let toto = this.objectivesCheck[obj.code](ship, positionedElement, player);
-            console.log("toto : ", toto)
             obj.done = toto;
         }
     }

@@ -49,7 +49,6 @@ export class VrgGameInfo extends VrgBase {
             this.gameRef = Datavault.refGetter.getGame(this.user.game);
             this.game = this.gameRef.getDefaultValue();
             this.gameRef.on("value", game => {
-                console.log("hey ref in second obs", game)
                 this.scenario = game.scenario;
                 this.players = game.players;
                 this.infos = game.gameInfo;
@@ -101,6 +100,7 @@ export class VrgGameInfo extends VrgBase {
                 <p>${this.infos.toPlay} have yet to validate his turn.</p>
                 ${this.getPlayer().validated ? 
                 html`You have validated your turn` : 
+                this.getPlayer().eliminated ? 'You have been eliminated' : 
                 html`<btn-loader id="validate" @click="${this.validateTurn}">
                         validate turn
                     </btn-loader>`}

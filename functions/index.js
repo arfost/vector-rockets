@@ -87,10 +87,7 @@ exports.quitGame = functions.https.onCall(async(key, context)=>{
 
     let validatedPlayer = 0;
     for(let player of game.players){
-        if(player.uid === uid){
-            player.validated = true;
-        }
-        if(player.validated){
+        if(player.validated || player.eliminated){
             validatedPlayer++;
         }
     }
@@ -165,9 +162,12 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
     let validatedPlayer = 0;
     for(let player of game.players){
         if(player.uid === uid){
+            if(player.eliminated){
+                throw new Error("You shouldn't have to validate")
+            }
             player.validated = true;
         }
-        if(player.validated){
+        if(player.validated || player.eliminated){
             validatedPlayer++;
         }
     }

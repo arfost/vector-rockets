@@ -47,7 +47,6 @@ export class VrgTouchpad extends VrgBase {
     }
 
     sendEvent(btn){
-        console.log('events touchpad ', btn+':'+this.pad);
         this.emit('btn-control', btn+':'+this.pad)
     }
 
@@ -55,8 +54,8 @@ export class VrgTouchpad extends VrgBase {
         return html`
         ${this.styles}
         <div class="base">
-            <div @click="${e=>this.open = !this.open}" class="opener">
-                ${this.open ? 'hide' : 'show'}
+            <div class="opener">
+                map control : <span style="text-decoration : underline; cursor: pointer" @click="${e=>this.open = !this.open}">${this.open ? 'hide' : 'show'}</span>
             </div>
             <div class="controls flex-box f-vertical f-j-center ${this.open ? 'open' : 'close'}">
                 <div class="btn btn-ctrl" @click="${e=>this.sendEvent('up')}" @touch="${e=>this.sendEvent('up')}">
