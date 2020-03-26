@@ -9,7 +9,8 @@ const grid = Honeycomb.defineGrid().rectangle({ width: 200, height: 200 });
 module.exports = class {
   
   init(base, baseId, type, player){
-    this._ship = {
+      
+    this._ship = JSON.parse(JSON.stringify({
         ...base,
         ...shipReference[type],
         id: baseId,
@@ -21,7 +22,7 @@ module.exports = class {
         type: "ship",
         name: player.name + " - 1",
         owner: player.uid
-      }
+      }))
       this._ship.apparence.color = player.color;
   }
 

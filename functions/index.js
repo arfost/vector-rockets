@@ -158,6 +158,8 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
     let gameRef = admin.database().ref('games/'+key);
 
     let game = (await gameRef.once('value')).val();
+
+    let gameStatus = 'ready'
     
     let validatedPlayer = 0;
     for(let player of game.players){
@@ -187,6 +189,10 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
         elementsRef.set(scenarioInstance.elements);
         game.scenario = scenarioInstance.scenario;
 
+        if(game.scenario.winner){
+            gameStatus = 'finished';
+        }
+
         game.players.map(player=>{
             player.validated = false;
             return player;
@@ -196,7 +202,7 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
     }
     
     return admin.database().ref('games/'+key).set(game).then(res=>{
-      return admin.database().ref('status/'+key).set('ready')
+      return admin.database().ref('status/'+key).set(gameStatus)
     }).then(res=>{
         return key;
     });

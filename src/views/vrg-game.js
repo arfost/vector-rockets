@@ -255,7 +255,7 @@ class VrgGame extends VrgBase {
                             </div>
                         </div>
                     </game-popin>
-                    <game-popin ?hidden=${this.game.status !== "waitingplayers"}>
+                    <game-popin ?hidden=${this.game.status !== "finished"}>
                         <vrg-finish-screen .scenario="${this.game.scenario}" .players="${this.game.players}" .userId="${this.user.uid}" ></vrg-finish-screen>
                         <btn-loader id="quit" @click="${this.quitGame}">
                             quit
