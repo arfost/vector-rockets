@@ -8,6 +8,8 @@ import  '../components/btn-loader.js';
 import '../components/game-components/vrg-touchpad.js'
 import '../components/game-components/vrg-element-desc.js'
 import '../components/game-components/vrg-game-info.js'
+import '../components/game-components/vrg-finish-screen.js'
+
 class VrgGame extends VrgBase {
 
     constructor(){
@@ -73,6 +75,15 @@ class VrgGame extends VrgBase {
                 }
             });
         }
+    }
+    
+    quitGame() {
+        this.shadowRoot.getElementById('quit').textMode = false;
+        Datavault.refGetter.getUser().actions.quitGame(this.game.key).then(ret=>{
+            this.emit('toast-msg', 'Game quitted');
+        }).catch(err=>{
+            this.emit('toast-msg', err.message);
+        });
     }
 
     drawMap(){
@@ -243,6 +254,12 @@ class VrgGame extends VrgBase {
                                 </btn-loader>
                             </div>
                         </div>
+                    </game-popin>
+                    <game-popin ?hidden=${this.game.status !== "waitingplayers"}>
+                        <vrg-finish-screen .scenario="${this.game.scenario}" .players="${this.game.players}" .userId="${this.user.uid}" ></vrg-finish-screen>
+                        <btn-loader id="quit" @click="${this.quitGame}">
+                            quit
+                        </btn-loader>
                     </game-popin>
                     <game-popin ?hidden=${this.game.status !== 'inturn'}>
                         <div class="flex-box f-vertical">

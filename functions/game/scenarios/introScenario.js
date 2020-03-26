@@ -72,6 +72,7 @@ module.exports = class{
                 return element;
             }
         })
+        this._scenario.winner = this.checkVictory(players);
         this.addMessage("Turn "+this._scenario.turn+" finished");
         this._scenario.turn++;
     }
@@ -242,7 +243,20 @@ module.exports = class{
     }
 
     checkVictory(players){
-        //check all players objectives and return 
+
+        for(let player of players){
+            let temoin = true;
+            for(let obj of player.objectives){
+                temoin = temoin && obj.done
+            }
+            if(temoin){
+                return {
+                    name:player.name,
+                    nbTurn: this._scenario.turn
+                }
+            }
+        }
+        return false;
     }
 
 
