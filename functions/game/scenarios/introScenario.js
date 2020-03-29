@@ -219,7 +219,7 @@ module.exports = class{
                 let onEarth = false;
                 if (positionedElements[ship.x + ':' + ship.y]) {
                     for (let el of positionedElements[ship.x + ':' + ship.y]) {
-                      if (el.name === 'earth') {
+                      if (el.name === 'terra') {
                         onEarth = true;
                       }   
                     }
