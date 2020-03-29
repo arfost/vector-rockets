@@ -224,7 +224,7 @@ module.exports = class{
                       }   
                     }
                   }
-                return Boolean(ship.landed && onEarth)
+                return Boolean(ship.jsonDesc.landed && onEarth)
             }
         }
     }
