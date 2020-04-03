@@ -157,7 +157,7 @@ class VrgGame extends VrgBase {
      }
 
      displayToken(){
-         return html`<p>Token : ${this.user.game}<img class="ml-1" src='img/game/clipboard-text.png' @click="${this.copyStringToClipboard}"></p>`
+         return html`<p>Token : ${this.user.game}<img class="ml-1" src='img/ui/clipboard-text.png' @click="${this.copyStringToClipboard}"></p>`
      }
 
 

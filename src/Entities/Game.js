@@ -61,7 +61,7 @@ export class Game extends FireReference {
                 toPlay: 0,
                 votes: 0
             },
-            scenario: game.scenario || {},
+            scenario: game.scenario || undefined,
             status,
             key:this.id,
         };
