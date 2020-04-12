@@ -91,6 +91,9 @@ export class UserProfil extends LitElement {
                 animation-duration: 0.0001s;
                 animation-name: mui-textfield-inserted;
             }
+            .input-wrap{
+                margin:0.5em;
+            }
         </style>`
     }
 
