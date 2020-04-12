@@ -3,12 +3,9 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 const scenarioGetter = require("./game/scenarios");
-const { getPlayerColorList } = require("./game/tools.js")
+const { getPlayerColorList } = require("./game/tools.js");
 
-admin.initializeApp({
-    credential: admin.credential.cert(require('../config/gameengineconfigurator-0a66938107ae.json')),
-    databaseURL: "https://gameengineconfigurator.firebaseio.com"
-  });
+admin.initializeApp();
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
