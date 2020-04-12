@@ -27,7 +27,7 @@ exports.createGame = functions.https.onCall(async(datas, context)=>{
     let game = {
         players : [{
             uid:uid,
-            name:user.displayName,
+            name:user.customName ? user.customName : user.displayName,
             color:colorList.pop()
         }],
         colorList:colorList,
@@ -53,7 +53,7 @@ exports.joinGame = functions.https.onCall(async(key, context)=>{
     }
     game.players.push({
         uid:uid,
-        name:user.displayName,
+        name:user.customName ? user.customName : user.displayName,
         color:game.colorList.pop(),
     })
     

@@ -2,7 +2,7 @@ import { html, css } from 'lit-element';
 import { VrgBase } from '../vrg-base.js'
 import Datavault from '../datavault.js'
 
-import '../components/fab-img.js'
+import '../components/user-profil.js'
 import '../views/vrg-nogame.js'
 import '../views/vrg-game.js'
 
@@ -15,6 +15,18 @@ class VrgMain extends VrgBase {
         this.loginRef.on("value", user => {
             this.user = user;
         })
+    }
+
+    toggleLogin() {
+        this.loginRef.actions.toggleLogin().then(logged=>{
+            this.showToast({
+                detail:'Logged ' + (logged ? 'in' : 'out')
+            });
+        }).catch(err=>{
+            this.showToast({
+                detail:err.message
+            });
+        });
     }
 
     showToast(e){
@@ -77,32 +89,20 @@ class VrgMain extends VrgBase {
           }`
     }
 
-    toggleLogin() {
-        this.loginRef.actions.toggleLogin().then(ret=>{
-            this.showToast({
-                detail:'Logged in'
-            });
-        }).catch(err=>{
-            this.showToast({
-                detail:err.message
-            });
-        });
-    }
-
     static get properties() {
         return {
             user: Object,
             toastMsg: String
         }
     }
-
+    
     render() {
         return html`
             ${this.styles}
             ${this.user.game ? 
                 html`<vrg-game .user="${this.user}" @toast-msg="${this.showToast}"></vrg-game>`:
                 html`<vrg-nogame .user="${this.user}" @toast-msg="${this.showToast}"></vrg-nogame>`}
-            <fab-img @click="${this.toggleLogin}" .src="${this.user.photoURL}"></fab-img>
+            <user-profil @user-msg="${this.showToast}" @user-error="${this.showToast}"></user-profil>
             <div id="snackbar">${this.toastMsg}</div>`;
     }
 }

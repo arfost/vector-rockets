@@ -41,7 +41,7 @@ export class FireReference {
         return {}
     }
 
-    initConnection() {
+    initConnection(noDefault) {
         this.data = {};
         if (this.connection) {
             for (let connection in this.connection) {
@@ -50,8 +50,9 @@ export class FireReference {
         }
         let connection = {};
         for (let source in this.sources) {
-
-            this.data[source] = this.defaultValues[source];
+            if(!noDefault){
+                this.data[source] = this.defaultValues[source];
+            }
             connection[source] = this.initSource(this.sources[source], this.params[source]);
             connection[source].on('value', snap => {
                 let tmp = snap.val();
@@ -108,7 +109,7 @@ export class FireReference {
                 }
             }
         }
-        firebase.database().ref().update(updates);
+        return firebase.database().ref().update(updates);
     }
 
     newDatas() {
@@ -146,13 +147,13 @@ export class LoginReference extends FireReference {
                 // User is signed in.
                 this.uid = user.uid;
 
-                this.initConnection();
+                this.initConnection(true);
                 this.actions.setUser({
                     email: user.email,
                     displayName: user.displayName,
                     isAnonymous: user.isAnonymous,
                     photoURL: user.photoURL
-                })
+                });
 
                 // [START_EXCLUDE]
                 // [END_EXCLUDE]
@@ -187,6 +188,12 @@ export class LoginReference extends FireReference {
                 this.data.user = user;
                 this.save();
             },
+            updateInfos: infos => {
+                if(infos.name){
+                    this.data.user.customName = infos.name;
+                }
+                return this.save();
+            },
             emptyUser: () => {
                 if (this.data) {
                     this.data.user = this.defaultValues.user;
@@ -204,7 +211,10 @@ export class LoginReference extends FireReference {
     }
 
     formatDatas({user, permissions}) {
-        user = user ? user : this.defaultValues.user;
+        if(!user){
+            return 
+        }
+        user.displayName = user.customName ? user.customName : user.displayName;
         user.uid = this.uid;
         user.permissions = permissions ? permissions : [];
         return user;
