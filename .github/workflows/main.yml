@@ -20,12 +20,17 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
       
-    - run: |
+    - name: install
+      run: |
         npm install
         cd ./functions
         npm install
         cd ..
-        npm run build
-        npx firebase deploy --token $FIREBASE_TOKEN
-      env: # Or as an environment variable
+
+    - name: build
+      run: npm run build
+    
+    -name: deploy
+      run: npx firebase deploy --token $FIREBASE_TOKEN
+      env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_LOGIN_TOKEN }}
