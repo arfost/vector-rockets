@@ -48,7 +48,16 @@ module.exports = class {
             aboveHex.x + ":" + aboveHex.y
         ]) {
             if (el.type === "ship" && el.doneAction === false) {
-                this.reSupply(el);
+                this.reSupply(el, scenario);
+            }
+        }
+    }
+    if (positionedElements[this.x + ":" + this.y]) {
+        for (let el of positionedElements[
+            this.x + ":" + this.y
+        ]) {
+            if (el.type === "ship" && el.doneAction === false) {
+                this.reSupply(el, scenario);
             }
         }
     }
@@ -57,7 +66,7 @@ module.exports = class {
   reSupply(ship, scenario){
       if(ship.fuel<ship.fuelMax){
         ship.fuel = ship.fuelMax;  
-        scenario.addMessage(el.name + " is ressuplied by "+this.name)
+        scenario.addMessage(ship.name + " is ressuplied by "+this.name)
       }
   }
 
