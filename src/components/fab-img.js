@@ -28,11 +28,7 @@ export class FabImg extends LitElement {
                 font-size: 50px;
                 color: white;
                 text-align: center;
-                line-height: 70px;
-            
-                position: fixed;
-                left: 1em;
-                top: 1em;
+                line-height: 70px;  
             }
             
             .fab:hover {
