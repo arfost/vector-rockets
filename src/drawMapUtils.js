@@ -47,9 +47,9 @@ export default class MapRenderer {
     }
 
     setAction(action, selectedElement) {
-        if(this.actions[action.type]){
+        if (this.actions[action.type]) {
             this.actions[action.type](action, selectedElement);
-        }else{
+        } else {
             this.actions.default();
         }
     }
@@ -141,12 +141,12 @@ export default class MapRenderer {
 
     setClick(e) {
         let p;
-        if(e.offsetX){
+        if (e.offsetX) {
             p = Point(e.offsetX, e.offsetY);
-        }else if(e.touches && e.touches.length>0){
+        } else if (e.touches && e.touches.length > 0) {
             let touch = e.touches[0];
             p = Point(touch.clientX, touch.clientY);
-        }else{
+        } else {
             console.warn("unknown event type : ", e);
             return;
         }
@@ -155,7 +155,7 @@ export default class MapRenderer {
                 .subtract(this.camera.x, this.camera.y)
                 .divide(this.camera.zoom, this.camera.zoom)
         );
-        console.log("click :",hex.x, hex.y)
+        console.log("click :", hex.x, hex.y)
         if (
             (this.clickHex && hex.x == this.clickHex.x && hex.y == this.clickHex.y) ||
             !this.isInBound(hex)
@@ -220,14 +220,14 @@ export default class MapRenderer {
         this.drawElements();
     }
 
-    mapMove(x, y){
-        this.camera.x = this.camera.x + (x*10);
-        this.camera.y = this.camera.y + (y*10);
+    mapMove(x, y) {
+        this.camera.x = this.camera.x + (x * 10);
+        this.camera.y = this.camera.y + (y * 10);
         this.draw();
     }
 
     mapZoom(zoom) {
-        this.camera.zoom = this.camera.zoom + (zoom/100);
+        this.camera.zoom = this.camera.zoom + (zoom / 100);
         this.draw();
     }
 
@@ -294,7 +294,7 @@ export default class MapRenderer {
             this.actionsGraphics.beginFill(0x00ff00, 0.5);
 
             this.currentAction.selectHex.forEach(hex => {
-                if(!hex) return;
+                if (!hex) return;
                 const point = hex.toPoint();
                 // add the hex's position to each of its corner points
                 const corners = hex.corners().map(corner =>
@@ -415,12 +415,15 @@ class ElementRenderer {
             case "ship":
                 this.shipRenderer(ctx, element, hex, camera, grid, selected);
                 break;
+            case "dirtySpace":
+                this.dirtySpaceRenderer(ctx, element, hex, camera, grid, selected);
+                break;
             case "gravArrow":
                 this.gravArrowRenderer(ctx, element, hex, camera, grid, selected);
                 break;
             default:
                 this.defaultRenderer(ctx, element, hex, camera);
-                //console.error("no renderer for type " + type, element);
+            //console.error("no renderer for type " + type, element);
         }
     }
 
@@ -435,8 +438,24 @@ class ElementRenderer {
         ctx.endFill();
     }
 
+    dirtySpaceRenderer(ctx, element, hex, camera) {
+        const point = hex
+            .toPoint()
+            .add(hex.center())
+            .multiply(camera.zoom, camera.zoom)
+            .add(camera.x, camera.y);
+        let points = [{x:-5,y:-5,size:2},{x:5,y:5,size:3},{x:-5,y:5,size:1},{x:5,y:-5,size:2},{x:0,y:0,size:2}].map(p => {
+            return { x: (p.x-getDice(0, 3)), y: +(p.y-getDice(0, 3)) , size:getDice(1, 3) };
+        });
+        for (let p of points) {
+            ctx.beginFill("0xDDDDDD", 1);
+            ctx.drawCircle(point.x+(p.x*camera.zoom), point.y+(p.y*camera.zoom), p.size * camera.zoom);
+            ctx.endFill();
+        }
+    }
+
     shipRenderer(ctx, element, hex, camera, grid, selected) {
-        if(element.destroyed){
+        if (element.destroyed) {
             return
         }
         let ship = new PIXI.Graphics();
@@ -448,7 +467,7 @@ class ElementRenderer {
 
         //draw ship
         ship.lineStyle(1, 0x999999);
-        ship.beginFill("0xD"+element.apparence.color, 1);
+        ship.beginFill("0xD" + element.apparence.color, 1);
         let [start, ...points] = element.apparence.path.map(p => {
             return { x: p.x * camera.zoom, y: p.y * camera.zoom };
         });
@@ -490,34 +509,34 @@ class ElementRenderer {
         let burn = element.plannedActions
             ? element.plannedActions.find(a => a.type == "burn" || a.type == "takeoff")
             : undefined;
-            if (burn && element.owner === this.playerUid) {
-                let burnDestHex = grid.get([element.x, element.y]);
-                if(burn.type==="burn"){
-                    burnDestHex = inertiaToHex({
-                        q: totalInertia.q - burn.result.q,
-                        r: totalInertia.r - burn.result.r,
-                        s: totalInertia.s - burn.result.s
-                    }, burnDestHex, this.Hex);
-                }else{
-                    burnDestHex = inertiaToHex({
-                        q: totalInertia.q + burn.result.q,
-                        r: totalInertia.r + burn.result.r,
-                        s: totalInertia.s + burn.result.s
-                    }, burnDestHex, this.Hex);
-                }
-                const burnDestPoint = burnDestHex
-                    .toPoint()
-                    .add(burnDestHex.center())
-                    .multiply(camera.zoom, camera.zoom)
-                    .add(camera.x, camera.y);
-                ctx.lineStyle(2 * camera.zoom, burn.type === "burn" ? 0xaaaaaa : 0xaa0000);
-                ctx.moveTo(point.x, point.y);
-                ctx.lineTo(burnDestPoint.x, burnDestPoint.y);
-                ctx.beginFill(0x888888, 1);
-                ctx.drawCircle(burnDestPoint.x, burnDestPoint.y, 3 * camera.zoom);
-                ctx.endFill();
+        if (burn && element.owner === this.playerUid) {
+            let burnDestHex = grid.get([element.x, element.y]);
+            if (burn.type === "burn") {
+                burnDestHex = inertiaToHex({
+                    q: totalInertia.q - burn.result.q,
+                    r: totalInertia.r - burn.result.r,
+                    s: totalInertia.s - burn.result.s
+                }, burnDestHex, this.Hex);
+            } else {
+                burnDestHex = inertiaToHex({
+                    q: totalInertia.q + burn.result.q,
+                    r: totalInertia.r + burn.result.r,
+                    s: totalInertia.s + burn.result.s
+                }, burnDestHex, this.Hex);
             }
-        
+            const burnDestPoint = burnDestHex
+                .toPoint()
+                .add(burnDestHex.center())
+                .multiply(camera.zoom, camera.zoom)
+                .add(camera.x, camera.y);
+            ctx.lineStyle(2 * camera.zoom, burn.type === "burn" ? 0xaaaaaa : 0xaa0000);
+            ctx.moveTo(point.x, point.y);
+            ctx.lineTo(burnDestPoint.x, burnDestPoint.y);
+            ctx.beginFill(0x888888, 1);
+            ctx.drawCircle(burnDestPoint.x, burnDestPoint.y, 3 * camera.zoom);
+            ctx.endFill();
+        }
+
 
         //draw trails from previous moves
         if (selected) {
@@ -527,7 +546,7 @@ class ElementRenderer {
             ctx.beginFill(0x000000, 0.1);
             hexBetweens.shift()
             hexBetweens.forEach(hex => {
-                if(!hex){
+                if (!hex) {
                     return;
                 }
                 const point = hex.toPoint();
@@ -659,6 +678,16 @@ class ElementRenderer {
         ctx.endFill();
     }
 }
+
+const getDice = function (min, max) {
+    if (typeof max === "undefined") {
+        max = min;
+        min = 1;
+    }
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+};
 
 const inertiaToHex = function (inertia, oldHex, Hex) {
     return Hex({

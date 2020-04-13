@@ -5,3 +5,4 @@ dist
 .firebase
 *-debug.log
 .scannerwork/
+config/gameengineconfigurator-0a66938107ae.json
