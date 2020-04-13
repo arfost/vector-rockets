@@ -110,8 +110,31 @@ export default class MapRenderer {
                 this.drawAction();
             },
             land: (action, selectedElement) => {
-                this.currentAction = undefined;
-                this.actionReceiver(action.target);
+                this.currentAction = Object.assign({}, action);
+
+                this.currentAction.baseHex = this.Hex(action.target.x, action.target.y);
+                this.currentAction.selectHex = this.grid.neighborsOf(
+                    this.currentAction.baseHex
+                );
+                this.currentAction.resolve = (hex, action) => {
+                    let goodHex = action.selectHex.find(shex => shex.equals(hex));
+                    if (goodHex) {
+                        let diff = {
+                            q: goodHex.q - action.baseHex.q,
+                            r: goodHex.r - action.baseHex.r,
+                            s: goodHex.s - action.baseHex.s
+                        }
+                        this.currentAction = undefined;
+                        this.actionReceiver({
+                            direction:diff,
+                            position:{
+                                x:action.target.x,
+                                y:action.target.y
+                            }
+                        });
+                        this.drawAction();
+                    }
+                }
                 this.drawAction();
             },
             takeoff: (action, selectedElement) => {
@@ -527,20 +550,65 @@ class ElementRenderer {
             totalInertia.s = totalInertia.s + displacement.s;
         }
         //draw rotation
-        let destHex = inertiaToHex(
-            totalInertia,
-            grid.get([element.x, element.y]),
-            this.Hex
-        );
-        let destPoint = destHex
-            .toPoint()
-            .add(destHex.center())
-            .multiply(camera.zoom, camera.zoom)
-            .add(camera.x, camera.y);
+        let destPoint;
+        let destHex;
+        if(element.landed){
+            let takeoffDir = {q:0,r:0,s:0};
+            let takeoff = (element.plannedActions || []).find(a=>a.type == "takeoff");
+            if(element.landedDirection){
+                takeoffDir = element.landedDirection;
+            }else{
+                if(takeoff){
+                    takeoffDir = takeoff.result;
+                }
+            }
+            
+            destHex = inertiaToHex(
+                takeoffDir,
+                grid.get([element.x, element.y]),
+                this.Hex
+            );
+            destPoint = destHex
+                .toPoint()
+                .add(destHex.center())
+                .multiply(camera.zoom, camera.zoom)
+                .add(camera.x, camera.y);
 
-        let angle = Math.atan2(destPoint.x - point.x, point.y - destPoint.y);
-        var degrees = (180 * angle) / Math.PI;
-        ship.angle = degrees;
+            let angle = Math.atan2(destPoint.x - point.x, point.y - destPoint.y);
+            var degrees = (180 * angle) / Math.PI;
+            ship.angle = degrees;
+
+            if(!takeoff){
+                destHex = inertiaToHex(
+                    {q:0,r:0,s:0},
+                    grid.get([element.x, element.y]),
+                    this.Hex
+                );
+                destPoint = destHex
+                .toPoint()
+                .add(destHex.center())
+                .multiply(camera.zoom, camera.zoom)
+                .add(camera.x, camera.y);
+            }
+        }else{
+
+            destHex = inertiaToHex(
+                totalInertia,
+                grid.get([element.x, element.y]),
+                this.Hex
+            );
+            destPoint = destHex
+                .toPoint()
+                .add(destHex.center())
+                .multiply(camera.zoom, camera.zoom)
+                .add(camera.x, camera.y);
+
+            let angle = Math.atan2(destPoint.x - point.x, point.y - destPoint.y);
+            var degrees = (180 * angle) / Math.PI;
+            ship.angle = degrees;
+        }
+
+        
 
         //check for burn maneuver
         let burn = element.plannedActions
@@ -555,10 +623,11 @@ class ElementRenderer {
                     s: totalInertia.s - burn.result.s
                 }, burnDestHex, this.Hex);
             } else {
+                let takeoffdir = element.landedDirection ? element.landedDirection : burn.result;
                 burnDestHex = inertiaToHex({
-                    q: totalInertia.q + burn.result.q,
-                    r: totalInertia.r + burn.result.r,
-                    s: totalInertia.s + burn.result.s
+                    q: totalInertia.q + takeoffdir.q,
+                    r: totalInertia.r + takeoffdir.r,
+                    s: totalInertia.s + takeoffdir.s
                 }, burnDestHex, this.Hex);
             }
             const burnDestPoint = burnDestHex

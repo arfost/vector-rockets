@@ -166,12 +166,17 @@ module.exports = class {
     return {
       land: {
         execute(ship, result) {
+            console.log(result)
           ship.landed = true;
-          ship.x = result.x;
-          ship.y = result.y;
+          ship.x = result.position.x;
+          ship.y = result.position.y;
 
-          ship.inertia = hexToInertia(Hex(ship.x, ship.y), Hex(result.x, result.y), Hex);
-
+          ship.inertia = hexToInertia(
+                            Hex(ship.x, ship.y), 
+                            Hex(result.position.x, result.position.y), 
+                            Hex
+                        );
+            ship.landedDirection = result.direction;
           ship.displacement = [];
 
           return ship;
@@ -189,7 +194,6 @@ module.exports = class {
             inertia.s = inertia.s + displacement.s;
           }
       
-          //TODO add speed test
           if (Math.abs(inertia.q) <= 1 && Math.abs(inertia.r) <= 1 && Math.abs(inertia.s) <= 1) {
             for (let hex of grid.neighborsOf(Hex(ship.x, ship.y))) {
               if (!hex) {
@@ -221,23 +225,46 @@ module.exports = class {
       },
       takeoff: {
         execute(ship, result) {
+            console.log(ship)
           delete ship.landed;
 
-          ship.inertia = result;
+          ship.inertia = ship.landedDirection || result;
           ship.takeoff = true;
+
+          delete ship.landedDirection;
 
           return ship;
         },
         canDo(positionedElements, ship) {
-          if(ship.landed){
-            return [this._representation]
-          }
-          return []
+            if(!positionedElements[ship.x + ':' + ship.y]){
+                return []
+            }
+            if(ship.landed){
+                if(!ship.landedDirection){
+                    return [{
+                        ...this._representation,
+                        free:true,
+                        direct:false
+                    }];
+                }
+                for(let el of positionedElements[ship.x + ':' + ship.y]){
+                    if( 
+                        el.type === "base" && 
+                        el.direction.q === ship.landedDirection.q && 
+                        el.direction.r === ship.landedDirection.r && 
+                        el.direction.s === ship.landedDirection.s){
+                        return [this._representation];
+                    }
+                }
+            }
+            
+          return [];
         },
         get _representation(){
           return {
             type: "takeoff",
-            name: "take off"
+            name: "take off",
+            direct: true
           }
         }
       },
