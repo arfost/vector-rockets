@@ -49,6 +49,51 @@ module.exports = class{
             name:"terra 1",
             x: 17,
             y: 26
+        },{
+            direction:{
+                q:0,
+                r:1,
+                s:-1
+            },
+            name:"terra 2",
+            x: 17,
+            y: 26
+        },{
+            direction:{
+                q:1,
+                r:-1,
+                s:0
+            },
+            name:"terra 3",
+            x: 17,
+            y: 26
+        },{
+            direction:{
+                q:-1,
+                r:1,
+                s:0
+            },
+            name:"terra 4",
+            x: 17,
+            y: 26
+        },{
+            direction:{
+                q:0,
+                r:-1,
+                s:1
+            },
+            name:"terra 5",
+            x: 17,
+            y: 26
+        },{
+            direction:{
+                q:1,
+                r:0,
+                s:-1
+            },
+            name:"terra 6",
+            x: 17,
+            y: 26
         }]
     }
 
