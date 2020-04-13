@@ -13,6 +13,7 @@ module.exports = class {
     this._ship = JSON.parse(JSON.stringify({
         ...base,
         ...shipReference[type],
+        actif: true,
         id: baseId,
         inertia: {
           q: 0,
@@ -85,9 +86,8 @@ module.exports = class {
       }
 
       
-    }else{
-        this._ship.fuel = this._ship.fuelMax;
     }
+    
     this._ship.x = this._futurHex.x;
       this._ship.y = this._futurHex.y;
 
@@ -121,6 +121,9 @@ module.exports = class {
                 scenario
             );
         }
+        this._ship.doneAction = true;
+    }else{
+        this._ship.doneAction = false;
     }
 
     let trail = {

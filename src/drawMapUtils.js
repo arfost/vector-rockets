@@ -407,10 +407,13 @@ class ElementRenderer {
     render(ctx, type, element, hex, camera, grid, selected) {
         switch (type) {
             case "planet":
-                this.planeteRenderer(ctx, element, hex, camera);
+                this.planeteRenderer(ctx, element, hex, camera, grid);
                 break;
             case "star":
-                this.planeteRenderer(ctx, element, hex, camera);
+                this.planeteRenderer(ctx, element, hex, camera, grid);
+                break;
+            case "base":
+                this.baseRenderer(ctx, element, hex, camera, grid, selected);
                 break;
             case "ship":
                 this.shipRenderer(ctx, element, hex, camera, grid, selected);
@@ -427,7 +430,7 @@ class ElementRenderer {
         }
     }
 
-    planeteRenderer(ctx, element, hex, camera) {
+    planeteRenderer(ctx, element, hex, camera, grid) {
         const point = hex
             .toPoint()
             .add(hex.center())
@@ -436,6 +439,40 @@ class ElementRenderer {
         ctx.beginFill("0xD" + element.apparence.color, 1);
         ctx.drawCircle(point.x, point.y, element.apparence.radius * camera.zoom);
         ctx.endFill();
+
+
+    }
+
+    baseRenderer(ctx, element, hex, camera, grid, selected) {
+        const point = hex
+            .toPoint()
+            .add(hex.center())
+            .multiply(camera.zoom, camera.zoom)
+            .add(camera.x, camera.y);
+        let base = new PIXI.Graphics();
+
+        base.lineStyle(1, 0x999999);
+        base.beginFill("0x" + element.apparence.color, 1);
+        base.drawCircle(0, -10 * camera.zoom, element.apparence.size * camera.zoom);
+        base.endFill();
+        base.position.set(point.x, point.y);
+
+        let destHex = inertiaToHex(
+            element.direction,
+            grid.get([element.x, element.y]),
+            this.Hex
+        );
+        let destPoint = destHex
+            .toPoint()
+            .add(destHex.center())
+            .multiply(camera.zoom, camera.zoom)
+            .add(camera.x, camera.y);
+
+        let angle = Math.atan2(destPoint.x - point.x, point.y - destPoint.y);
+        var degrees = (180 * angle) / Math.PI;
+        base.angle = degrees;
+
+        ctx.addChild(base);
     }
 
     dirtySpaceRenderer(ctx, element, hex, camera) {

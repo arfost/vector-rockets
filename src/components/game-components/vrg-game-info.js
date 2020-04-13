@@ -87,7 +87,8 @@ export class VrgGameInfo extends VrgBase {
             this.scenario && this.infos && this.players ? 
             html`<div class="flex-box f-vertical f-a-center f-j-space" style="height:100%;padding:1em">
             <div class="flex-box f-vertical f-a-center">
-                <h4>Game infos : </h4>
+                <h4>Game infos, ${this.scenario.name} : </h4>
+                <p>${this.scenario.desc}</p>
                 <p>You are ${this.getPlayer().name}</p>
                 <p>Turn ${this.scenario.turn}</p>
                 <div class="flex-box f-vertical scroll">

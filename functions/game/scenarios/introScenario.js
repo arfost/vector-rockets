@@ -2,10 +2,12 @@ const baseMap = require("./maps/baseMap.json");
 const inflateMapElement = require("../elements/mapElements.js");
 const { getPlayerColorList } = require("../tools.js");
 const ShipClass = require("../elements/ship.js");
+const BaseClass = require("../elements/base.js");
 const Honeycomb = require("honeycomb-grid");
 const Hex = Honeycomb.extendHex({ size: 14, orientation: "flat" });
 
 const grid = Honeycomb.defineGrid().rectangle({ width: 200, height: 200 });
+
 
 module.exports = class{
 
@@ -19,6 +21,10 @@ module.exports = class{
     load(elements, scenario){
         this._elements = elements;
         this._scenario = scenario;
+        this.updatePositionedElement();
+    }
+
+    updatePositionedElement(){
         this.positionedElement = this._elements.reduce((acc, el)=>{
             acc[el.x+':'+el.y] = acc[el.x+':'+el.y] ? [el, ...acc[el.x+':'+el.y]] : [el];
             return acc
@@ -33,11 +39,29 @@ module.exports = class{
         return this._scenario
     }
 
+    get initBaseList(){
+        return [{
+            direction:{
+                q:-1,
+                r:0,
+                s:1
+            },
+            name:"terra 1",
+            x: 17,
+            y: 26
+        }]
+    }
+
     playTurn(players){
         let actifs = new Map();
         for(let element of this._elements){
             if(element.actif){
-                let instance = new ShipClass();
+                let instance;
+                if(element.type === "ship"){
+                    instance = new ShipClass();
+                }else{
+                    instance = new BaseClass();
+                }
                 instance.load(element);
                 instance.prepareActions(this.positionedElement, this);
                 actifs.set(instance.id, instance);
@@ -84,18 +108,32 @@ module.exports = class{
         }
 
         let shipList = [];
+        let baseList = [];
 
         for(let player of players){
             let role = this.getRole(player);
             for(let ship of role.shipList){
                 let shipInstance = new ShipClass();
-                shipInstance.init(ship.base, elements.length+shipList.length, ship.type, player);
+                shipInstance.init(ship.base, "shi"+shipList.length, ship.type, player);
                 shipList.push(shipInstance);
+            }
+
+            for(let base of role.baseList){
+                let baseInstance = new BaseClass();
+                baseInstance.init(base.base, "bas"+baseList.length, base.type, player);
+                baseList.push(baseInstance);
             }
 
             player.objectives = role.objectives;
         }
-        let positionedElement = [...elements, ...shipList].reduce((acc, el)=>{
+
+        for(let initBase of this.initBaseList){
+            let baseInstance = new BaseClass();
+            baseInstance.init(initBase, "bas"+baseList.length);
+            baseList.push(baseInstance);
+        }
+
+        let positionedElement = [...elements, ...shipList, ...baseList].reduce((acc, el)=>{
             acc[el.x+':'+el.y] = acc[el.x+':'+el.y] ? [el, ...acc[el.x+':'+el.y]] : [el];
             return acc
         }, {});
@@ -105,10 +143,16 @@ module.exports = class{
             return ship.jsonDesc;
         })
 
-        this._elements = [...elements, ...shipList];
+        baseList = baseList.map(base=>{
+            base.calculateActions(base, positionedElement);
+            return base.jsonDesc;
+        })
+
+        this._elements = [...elements, ...shipList, ...baseList];
         this._scenario = {
             messages:["Starting"],
             name: "The solar race",
+            desc: "A fast race in the solar system",
             mapInfos:baseMap.infos,
             turn: 1
         }
@@ -120,6 +164,7 @@ module.exports = class{
                 base: {x:17,y:26, landed:true},
                 type:"corvette"
             }],
+            baseList:[],
             objectives:[{
                 name:"back to earth",
                 code:"bearth",
