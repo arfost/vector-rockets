@@ -173,27 +173,32 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
 
     if(validatedPlayer === game.players.length){
         admin.database().ref('status/'+key).set('inturn');
-
-        let elementsRef = admin.database().ref('elements/'+key);
-        let elements = (await elementsRef.once('value')).val();
-
-        let scenarioInstance = scenarioGetter(game.type);
-
-        scenarioInstance.load(elements, game.scenario);
-
-        scenarioInstance.playTurn(game.players)
-
-        elementsRef.set(scenarioInstance.elements);
-        game.scenario = scenarioInstance.scenario;
-
-        if(game.scenario.winner){
-            gameStatus = 'finished';
+        try{
+            let elementsRef = admin.database().ref('elements/'+key);
+            let elements = (await elementsRef.once('value')).val();
+    
+            let scenarioInstance = scenarioGetter(game.type);
+    
+            scenarioInstance.load(elements, game.scenario);
+    
+            scenarioInstance.playTurn(game.players)
+    
+            elementsRef.set(scenarioInstance.elements);
+            game.scenario = scenarioInstance.scenario;
+    
+            if(game.scenario.winner){
+                gameStatus = 'finished';
+            }
+    
+            game.players.map(player=>{
+                player.validated = false;
+                return player;
+            })
+        }catch(e){
+            admin.database().ref('status/'+key).set('ready');
+            throw e
         }
-
-        game.players.map(player=>{
-            player.validated = false;
-            return player;
-        })
+        
     }else{
         game.gameInfo.toPlay = game.players.length - validatedPlayer;
     }
