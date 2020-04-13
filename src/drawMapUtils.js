@@ -445,11 +445,11 @@ class ElementRenderer {
             .multiply(camera.zoom, camera.zoom)
             .add(camera.x, camera.y);
         let points = [{x:-5,y:-5,size:2},{x:5,y:5,size:3},{x:-5,y:5,size:1},{x:5,y:-5,size:2},{x:0,y:0,size:2}].map(p => {
-            return { x: point.x+((p.x-getDice(0, 3)) * camera.zoom), y: point.y+((p.y-getDice(0, 3)) * camera.zoom), size:getDice(1, 3) };
+            return { x: (p.x-getDice(0, 3)), y: +(p.y-getDice(0, 3)) , size:getDice(1, 3) };
         });
         for (let p of points) {
             ctx.beginFill("0xDDDDDD", 1);
-            ctx.drawCircle((p.x*camera.zoom), (p.y*camera.zoom), p.size * camera.zoom);
+            ctx.drawCircle(point.x+(p.x*camera.zoom), point.y+(p.y*camera.zoom), p.size * camera.zoom);
             ctx.endFill();
         }
     }
