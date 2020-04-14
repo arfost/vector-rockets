@@ -15,7 +15,7 @@ export class VrgTouchpad extends VrgBase {
     constructor(){
         super();
         this.pad = 5;
-        this.open = false;
+        this.open = true;
     }
 
     get selfStyles() {
