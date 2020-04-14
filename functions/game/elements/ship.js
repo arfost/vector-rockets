@@ -33,6 +33,7 @@ module.exports = class {
 
     get type() {
         return this._ship.type;
+        
     }
 
     load(ship) {
