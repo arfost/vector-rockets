@@ -25,6 +25,6 @@ describe('Testing base property initialisation on ship', () => {
     })
     test('color assignation', ()=>{
         let jsonShip = ship.jsonDesc
-        expect(jsonShip.apparence.color).toBe("red");
+        expect(jsonShip.apparence.color).toBe("blue");
     })
 })
