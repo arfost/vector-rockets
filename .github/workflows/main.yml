@@ -29,6 +29,9 @@ jobs:
 
     - name: build
       run: npm run build
+
+    - name: test
+      run: npm run test
     
     - name: deploy
       run: npx firebase deploy --token $FIREBASE_TOKEN
