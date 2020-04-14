@@ -12,7 +12,7 @@
     "dev:win": "win-launch.cmd",
     "dev:sw": "npm run webpack-dev-server -- --env.mode development  --env.presets serviceworker",
     "clfunctions": "firebase serve --only functions",
-    "test": "jest"
+    "test:back": "jest --coverage --collectCoverageFrom=functions/**/*.js"
   },
   "repository": {
     "type": "git",
