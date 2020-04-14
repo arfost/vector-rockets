@@ -166,7 +166,6 @@ module.exports = class {
     return {
       land: {
         execute(ship, result) {
-            console.log(result)
           ship.landed = true;
           ship.x = result.position.x;
           ship.y = result.position.y;
