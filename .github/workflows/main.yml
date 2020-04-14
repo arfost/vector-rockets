@@ -37,7 +37,7 @@ jobs:
       run: npm run test:back
     
     - name: deploy
-      if: github.ref == 'master'
+      if: github.ref == 'refs/heads/master'
       run: npx firebase deploy --token $FIREBASE_TOKEN
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_LOGIN_TOKEN }}
