@@ -330,18 +330,18 @@ module.exports = class{
             y: 17
         },{
             direction:{
-                q:1,
-                r:0,
-                s:-1
+                q:-1,
+                r:1,
+                s:0
             },
             name:"io base 1",
             x: 45,
             y: 18
         },{
             direction:{
-                q:-1,
+                q:0,
                 r:1,
-                s:0
+                s:-1
             },
             name:"ganymede base 2",
             x: 49,
