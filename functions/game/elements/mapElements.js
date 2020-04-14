@@ -3,7 +3,7 @@ const inflate = {
         
         planet.actif = false;
         planet.id = baseId;
-        planet.overtip = "You can land on planet to refuel if your speed is of one hex by turn."
+        planet.overtip = "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base."
 
         return [planet, ...getGravityWell(planet, baseId)]
     },
