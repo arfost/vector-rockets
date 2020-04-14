@@ -46,7 +46,7 @@ module.exports = class{
                 r:0,
                 s:1
             },
-            name:"terra 1",
+            name:"terra base 1",
             x: 17,
             y: 26
         },{
@@ -55,7 +55,7 @@ module.exports = class{
                 r:1,
                 s:-1
             },
-            name:"terra 2",
+            name:"terra base 2",
             x: 17,
             y: 26
         },{
@@ -64,7 +64,7 @@ module.exports = class{
                 r:-1,
                 s:0
             },
-            name:"terra 3",
+            name:"terra base 3",
             x: 17,
             y: 26
         },{
@@ -73,7 +73,7 @@ module.exports = class{
                 r:1,
                 s:0
             },
-            name:"terra 4",
+            name:"terra base 4",
             x: 17,
             y: 26
         },{
@@ -82,7 +82,7 @@ module.exports = class{
                 r:-1,
                 s:1
             },
-            name:"terra 5",
+            name:"terra base 5",
             x: 17,
             y: 26
         },{
@@ -91,9 +91,261 @@ module.exports = class{
                 r:0,
                 s:-1
             },
-            name:"terra 6",
+            name:"terra base 6",
             x: 17,
             y: 26
+        },{
+            direction:{
+                q:-1,
+                r:0,
+                s:1
+            },
+            name:"luna base 1",
+            x: 18,
+            y: 29
+        },{
+            direction:{
+                q:0,
+                r:1,
+                s:-1
+            },
+            name:"luna base 2",
+            x: 18,
+            y: 29
+        },{
+            direction:{
+                q:1,
+                r:-1,
+                s:0
+            },
+            name:"luna base 3",
+            x: 18,
+            y: 29
+        },{
+            direction:{
+                q:-1,
+                r:1,
+                s:0
+            },
+            name:"luna base 4",
+            x: 18,
+            y: 29
+        },{
+            direction:{
+                q:0,
+                r:-1,
+                s:1
+            },
+            name:"luna base 5",
+            x: 18,
+            y: 29
+        },{
+            direction:{
+                q:1,
+                r:0,
+                s:-1
+            },
+            name:"luna base 6",
+            x: 18,
+            y: 29
+        },{
+            direction:{
+                q:-1,
+                r:0,
+                s:1
+            },
+            name:"venus base 1",
+            x: 10,
+            y: 8
+        },{
+            direction:{
+                q:0,
+                r:1,
+                s:-1
+            },
+            name:"venus base 2",
+            x: 10,
+            y: 8
+        },{
+            direction:{
+                q:1,
+                r:-1,
+                s:0
+            },
+            name:"venus base 3",
+            x: 10,
+            y: 8
+        },{
+            direction:{
+                q:-1,
+                r:1,
+                s:0
+            },
+            name:"venus base 4",
+            x: 10,
+            y: 8
+        },{
+            direction:{
+                q:0,
+                r:-1,
+                s:1
+            },
+            name:"venus base 5",
+            x: 10,
+            y: 8
+        },{
+            direction:{
+                q:1,
+                r:0,
+                s:-1
+            },
+            name:"venus base 6",
+            x: 10,
+            y: 8
+        },{
+            direction:{
+                q:-1,
+                r:0,
+                s:1
+            },
+            name:"mars base 1",
+            x: 31,
+            y: 5
+        },{
+            direction:{
+                q:0,
+                r:1,
+                s:-1
+            },
+            name:"mars base 2",
+            x: 31,
+            y: 5
+        },{
+            direction:{
+                q:1,
+                r:-1,
+                s:0
+            },
+            name:"mars base 3",
+            x: 31,
+            y: 5
+        },{
+            direction:{
+                q:-1,
+                r:1,
+                s:0
+            },
+            name:"mars base 4",
+            x: 31,
+            y: 5
+        },{
+            direction:{
+                q:0,
+                r:-1,
+                s:1
+            },
+            name:"mars base 5",
+            x: 31,
+            y: 5
+        },{
+            direction:{
+                q:1,
+                r:0,
+                s:-1
+            },
+            name:"mars base 6",
+            x: 31,
+            y: 5
+        },{
+            direction:{
+                q:-1,
+                r:0,
+                s:1
+            },
+            name:"callisto base 1",
+            x: 47,
+            y: 13
+        },{
+            direction:{
+                q:0,
+                r:1,
+                s:-1
+            },
+            name:"callisto base 2",
+            x: 47,
+            y: 13
+        },{
+            direction:{
+                q:1,
+                r:-1,
+                s:0
+            },
+            name:"callisto base 3",
+            x: 47,
+            y: 13
+        },{
+            direction:{
+                q:-1,
+                r:1,
+                s:0
+            },
+            name:"callisto base 4",
+            x: 47,
+            y: 13
+        },{
+            direction:{
+                q:0,
+                r:-1,
+                s:1
+            },
+            name:"callisto base 5",
+            x: 47,
+            y: 13
+        },{
+            direction:{
+                q:1,
+                r:0,
+                s:-1
+            },
+            name:"callisto base 6",
+            x: 47,
+            y: 13
+        },{
+            direction:{
+                q:-1,
+                r:1,
+                s:0
+            },
+            name:"mercure base 1",
+            x: 8,
+            y: 17
+        },{
+            direction:{
+                q:1,
+                r:-1,
+                s:0
+            },
+            name:"mercure base 2",
+            x: 8,
+            y: 17
+        },{
+            direction:{
+                q:1,
+                r:0,
+                s:-1
+            },
+            name:"io base 1",
+            x: 45,
+            y: 18
+        },{
+            direction:{
+                q:-1,
+                r:1,
+                s:0
+            },
+            name:"ganymede base 2",
+            x: 49,
+            y: 20
         }]
     }
 
