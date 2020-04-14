@@ -235,9 +235,6 @@ module.exports = class {
           return ship;
         },
         canDo(positionedElements, ship) {
-            if(!positionedElements[ship.x + ':' + ship.y]){
-                return []
-            }
             if(ship.landed){
                 if(!ship.landedDirection){
                     return [{

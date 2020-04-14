@@ -436,12 +436,12 @@ module.exports = class{
         }, {});
         
         shipList = shipList.map(ship=>{
-            ship.calculateActions(ship, positionedElement);
+            ship.calculateActions(positionedElement, this);
             return ship.jsonDesc;
         })
 
         baseList = baseList.map(base=>{
-            base.calculateActions(base, positionedElement);
+            base.calculateActions(positionedElement, this);
             return base.jsonDesc;
         })
 
