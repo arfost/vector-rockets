@@ -33,11 +33,11 @@ jobs:
     - name: build
       run: npm run build
 
-    - name: test
-      run: npm run test
+    - name: test back end
+      run: npm run test:back
     
     - name: deploy
-      if: github.event == 'push'
+      if: github.ref == 'master'
       run: npx firebase deploy --token $FIREBASE_TOKEN
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_LOGIN_TOKEN }}
