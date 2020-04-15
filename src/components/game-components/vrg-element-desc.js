@@ -135,6 +135,9 @@ export class VrgElementDesc extends VrgBase {
 
     displayElementList() {
         if (this.elements) {
+            if(this.elements.length === 1){
+                this.elementViewedId = this.elements[0].id;
+            }
             let elementWithCatTitle = {};
             for (let element of this.elements) {
                 if (!elementWithCatTitle[element.type]) {
