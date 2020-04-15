@@ -118,7 +118,7 @@ export class VrgElementDesc extends VrgBase {
                                                                     @click="${() => this.emit('select-action', {
                 action,
                 element: selectedElement
-            })}">
+            })}"><icon-overtip class="fas fa-question-circle mr-1" ?hidden="${!action.overtip}" color="white" size="1em" overtip="${action.overtip}"></icon-overtip>
                                                                         ${action.name}${this.selectedActionId == action.id ?
                     html`<span 
                                                                                     @click="${e => {
@@ -177,6 +177,7 @@ export class VrgElementDesc extends VrgBase {
         if (selectedElement.plannedActions && selectedElement.owner == this.userId) {
             return html`<div class="flex-box f-vertical f-j-space"><span>Planned actions : </span>
             ${selectedElement.plannedActions.map(action => html`<div class="action flex-box f-horizontal f-j-space">
+            <icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!action.overtip}" color="white" size="1em" overtip="${action.overtip}"></icon-overtip>
                                             ${action.name}<span @click="${e => { this.emit('cancel-action', action) }}">X</span>
                                         </div>`)}
             </div>`
