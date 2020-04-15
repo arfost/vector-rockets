@@ -21,8 +21,8 @@ export class Game extends FireReference {
     }
     get actions() {
         return {
-            launchGame: async (key) => {
-                const res = await firebase.functions().httpsCallable('launchGame')({key, scenario:"intro"});
+            launchGame: async (key, scenario) => {
+                const res = await firebase.functions().httpsCallable('launchGame')({key, scenario});
             },
 
             playAction: (action) => {

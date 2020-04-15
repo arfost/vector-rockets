@@ -1,7 +1,6 @@
 
 import { html, css } from 'lit-element';
 import { VrgBase } from '../../vrg-base.js'
-import Datavault from '../../datavault.js';
 import  '../../components/btn-loader.js';
 
 export class VrgFinishScreen extends VrgBase {
