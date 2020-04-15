@@ -71,7 +71,7 @@ export class VrgGameInfo extends VrgBase {
             this.emit('toast-msg', 'Turn validated');
         }).catch(err=>{
             this.shadowRoot.getElementById('validate').textMode = true;
-            this.emit('toast-msg', err.message);
+            this.emit('toast-msg', 'An error occured trying to pass the turn. If the issue persist, contact the creator of the game.');
         });
     }
 

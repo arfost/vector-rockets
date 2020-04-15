@@ -24,6 +24,11 @@ export class VrgScenarioPreparation extends VrgBase {
 
     prepareAndLaunchConfig(){
         let scenario = this.scenarioList.find(sc=>sc.id === this.selectedScenario);
+
+        if(scenario.maxPlayer<this.players.length){
+            this.emit('toast-msg', 'There is too many players for this scenario');
+            return
+        }
         let config = {
             id:scenario.id
         }
@@ -42,7 +47,11 @@ export class VrgScenarioPreparation extends VrgBase {
     htmlInputForConfig(config){
         switch(config.type){
             case "boolean": 
-                return html`<input type="checkbox" id="${config.id}" name="${config.name}" ?checked="${config.default}">
+                return html`
+                <label class="switch">
+                    <input type="checkbox" id="${config.id}" name="${config.name}" ?checked="${config.default}">
+                    <span class="slider round"></span>
+                </label>
                 <label for="${config.name}">${config.name}</label>`
         }
     }
@@ -137,8 +146,8 @@ export class VrgScenarioPreparation extends VrgBase {
                     <h3>Preparing</h3>
                     <h5>Configure scenario</h5>
                     <p>You can choose a scenario and configure it. For your first game I advice using the introduction scenario.</p>
-                    <div class="flex-box f-horizontal">
-                        <div>
+                    <div class="flex-box f-horizontal f-j-start">
+                        <div class="mr-1">
                             ${this.scenarioList.map(sc=>html`<div @click="${e=>this.selectedScenario = sc.id}" class="${this.selectedScenario === sc.id ? "selected" : ""}">${sc.name}</div>`)}
                         </div>
                         <div>

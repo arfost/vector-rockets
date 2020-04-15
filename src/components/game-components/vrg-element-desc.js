@@ -137,6 +137,11 @@ export class VrgElementDesc extends VrgBase {
         if (this.elements) {
             if(this.elements.length === 1){
                 this.elementViewedId = this.elements[0].id;
+            }else{
+                let elem = this.elements.find(elem=>elem.owner == this.userId);
+                if(elem){
+                    this.elementViewedId = elem.id;
+                }
             }
             let elementWithCatTitle = {};
             for (let element of this.elements) {
@@ -187,7 +192,7 @@ export class VrgElementDesc extends VrgBase {
                 <span class="ml-1" style="float: right;" @click="${e => this.open = !this.open}">${this.open ? '▼' : '▲'}</span>
                 Element on this hex
             </div>
-            <div ?hidden="${!this.open}" class="flex-box f-horizontal f-j-space">
+            <div ?hidden="${!this.open}" class="flex-box f-horizontal f-j-start">
                 <div class="flex-box f-vertical f-j-space">
                     ${ this.displayElementList() }
                 </div>
