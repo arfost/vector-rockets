@@ -3,7 +3,10 @@ import { html, css, LitElement } from 'lit-element';
 export class VrgBase extends LitElement {
 
     emit(type, params){
+        console.log(type, params)
         let event = new CustomEvent(type, {
+            bubbles: true, 
+            composed: true,
             detail: params
           });
           this.dispatchEvent(event);
@@ -18,6 +21,69 @@ export class VrgBase extends LitElement {
 
     get sharedStyles() {
         return css`
+        /* The switch - the box around the slider */
+            .switch {
+                top:6px;
+                position: relative;
+                display: inline-block;
+                width: 30px;
+                height: 17px;
+            }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            /* The slider */
+            .slider {
+                position: absolute;
+            cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+            .slider:before {
+                position: absolute;
+            content: "";
+                height: 13px;
+                width: 13px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+            input:checked + .slider {
+                background-color:grey;
+            }
+
+            input:focus + .slider {
+                box-shadow: 0 0 1px grey;
+            }
+
+            input:checked + .slider:before {
+                -webkit-transform: translateX(13px);
+                -ms-transform: translateX(13px);
+                transform: translateX(13px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 17px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
             .card {
                 background-color: var(--shade-color);
                 color:var(--success-color);
@@ -189,47 +255,7 @@ export class VrgBase extends LitElement {
             }
             .p-1{
                 padding:1em;
-            }
-            .has-overtip{
-            position: relative;
-            display: inline-block;
-        }
-        .overtip{
-            visibility: hidden;
-            
-            background-color: grey;
-            width: 160px;
-            color: #fff;
-            text-align: center;
-            padding: 5px 0;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-            padding:1em;
-            
-            font-weight: 400;
-            font-size: 0.75rem;
-            line-height: 1.5;
-
-            /* Position the tooltip text - see examples below! */
-            position: absolute;
-            z-index: 1;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -140px; /* Use half of the width (120/2 = 60), to center the tooltip */
-        }
-        .overtip::after {
-            content: " ";
-            position: absolute;
-            top: 100%; /* At the bottom of the tooltip */
-            left: 50%;
-            margin-top: -10px;
-            border-width: 10px;
-            border-style: solid;
-            border-color: transparent transparent transparent grey;
-        }
-        .has-overtip:hover .overtip {
-            visibility: visible;
-        }`
+            }`
     }
 
 }

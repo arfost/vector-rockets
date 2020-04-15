@@ -248,6 +248,7 @@ module.exports = class {
                 get _representation() {
                     return {
                         type: "land",
+                        overtip: "Land on a planet, you can choose to face any hex of it, but remenber you can only take off with the ressources and help of a friendly base.",
                         name: "land"
                     }
                 }
@@ -289,6 +290,7 @@ module.exports = class {
                     return {
                         type: "takeoff",
                         name: "take off",
+                        overtip: "Take off using boosters from a friendly base to go one hex above the planet. Don't forget to burn left or right to began an orbit or you'll crash on the ground from gravity.",
                         direct: true
                     }
                 }
@@ -314,6 +316,7 @@ module.exports = class {
                 get _representation() {
                     return {
                         type: "burn",
+                        overtip: "Burn to modify your direction, but don't forget that in space you keep your inertia and braking will requiere has much fuel has accelareting.",
                         name: "burn"
                     }
                 }
@@ -334,6 +337,7 @@ module.exports = class {
                 get _representation() {
                     return {
                         type: "sabotage",
+                        overtip: "The ship's crew decide for no good reason to destroy it, and inflige damage to itself.",
                         name: "sabotage"
                     }
                 }

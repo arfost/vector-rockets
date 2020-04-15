@@ -24,6 +24,11 @@ export class VrgScenarioPreparation extends VrgBase {
 
     prepareAndLaunchConfig(){
         let scenario = this.scenarioList.find(sc=>sc.id === this.selectedScenario);
+
+        if(scenario.maxPlayer<this.players.length){
+            this.emit('toast-msg', 'There is too many players for this scenario');
+            return
+        }
         let config = {
             id:scenario.id
         }
@@ -42,7 +47,11 @@ export class VrgScenarioPreparation extends VrgBase {
     htmlInputForConfig(config){
         switch(config.type){
             case "boolean": 
-                return html`<input type="checkbox" id="${config.id}" name="${config.name}" ?checked="${config.default}">
+                return html`
+                <label class="switch">
+                    <input type="checkbox" id="${config.id}" name="${config.name}" ?checked="${config.default}">
+                    <span class="slider round"></span>
+                </label>
                 <label for="${config.name}">${config.name}</label>`
         }
     }
@@ -56,7 +65,7 @@ export class VrgScenarioPreparation extends VrgBase {
             ${scenario.desc}
             <h6>config</h6>
             <div>
-                ${scenario.options.map(el=>html`<div class="has-overtip">${this.htmlInputForConfig(el)}<div class="overtip">${el.desc}</div></div>`)}
+                ${scenario.options.map(el=>html`<div>${this.htmlInputForConfig(el)}<icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!el.desc}" color="grey" size="1em" overtip="${el.desc}"></icon-overtip></div>`)}
             </div>
         </div>    
         `}
@@ -96,7 +105,7 @@ export class VrgScenarioPreparation extends VrgBase {
     }
     
     displayToken(){
-        return html`<p>Token : ${this.user.game}<img class="ml-1" src='img/ui/clipboard-text.png' @click="${this.copyStringToClipboard}"></p>`
+        return html`<p>Token : ${this.user.game}<icon-overtip class="fas fa-copy ml-1" color="grey" size="1em" overtip="copy to clipboard" @click="${this.copyStringToClipboard}"></icon-overtip></p>`
     }
 
     
@@ -137,8 +146,8 @@ export class VrgScenarioPreparation extends VrgBase {
                     <h3>Preparing</h3>
                     <h5>Configure scenario</h5>
                     <p>You can choose a scenario and configure it. For your first game I advice using the introduction scenario.</p>
-                    <div class="flex-box f-horizontal">
-                        <div>
+                    <div class="flex-box f-horizontal f-j-start">
+                        <div class="mr-1">
                             ${this.scenarioList.map(sc=>html`<div @click="${e=>this.selectedScenario = sc.id}" class="${this.selectedScenario === sc.id ? "selected" : ""}">${sc.name}</div>`)}
                         </div>
                         <div>

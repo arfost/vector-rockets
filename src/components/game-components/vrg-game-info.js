@@ -71,12 +71,12 @@ export class VrgGameInfo extends VrgBase {
             this.emit('toast-msg', 'Turn validated');
         }).catch(err=>{
             this.shadowRoot.getElementById('validate').textMode = true;
-            this.emit('toast-msg', err.message);
+            this.emit('toast-msg', 'An error occured trying to pass the turn. If the issue persist, contact the creator of the game.');
         });
     }
 
     displayObjectif(obj){
-        return html`<div class="objectif has-overtip">${obj.name} : ${obj.done ? "done" : "not done"} <div class="overtip">${obj.desc}</div></div>`
+        return html`<div class="objectif">${obj.name} : ${obj.done ? "done" : "not done"} <icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!obj.desc}" color="white" size="1em" overtip="${obj.desc}"></icon-overtip></div>`
     }
 
     render() {

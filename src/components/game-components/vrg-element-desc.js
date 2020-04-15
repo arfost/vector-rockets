@@ -1,6 +1,7 @@
 
 import { html, css } from 'lit-element';
 import { VrgBase } from '../../vrg-base.js';
+import '../icon-overtip.js';
 
 const typeNameConversion = {
     "base": {
@@ -95,12 +96,12 @@ export class VrgElementDesc extends VrgBase {
                 return ''
             }
             return html`<h4>
-                            <span style="width:100%" class="${elem.overtip ? 'has-overtip' : ''}">${elem.name}${elem.overtip ? html`<div class='overtip'>${elem.overtip}</div>` : ''}</span>
+                            <span style="width:100%" >${elem.name}<icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!elem.overtip}" color="white" size="1em" overtip="${elem.overtip}"></icon-overtip></span>
                         </h4>
                         <div>
                             <p>${elem.desc}</p>
-                            ${elem.fuel !== undefined ? html`<div class="has-overtip">fuel : ${elem.fuel}/${elem.fuelMax} <div class="overtip">When there is no fuel left, you can't burn anymore. Land on a planet to refuel.</div></div>` : ``}
-                            ${elem.damage ? html`<div class="has-overtip">damage : ${elem.damage} <div class="overtip">crew is repairing and ship can't burn for this number of round</div></div>` : ``}
+                            ${elem.fuel !== undefined ? html`<div>fuel : ${elem.fuel}/${elem.fuelMax} <icon-overtip class="fas fa-question-circle ml-1" color="white" size="1em" overtip="When there is no fuel left, you can't burn anymore. Land on a planet to refuel."></icon-overtip></div>` : ``}
+                            ${elem.damage ? html`<div>damage : ${elem.damage} <icon-overtip class="fas fa-question-circle ml-1" color="white" size="1em" overtip="crew is repairing and ship can't burn for this number of turn"></icon-overtip></div>` : ``}
                             ${this.drawActions(elem)}
                             ${this.drawPlannedActions(elem)}
                         </div>`
@@ -117,7 +118,7 @@ export class VrgElementDesc extends VrgBase {
                                                                     @click="${() => this.emit('select-action', {
                 action,
                 element: selectedElement
-            })}">
+            })}"><icon-overtip class="fas fa-question-circle mr-1" ?hidden="${!action.overtip}" color="white" size="1em" overtip="${action.overtip}"></icon-overtip>
                                                                         ${action.name}${this.selectedActionId == action.id ?
                     html`<span 
                                                                                     @click="${e => {
@@ -135,8 +136,17 @@ export class VrgElementDesc extends VrgBase {
 
     displayElementList() {
         if (this.elements) {
+            let elem = this.elements.find(elem=>elem.id===this.elementViewedId);
+            if(!elem){
+                this.elementViewedId = undefined;
+            }
             if(this.elements.length === 1){
                 this.elementViewedId = this.elements[0].id;
+            }else{
+                let elem = this.elements.find(elem=>elem.owner == this.userId);
+                if(elem && this.elementViewedId === undefined){
+                    this.elementViewedId = elem.id;
+                }
             }
             let elementWithCatTitle = {};
             for (let element of this.elements) {
@@ -171,6 +181,7 @@ export class VrgElementDesc extends VrgBase {
         if (selectedElement.plannedActions && selectedElement.owner == this.userId) {
             return html`<div class="flex-box f-vertical f-j-space"><span>Planned actions : </span>
             ${selectedElement.plannedActions.map(action => html`<div class="action flex-box f-horizontal f-j-space">
+            <icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!action.overtip}" color="white" size="1em" overtip="${action.overtip}"></icon-overtip>
                                             ${action.name}<span @click="${e => { this.emit('cancel-action', action) }}">X</span>
                                         </div>`)}
             </div>`
@@ -187,7 +198,7 @@ export class VrgElementDesc extends VrgBase {
                 <span class="ml-1" style="float: right;" @click="${e => this.open = !this.open}">${this.open ? '▼' : '▲'}</span>
                 Element on this hex
             </div>
-            <div ?hidden="${!this.open}" class="flex-box f-horizontal f-j-space">
+            <div ?hidden="${!this.open}" class="flex-box f-horizontal f-j-start">
                 <div class="flex-box f-vertical f-j-space">
                     ${ this.displayElementList() }
                 </div>

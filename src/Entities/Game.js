@@ -22,7 +22,7 @@ export class Game extends FireReference {
     get actions() {
         return {
             launchGame: async (key, scenario) => {
-                const res = await firebase.functions().httpsCallable('launchGame')({key, scenario});
+                return firebase.functions().httpsCallable('launchGame')({key, scenario});
             },
 
             playAction: (action) => {
@@ -47,7 +47,7 @@ export class Game extends FireReference {
                 this.save();
             },
             validateTurn: async (key) => {
-                const res = await firebase.functions().httpsCallable('validateTurn')(key);
+                return firebase.functions().httpsCallable('validateTurn')(key);
             }
         }
     }
