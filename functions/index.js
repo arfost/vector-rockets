@@ -129,7 +129,7 @@ exports.launchGame = functions.https.onCall(async({key, scenario}, context)=>{
     
     let game = (await gameRef.once('value')).val();
 
-    game.type = scenario;
+    game.type = scenario.id;
 
     scenarioInstance.init(game.players, scenario);
     
