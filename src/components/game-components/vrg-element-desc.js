@@ -139,7 +139,7 @@ export class VrgElementDesc extends VrgBase {
                 this.elementViewedId = this.elements[0].id;
             }else{
                 let elem = this.elements.find(elem=>elem.owner == this.userId);
-                if(elem){
+                if(elem && this.elementViewedId === undefined){
                     this.elementViewedId = elem.id;
                 }
             }

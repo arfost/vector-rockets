@@ -19,7 +19,8 @@ const inflate = {
         dirtySpace.actif = false;
         dirtySpace.id = baseId;
         dirtySpace.name = "dirty space";
-        dirtySpace.desc = "this space is dirty, po"
+        dirtySpace.desc = "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.";
+        dirtySpace.overtip = "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn."
 
         return [dirtySpace];
     }
