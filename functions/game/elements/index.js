@@ -1,16 +1,16 @@
+
+const ShipClass = require("./ship.js");
+const BaseClass = require("./base.js");
+
 function getElement(element) {
   switch (element) {
     case "ship":
-      return require('./ship.js');
-    case "star":
-      return require('./star.js');
-    case "planet":
-      return require('./planet.js');
-    case "dirtySpace":
-      return require('./dirtySpace.js');
+      return new ShipClass();
+    case "base":
+      return new BaseClass();
 
     default: throw new Error("this element type doesn't exist");
   }
 }
 
-module.exports = getScenario;
+module.exports = getElement;

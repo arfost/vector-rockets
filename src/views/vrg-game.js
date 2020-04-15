@@ -5,10 +5,11 @@ import MapRenderer from '../drawMapUtils.js'
 
 import '../components/game-popin.js';
 import  '../components/btn-loader.js';
-import '../components/game-components/vrg-touchpad.js'
-import '../components/game-components/vrg-element-desc.js'
-import '../components/game-components/vrg-game-info.js'
-import '../components/game-components/vrg-finish-screen.js'
+import '../components/game-components/vrg-touchpad.js';
+import '../components/game-components/vrg-element-desc.js';
+import '../components/game-components/vrg-game-info.js';
+import '../components/game-components/vrg-finish-screen.js';
+import '../components/game-components/vrg-scenario-preparation.js';
 
 class VrgGame extends VrgBase {
 
@@ -34,10 +35,6 @@ class VrgGame extends VrgBase {
         .map > canvas{
             width:100%;
             height:100%;
-        }
-        
-        .self {
-            text-decoration: underline
         }
         .tooltip {
             position:fixed;
@@ -126,40 +123,13 @@ class VrgGame extends VrgBase {
         })
     }
 
-    launchGame(){
-        this.shadowRoot.getElementById('launch').textMode = false;
-        this.gameRef.actions.launchGame(this.user.game).then(()=>{
+    launchGame(e){
+        this.gameRef.actions.launchGame(this.user.game, e.detail).then(()=>{
             this.emit('toast-msg', 'Game started');
-            this.shadowRoot.getElementById('launch').textMode = true;
         }).catch(e=>{
             this.emit('toast-msg', 'Error : the game could not be started');
-            this.shadowRoot.getElementById('launch').textMode = true;
         });
     }
-
-    copyStringToClipboard () {
-        // Create new element
-        var el = document.createElement('textarea');
-        // Set value (string to be copied)
-        el.value = this.user.game;
-        // Set non-editable to avoid focus and move outside of view
-        el.setAttribute('readonly', '');
-        el.style = {position: 'absolute', left: '-9999px'};
-        document.body.appendChild(el);
-        // Select text inside element
-        el.select();
-        // Copy text to clipboard
-        document.execCommand('copy');
-        // Remove temporary element
-        document.body.removeChild(el);
-
-        this.emit('toast-msg', `Game token copied to clipboard`);
-     }
-
-     displayToken(){
-         return html`<p>Token : ${this.user.game}<img class="ml-1" src='img/ui/clipboard-text.png' @click="${this.copyStringToClipboard}"></p>`
-     }
-
 
     actionSelect(action, selectedElement){
         if(action.direct){
@@ -235,25 +205,7 @@ class VrgGame extends VrgBase {
                         </div>
                     </div>
                     <game-popin ?hidden=${this.game.status !== "waitingplayers"}>
-                        <div class="flex-box f-horizontal">
-                            <div class="flex-box f-vertical f-j-start">
-                                <div>Players : </div>
-                                <ul>
-                                    ${this.game.players.map(player=>html`<li style="color:#${player.color}" class="${player.uid === this.user.uid ? 'self': ''}">${player.name}</li>`)}
-                                </ul>
-                            </div>
-                            <div class="flex-box f-vertical">
-                                <h3>Preparing</h3>
-                                <p>You can invite people to this game by giving this token above. There is no chat for now, so use any other messaging system you'd like for that.</p>
-                                <p>When ready, click the button on the right.</p>
-                                ${this.displayToken()}
-                            </div>
-                            <div>
-                                <btn-loader id="launch" @click="${this.launchGame}">
-                                    launch
-                                </btn-loader>
-                            </div>
-                        </div>
+                        <vrg-scenario-preparation .players="${this.game.players}" .user="${this.user}" @launch="${this.launchGame}"></vrg-scenario-preparation>
                     </game-popin>
                     <game-popin ?hidden=${this.game.status !== "finished"}>
                         <vrg-finish-screen .scenario="${this.game.scenario}" .players="${this.game.players}" .userId="${this.user.uid}" ></vrg-finish-screen>

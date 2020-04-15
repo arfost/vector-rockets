@@ -1,5 +1,12 @@
 const getScenario = require('../functions/game/scenarios/index.js');
 
+test('error when requesting inexisting scenario', ()=>{
+    let testCrea = ()=>{
+        getScenario('bad')
+    }
+    expect(testCrea).toThrow();
+})
+
 describe('Testing intro scenario', () => {
 
 
@@ -13,7 +20,7 @@ describe('Testing intro scenario', () => {
             "uid": "uid"
           }]
         scenario = getScenario("intro");
-        scenario.init(players);
+        scenario.init(players, {ss:true});
     });
 
     test('correct number of elements', () => {
@@ -101,6 +108,24 @@ describe('Testing intro scenario', () => {
             let ship = scenario.elements.find(el=>el.owner === players[0].uid);
             expect(ship.x).toBe(18);
             expect(ship.y).toBe(26);
+        })
+    })  
+
+    describe('testing init with no same start option', () => {
+        
+        beforeAll(() => {
+            players = [{
+                "name" : "Arfost",
+                "color" : "red",
+                "uid": "uid"
+              }]
+            scenario = getScenario("intro");
+            scenario.init(players, {ss:true});
+        });
+        test('ship has moved', () => {
+            let ship = scenario.elements.find(el=>el.owner === players[0].uid);
+            let startPoint = [{x:31,y:5},{x:17,y:26},{x:10,y:8},{x:47,y:13}].find(coord=>coord.x===ship.x && coord.y === ship.y)
+            expect(startPoint).toBeDefined();
         })
     })  
 })

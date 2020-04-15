@@ -125,13 +125,13 @@ exports.launchGame = functions.https.onCall(async({key, scenario}, context)=>{
     let gameRef = admin.database().ref('games/'+key);
     let elementsRef = admin.database().ref('elements/'+key);
 
-    let scenarioInstance = scenarioGetter(scenario);
+    let scenarioInstance = scenarioGetter(scenario.id);
     
     let game = (await gameRef.once('value')).val();
 
-    game.type = scenario;
+    game.type = scenario.id;
 
-    scenarioInstance.init(game.players);
+    scenarioInstance.init(game.players, scenario);
     
     elementsRef.set(scenarioInstance.elements);
     

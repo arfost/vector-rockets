@@ -1,12 +1,11 @@
 const baseMap = require("./maps/baseMap.json");
 const inflateMapElement = require("../elements/mapElements.js");
-const { getPlayerColorList } = require("../tools.js");
-const ShipClass = require("../elements/ship.js");
-const BaseClass = require("../elements/base.js");
+const { getPlayerColorList, shuffleArray } = require("../tools.js");
+const getElement = require("../elements");
 const Honeycomb = require("honeycomb-grid");
 const Hex = Honeycomb.extendHex({ size: 14, orientation: "flat" });
 
-const grid = Honeycomb.defineGrid().rectangle({ width: 200, height: 200 });
+const grid = Honeycomb.defineGrid(Hex).rectangle({ width: 200, height: 200 });
 
 
 module.exports = class{
@@ -353,12 +352,7 @@ module.exports = class{
         let actifs = new Map();
         for(let element of this._elements){
             if(element.actif){
-                let instance;
-                if(element.type === "ship"){
-                    instance = new ShipClass();
-                }else{
-                    instance = new BaseClass();
-                }
+                let instance = getElement(element.type);
                 instance.load(element);
                 instance.prepareActions(this.positionedElement, this);
                 actifs.set(instance.id, instance);
@@ -398,7 +392,8 @@ module.exports = class{
         this._scenario.turn++;
     }
 
-    init(players){
+    init(players, scenario){
+        scenario.randomStart = shuffleArray([{x:31,y:5},{x:17,y:26},{x:10,y:8},{x:47,y:13}])
         let elements = [];
         for(let base of baseMap.elements){
             elements = [...elements, ...inflateMapElement(base, elements.length)]
@@ -408,15 +403,15 @@ module.exports = class{
         let baseList = [];
 
         for(let player of players){
-            let role = this.getRole(player);
+            let role = this.getRole(player, scenario);
             for(let ship of role.shipList){
-                let shipInstance = new ShipClass();
+                let shipInstance = getElement("ship");
                 shipInstance.init(ship.base, "shi"+shipList.length, ship.type, player);
                 shipList.push(shipInstance);
             }
 
             for(let base of role.baseList){
-                let baseInstance = new BaseClass();
+                let baseInstance = getElement("base");
                 baseInstance.init(base.base, "bas"+baseList.length, base.type, player);
                 baseList.push(baseInstance);
             }
@@ -425,7 +420,7 @@ module.exports = class{
         }
 
         for(let initBase of this.initBaseList){
-            let baseInstance = new BaseClass();
+            let baseInstance = getElement("base");
             baseInstance.init(initBase, "bas"+baseList.length);
             baseList.push(baseInstance);
         }
@@ -455,12 +450,22 @@ module.exports = class{
         }
     }
 
-    getRole(player){
-        return {
-            shipList:[{
+    getRole(player, config){
+        let shipList
+        if(config.ss){
+            shipList = [{
                 base: {x:17,y:26, landed:true},
                 type:"corvette"
-            }],
+            }]
+        }else{
+            let start = config.randomStart.pop();
+            shipList = [{
+                base: {x:start.x,y:start.y, landed:true},
+                type:"corvette"
+            }]
+        }
+        return {
+            shipList,
             baseList:[],
             objectives:[{
                 name:"back to earth",
