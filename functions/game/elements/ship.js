@@ -1,10 +1,11 @@
-const shipReference = require('./shipReference.json')
-const { inertiaToHex, hexToInertia, getDice } = require('../tools.js')
+const shipReference = require('./shipReference.json');
+const { inertiaToHex, hexToInertia, getDice } = require('../tools.js');
 const Honeycomb = require("honeycomb-grid");
+var collide = require('line-circle-collision');
 
 const Hex = Honeycomb.extendHex({ size: 14, orientation: "flat" });
 
-const grid = Honeycomb.defineGrid().rectangle({ width: 200, height: 200 });
+const grid = Honeycomb.defineGrid(Hex).rectangle({ width: 200, height: 200 });
 
 module.exports = class {
 
@@ -60,7 +61,17 @@ module.exports = class {
     resolveTurn(positionedElements, scenario) {
 
         if (!this._ship.landed) {
+            
+            let destPoint = this.futurHex.toPoint()
+            .add(this.futurHex.center());
+            
+            let startPoint = this.actualHex.toPoint()
+            .add(this.actualHex.center());
 
+            let trajectoryLine = {
+                start:[startPoint.x, startPoint.y],
+                end:[destPoint.x, destPoint.y]
+            } 
             for (let traversedHex of this._traversedHexs) {
                 if (!traversedHex) {
                     continue;
@@ -79,6 +90,15 @@ module.exports = class {
                                     this._ship.damage = result;
                                     this._ship.damageTaken = true;
                                 }
+                            }
+                        }
+                        if(el.type === "planet" || el.type === "star"){
+                            let planetCenter = traversedHex.toPoint().add(this.futurHex.center());
+                            let colision = collide(trajectoryLine.start, trajectoryLine.end, [planetCenter.x, planetCenter.y], el.apparence.radius)
+                            if(colision){
+                                this._ship.destroyed = true;
+                                this._ship.destroyedReason = 'damage';
+                                scenario.addMessage(this._ship.name + ' was destroyed in a violent lithobraking');
                             }
                         }
                     }
@@ -105,10 +125,10 @@ module.exports = class {
         }
 
         if (this._ship.damageTaken) {
-            if (this._ship.damage > 6) {
+            if (this._ship.damage > 6 && !this._ship.destroyed) {
                 this._ship.destroyed = true;
                 this._ship.destroyedReason = 'damage';
-                scenario.addMessage(this._ship.name + ' was destroyed in an artistic fireball')
+                scenario.addMessage(this._ship.name + ' was destroyed in a;')
             }
             this._ship.damageTaken = false;
         } else {
@@ -159,12 +179,17 @@ module.exports = class {
             this._ship.displacement = [];
 
         }
-        this._futurHex = inertiaToHex(this._ship.inertia, Hex(this._ship.x, this._ship.y), Hex);
+        this._actualHex = Hex(this._ship.x, this._ship.y);
+        this._futurHex = inertiaToHex(this._ship.inertia, this.actualHex, Hex);
 
-        this._traversedHexs = grid.hexesBetween(Hex(this._ship.x, this._ship.y), this._futurHex);
+        this._traversedHexs = grid.hexesBetween(this.actualHex, this._futurHex);
         this._traversedHexs.shift();
 
         this._ship.plannedActions = [];
+    }
+
+    get actualHex(){
+        return this._actualHex;
     }
 
     get actions() {
@@ -229,7 +254,6 @@ module.exports = class {
             },
             takeoff: {
                 execute(ship, result) {
-                    console.log(ship)
                     delete ship.landed;
 
                     ship.inertia = ship.landedDirection || result;
