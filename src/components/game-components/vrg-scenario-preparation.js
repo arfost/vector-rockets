@@ -65,7 +65,7 @@ export class VrgScenarioPreparation extends VrgBase {
             ${scenario.desc}
             <h6>config</h6>
             <div>
-                ${scenario.options.map(el=>html`<div class="has-overtip">${this.htmlInputForConfig(el)}<div class="overtip">${el.desc}</div></div>`)}
+                ${scenario.options.map(el=>html`<div>${this.htmlInputForConfig(el)}<icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!el.desc}" color="grey" size="1em" overtip="${el.desc}"></icon-overtip></div>`)}
             </div>
         </div>    
         `}
@@ -105,7 +105,7 @@ export class VrgScenarioPreparation extends VrgBase {
     }
     
     displayToken(){
-        return html`<p>Token : ${this.user.game}<img class="ml-1" src='img/ui/clipboard-text.png' @click="${this.copyStringToClipboard}"></p>`
+        return html`<p>Token : ${this.user.game}<icon-overtip class="fas fa-copy ml-1" color="grey" size="1em" overtip="copy to clipboard" @click="${this.copyStringToClipboard}"></icon-overtip></p>`
     }
 
     

@@ -1,6 +1,7 @@
 
 import { html, css } from 'lit-element';
 import { VrgBase } from '../../vrg-base.js';
+import '../icon-overtip.js';
 
 const typeNameConversion = {
     "base": {
@@ -95,12 +96,12 @@ export class VrgElementDesc extends VrgBase {
                 return ''
             }
             return html`<h4>
-                            <span style="width:100%" class="${elem.overtip ? 'has-overtip' : ''}">${elem.name}${elem.overtip ? html`<div class='overtip'>${elem.overtip}</div>` : ''}</span>
+                            <span style="width:100%" >${elem.name}<icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!elem.overtip}" color="white" size="1em" overtip="${elem.overtip}"></icon-overtip></span>
                         </h4>
                         <div>
                             <p>${elem.desc}</p>
-                            ${elem.fuel !== undefined ? html`<div class="has-overtip">fuel : ${elem.fuel}/${elem.fuelMax} <div class="overtip">When there is no fuel left, you can't burn anymore. Land on a planet to refuel.</div></div>` : ``}
-                            ${elem.damage ? html`<div class="has-overtip">damage : ${elem.damage} <div class="overtip">crew is repairing and ship can't burn for this number of round</div></div>` : ``}
+                            ${elem.fuel !== undefined ? html`<div>fuel : ${elem.fuel}/${elem.fuelMax} <icon-overtip class="fas fa-question-circle ml-1" color="white" size="1em" overtip="When there is no fuel left, you can't burn anymore. Land on a planet to refuel."></icon-overtip></div>` : ``}
+                            ${elem.damage ? html`<div>damage : ${elem.damage} <icon-overtip class="fas fa-question-circle ml-1" color="white" size="1em" overtip="crew is repairing and ship can't burn for this number of turn"></icon-overtip></div>` : ``}
                             ${this.drawActions(elem)}
                             ${this.drawPlannedActions(elem)}
                         </div>`
