@@ -84,7 +84,8 @@ class IconOvertip extends LitElement {
       return icon;
     };
     let data = getPrefix(className);
-    return `${this.pathPrefix}/@fortawesome/fontawesome-free/sprites/${data[0]}.svg#${data[1]}`;
+    console.log(`${this.pathPrefix}/svgs/${data[0]}.svg#${data[1]}`)
+    return `${this.pathPrefix}/sprites/${data[0]}.svg#${data[1]}`;
   }
   constructor() {
     super();
@@ -93,7 +94,7 @@ class IconOvertip extends LitElement {
     this.style = "";
     this.size = "";
     this.color = "";
-    this.pathPrefix = "node_modules";
+    this.pathPrefix = "img";
   }
   firstUpdated() {
     this.src = this.getSources(this.iClass);
@@ -111,9 +112,8 @@ class IconOvertip extends LitElement {
         ${this.styles}
     </style>
     <div class="has-overtip">
-        <svg .style="${this._parseStyles()}">
-            <use 
-                href="${this.src}">
+    <svg .style="${this._parseStyles()}">
+            <use href="${this.src}">
             </use>
         </svg>
         ${this.overtip ? html`<div class="overtip">${this.overtip}</div>` : ''}
