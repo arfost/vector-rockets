@@ -42,7 +42,7 @@ export class VrgFinishScreen extends VrgBase {
     }
 
     displayObjectif(obj){
-        return html`<div class="objectif">${obj.name} : ${obj.done ? "done" : "not done"} <icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!obj.desc}" color="white" size="1em" overtip="${obj.desc}"></icon-overtip></div>`
+        return html`<div class="objectif">${obj.name} : ${obj.done ? "done" : "not done"} <icon-overtip class="fas fa-question-circle ml-1" ?hidden="${!obj.desc}" color="grey" size="1em" overtip="${obj.desc}"></icon-overtip></div>`
     }
 
     render() {
