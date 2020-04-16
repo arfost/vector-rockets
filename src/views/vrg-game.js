@@ -123,14 +123,6 @@ class VrgGame extends VrgBase {
         })
     }
 
-    launchGame(e){
-        this.gameRef.actions.launchGame(this.user.game, e.detail).then(()=>{
-            this.emit('toast-msg', 'Game started');
-        }).catch(e=>{
-            this.emit('toast-msg', 'Error : the game could not be started');
-        });
-    }
-
     actionSelect(action, selectedElement){
         if(action.direct){
             this.gameRef.actions.playAction(action)
@@ -205,7 +197,7 @@ class VrgGame extends VrgBase {
                         </div>
                     </div>
                     <game-popin ?hidden=${this.game.status !== "waitingplayers"}>
-                        <vrg-scenario-preparation .players="${this.game.players}" .user="${this.user}" @launch="${this.launchGame}"></vrg-scenario-preparation>
+                        <vrg-scenario-preparation .players="${this.game.players}" .user="${this.user}"></vrg-scenario-preparation>
                     </game-popin>
                     <game-popin ?hidden=${this.game.status !== "finished"}>
                         <vrg-finish-screen .scenario="${this.game.scenario}" .players="${this.game.players}" .userId="${this.user.uid}" ></vrg-finish-screen>

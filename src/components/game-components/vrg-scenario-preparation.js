@@ -1,5 +1,6 @@
 
 import { html, css } from 'lit-element';
+import Datavault from '../../datavault.js';
 import { VrgBase } from '../../vrg-base.js'
 import  '../../components/btn-loader.js';
 
@@ -41,7 +42,14 @@ export class VrgScenarioPreparation extends VrgBase {
             }
             config[element.id] = value;
         }
-        this.emit("launch", config);
+        this.shadowRoot.getElementById('launch').textMode = false;
+        Datavault.refGetter.getGame(this.user.game).actions.launchGame(this.user.game, config).then(()=>{
+            this.shadowRoot.getElementById('launch').textMode = true;
+            this.emit('toast-msg', 'Game started');
+        }).catch(e=>{
+            this.shadowRoot.getElementById('launch').textMode = true;
+            this.emit('toast-msg', 'Error : the game could not be started');
+        });
     }
 
     htmlInputForConfig(config){
