@@ -27,10 +27,20 @@ describe('Testing intro scenario', () => {
         let elements = scenario.elements;
         expect(elements.length).toBe(178);
     })
+    describe('testing objs', ()=>{
+        test('player has objectives now', () => {
+            expect(players[0].objectives).toBeDefined();
+        })
 
-    test('player has objectives now', () => {
-        expect(players[0].objectives).toBeDefined();
+        test('player has return to earth obj', () => {
+            expect(players[0].objectives.find(obj=>obj.code==="bterra")).toBeDefined();
+        })
+
+        test('player has cbvenus obj', () => {
+            expect(players[0].objectives.find(obj=>obj.code==="cbvenus")).toBeDefined();
+        })
     })
+    
 
     test('starting message in message', () => {
         let messages = scenario.scenario.messages;
