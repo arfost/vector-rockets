@@ -401,7 +401,7 @@
         {
             "apparence": {
                 "color": "88ee00",
-                "radius": 2
+                "radius": 3
             },
             "name": "callisto",
             "desc":"second largest moon of jupiter, tidally locked to jupiter, outside her radiation zone and containing water ice and organic compounds, it naturally became the greenhouse of jupiters activities.",
@@ -434,7 +434,7 @@
         {
             "apparence": {
                 "color": "bbbbbb",
-                "radius": 3
+                "radius": 2
             },
             "name": "ganymede",
             "desc":"the biggest satelite of the solar system, bigger than mercury.",

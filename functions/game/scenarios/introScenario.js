@@ -393,7 +393,6 @@ module.exports = class{
     }
 
     init(players, scenario){
-        scenario.randomStart = shuffleArray([{x:31,y:5},{x:17,y:26},{x:10,y:8},{x:47,y:13}])
         let elements = [];
         for(let base of baseMap.elements){
             elements = [...elements, ...inflateMapElement(base, elements.length)]
@@ -450,71 +449,104 @@ module.exports = class{
         }
     }
 
-    getRole(player, config){
-        let shipList
+    getStartingPoints(config){
         if(config.ss){
-            shipList = [{
-                base: {x:17,y:26, landed:true},
-                type:"corvette"
-            }]
-        }else{
-            let start = config.randomStart.pop();
-            shipList = [{
-                base: {x:start.x,y:start.y, landed:true},
-                type:"corvette"
+            return [{
+                name:'terra',
+                pos:{x:17,y:26}
             }]
         }
+        return shuffleArray([{name:'mars', pos:{x:31,y:5}},{name:'venus', pos:{x:10,y:8}},{name:'callisto', pos:{x:47,y:13}},{name:'terra', pos:{x:17,y:26}}])
+    }
+
+    get baseObjectives(){
+        return [{
+            name:"back to terra",
+            code:"bterra",
+            desc:"return to terra after passing near all important bodies of the map",
+            done: true
+        },{
+            name:"back to venus",
+            code:"bvenus",
+            desc:"return to venus after passing near all important bodies of the map",
+            done: true
+        },{
+            name:"back to mars",
+            code:"bmars",
+            desc:"return to mars after passing near all important bodies of the map",
+            done: true
+        },{
+            name:"back to callisto",
+            code:"bcallisto",
+            desc:"return to callisto after passing near all important bodies of the map",
+            done: true
+        },{
+            name:"close by terra",
+            code:"cbterra",
+            desc:"fly in a least one gravity hex of terra",
+            durable:true,
+            done: false
+        },{
+            name:"close by venus",
+            code:"cbvenus",
+            desc:"fly in a least one gravity hex of venus",
+            durable:true,
+            done: false
+        },{
+            name:"close by mars",
+            code:"cbmars",
+            desc:"fly in a least one gravity hex of mars",
+            durable:true,
+            done: false
+        },{
+            name:"close by callisto",
+            code:"cbcallisto",
+            desc:"fly in a least one gravity hex of callisto",
+            durable:true,
+            done: false
+        },{
+            name:"close by ganymede",
+            code:"cbganymede",
+            desc:"fly in a least one gravity hex of ganymede",
+            durable:true,
+            done: false
+        },{
+            name:"close by mercury",
+            code:"cbmercury",
+            desc:"fly in a least one gravity hex of mercury",
+            durable:true,
+            done: false
+        },{
+            name:"close by sun",
+            code:"cbsun",
+            desc:"fly in a least one gravity hex of the sun",
+            durable:true,
+            done: false
+        },{
+            name:"close by jupiter",
+            code:"cbjupiter",
+            desc:"fly in a least one gravity hex of jupiter",
+            durable:true,
+            done: false
+        }]
+    }
+
+    getRole(player, config){
+        
+        let shipList;
+        if(!config.randomStart || config.randomStart.length === 0){
+            config.randomStart = this.getStartingPoints(config);
+        }
+        let startPoint = config.randomStart.pop();
+        shipList = [{
+            base: {x:startPoint.pos.x,y:startPoint.pos.y, landed:true},
+            type:"corvette"
+        }]
+        let objectives = this.baseObjectives.filter(obj=>(obj.code==='b'+startPoint.name||(obj.code.startsWith('cb') && obj.code!=='cb'+startPoint.name)));
         return {
             shipList,
-            baseList:[],
-            objectives:[{
-                name:"back to earth",
-                code:"bearth",
-                desc:"return to earth after passing near all important bodies of the map",
-                done: true
-            },{
-                name:"close by venus",
-                code:"cbvenus",
-                desc:"fly in a least one gravity hex of venus",
-                durable:true,
-                done: false
-            },{
-                name:"close by mars",
-                code:"cbmars",
-                desc:"fly in a least one gravity hex of mars",
-                durable:true,
-                done: false
-            },{
-                name:"close by callisto",
-                code:"cbcallisto",
-                desc:"fly in a least one gravity hex of callisto",
-                durable:true,
-                done: false
-            },{
-                name:"close by ganymede",
-                code:"cbganymede",
-                desc:"fly in a least one gravity hex of ganymede",
-                durable:true,
-                done: false
-            },{
-                name:"close by mercury",
-                code:"cbmercury",
-                desc:"fly in a least one gravity hex of mercury",
-                durable:true,
-                done: false
-            },{
-                name:"close by sun",
-                code:"cbsun",
-                desc:"fly in a least one gravity hex of the sun",
-                durable:true,
-                done: false
-            },{
-                name:"close by jupiter",
-                code:"cbjupiter",
-                desc:"fly in a least one gravity hex of jupiter",
-                durable:true,
-                done: false
-            }]
+            objectives,
+            baseList:[]
         }
     }
 
@@ -541,6 +573,17 @@ module.exports = class{
                 }
                 return closeBy
             },
+            _checkBackTo(planet, ship, positionedElements){
+                let onObj = false;
+                if (positionedElements[ship.x + ':' + ship.y]) {
+                    for (let el of positionedElements[ship.x + ':' + ship.y]) {
+                      if (el.name === planet) {
+                        onObj = true;
+                      }   
+                    }
+                  }
+                return Boolean(ship.jsonDesc.landed && onObj)
+            },
             cbvenus:function(ship, positionedElements){
                 return this._checkCloseBy('venus', ship.traversedHex, positionedElements)
             },
@@ -562,16 +605,20 @@ module.exports = class{
             cbsun:function(ship, positionedElements){
                 return this._checkCloseBy('sol', ship.traversedHex, positionedElements)
             },
-            bearth:function(ship, positionedElements){
-                let onEarth = false;
-                if (positionedElements[ship.x + ':' + ship.y]) {
-                    for (let el of positionedElements[ship.x + ':' + ship.y]) {
-                      if (el.name === 'terra') {
-                        onEarth = true;
-                      }   
-                    }
-                  }
-                return Boolean(ship.jsonDesc.landed && onEarth)
+            cbterra:function(ship, positionedElements){
+                return this._checkCloseBy('terra', ship.traversedHex, positionedElements)
+            },
+            bterra:function(ship, positionedElements){
+                return this._checkBackTo('terra', ship, positionedElements);
+            },
+            bmars:function(ship, positionedElements){
+                return this._checkBackTo('mars', ship, positionedElements);
+            },
+            bvenus:function(ship, positionedElements){
+                return this._checkBackTo('venus', ship, positionedElements);
+            },
+            bcallisto:function(ship, positionedElements){
+                return this._checkBackTo('callisto', ship, positionedElements);
             }
         }
     }

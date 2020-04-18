@@ -6,6 +6,21 @@ import  '../../components/btn-loader.js';
 
 export class VrgScenarioPreparation extends VrgBase {
     //we need to init values in constructor
+    get scenarioList(){
+        return [{
+            name:"Introduction scenario",
+            desc:"A simple race around the solar system, to understand navigation.",
+            id:"intro",
+            maxPlayer:4,
+            options:[{
+                type:"boolean",
+                id:"ss",
+                name:"same start",
+                desc:"All players began on the earth, otherwise they are spread on different starting planet",
+                default:false
+            }]
+        }]
+    }
 
     static get properties() {
         return {
@@ -78,22 +93,6 @@ export class VrgScenarioPreparation extends VrgBase {
         </div>    
         `}
         return ''
-    }
-
-    get scenarioList(){
-        return [{
-            name:"Introduction scenario",
-            desc:"A simple race around the solar system, to understand navigation.",
-            id:"intro",
-            maxPlayer:4,
-            options:[{
-                type:"boolean",
-                id:"ss",
-                name:"same start",
-                desc:"All players began on the earth, otherwise they are spread on different starting planet",
-                default:true
-            }]
-        }]
     }
 
     constructor() {
