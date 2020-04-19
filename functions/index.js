@@ -194,6 +194,7 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
                 player.validated = false;
                 return player;
             })
+            game.gameInfo.toPlay = game.players.length;
         }catch(e){
             admin.database().ref('status/'+key).set('ready');
             throw e
