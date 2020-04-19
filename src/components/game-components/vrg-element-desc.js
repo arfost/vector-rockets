@@ -195,7 +195,7 @@ export class VrgElementDesc extends VrgBase {
         ${this.styles}
         <div class="card flex-box f-vertical f-j-space root" ?hidden="${!this.elements || this.elements.length === 0}">
             <div>
-                <span class="ml-1" style="float: right;" @click="${e => this.open = !this.open}">${this.open ? '▼' : '▲'}</span>
+                <span class="ml-1" style="float:right;cursor:pointer" @click="${e => this.open = !this.open}">${this.open ? '▼' : '▲'}</span>
                 Element on this hex
             </div>
             <div ?hidden="${!this.open}" class="flex-box f-horizontal f-j-start">
