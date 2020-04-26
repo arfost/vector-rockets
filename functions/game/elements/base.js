@@ -47,7 +47,7 @@ module.exports = class {
         for (let el of positionedElements[
             aboveHex.x + ":" + aboveHex.y
         ]) {
-            if (el.type === "ship" && el.doneAction === false) {
+            if (el.type === "ship" && el.doneAction === false && (Math.abs(el.inertia.q) <= 1 && Math.abs(el.inertia.r) <= 1 && Math.abs(el.inertia.s) <= 1)) {
                 this.reSupply(el, scenario);
             }
         }

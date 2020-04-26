@@ -90,26 +90,33 @@ exports.quitGame = functions.https.onCall(async(key, context)=>{
     }
 
     if(validatedPlayer === game.players.length){
-        admin.database().ref('status/'+key).set('inturn');
-
-        let elementsRef = admin.database().ref('elements/'+key);
-        let elements = (await elementsRef.once('value')).val();
-
-        let scenarioInstance = scenarioGetter(game.type);
-
-        scenarioInstance.load(elements, game.scenario);
-
-        scenarioInstance.playTurn()
-
-        elementsRef.set(scenarioInstance.elements);
-        game.scenario = scenarioInstance.scenario;
-
-        game.players.map(player=>{
-            player.validated = false;
-            return player;
-        })
-        
-        game.gameInfo.turn ++;
+        try{
+            admin.database().ref('status/'+key).set('inturn');
+            let elementsRef = admin.database().ref('elements/'+key);
+            let elements = (await elementsRef.once('value')).val();
+    
+            let scenarioInstance = scenarioGetter(game.type);
+    
+            scenarioInstance.load(elements, game.scenario);
+    
+            scenarioInstance.playTurn(game.players)
+    
+            elementsRef.set(scenarioInstance.elements);
+            game.scenario = scenarioInstance.scenario;
+    
+            if(game.scenario.winner){
+                gameStatus = 'finished';
+            }
+    
+            game.players.map(player=>{
+                player.validated = false;
+                return player;
+            })
+            game.gameInfo.toPlay = game.players.length;
+        }catch(e){
+            admin.database().ref('status/'+key).set('ready');
+            throw e
+        }
     }else{
         game.gameInfo.toPlay = game.players.length - validatedPlayer;
     }
@@ -194,6 +201,7 @@ exports.validateTurn = functions.https.onCall(async(key, context)=>{
                 player.validated = false;
                 return player;
             })
+            game.gameInfo.toPlay = game.players.length;
         }catch(e){
             admin.database().ref('status/'+key).set('ready');
             throw e

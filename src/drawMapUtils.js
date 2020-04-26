@@ -552,7 +552,7 @@ class ElementRenderer {
         //draw rotation
         let destPoint;
         let destHex;
-        if(element.landed){
+        if(element.landed && element.owner === this.playerUid){
             let takeoffDir = {q:0,r:0,s:0};
             let takeoff = (element.plannedActions || []).find(a=>a.type == "takeoff");
             if(element.landedDirection){
