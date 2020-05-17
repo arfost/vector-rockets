@@ -695,7 +695,7 @@ module.exports = class{
             let temoin = true;
             for(let obj of player.objectives){
                 temoin = temoin && obj.done
-            };;
+            }
             if(temoin){
                 return {
                     name:player.name,

@@ -27,7 +27,7 @@ jobs:
       run: |
         npm install
         cd ./functions
-        npm install
+        npm ci
         cd ..
 
     - name: test back end
