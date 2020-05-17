@@ -212,6 +212,7 @@ describe('Testing intro scenario', () => {
             }]
             scenario.load(jsonElement, jsonScenar);
             scenario.playTurn(players);
+            console.log(scenario.scenario.messages);
             expect(scenario.scenario.messages).toContain("Arfost - 1 is firing is guns");
         })
     })

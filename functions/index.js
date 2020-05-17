@@ -28,6 +28,7 @@ exports.createGame = functions.https.onCall(async(datas, context)=>{
             color:colorList.pop()
         }],
         colorList:colorList,
+        creationDate:new Date().toISOString()
     }
 
     gameRef.set(game);

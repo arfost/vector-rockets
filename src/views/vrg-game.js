@@ -165,6 +165,10 @@ class VrgGame extends VrgBase {
         }
     }
 
+    sendSelectedElementIdToRenderer(id){
+        this.mapRenderer.setSelectedDetailsId(id);
+    }
+
     render() {
         return html`
             ${this.styles}
@@ -174,7 +178,8 @@ class VrgGame extends VrgBase {
                     <vrg-element-desc 
                         class="tooltip" 
                         @select-action="${e=>this.actionSelect(e.detail.action, e.detail.element)}" 
-                        @cancel-action="${e=>this.actionCancel(e.detail)}" 
+                        @cancel-action="${e=>this.actionCancel(e.detail)}"
+                        @element-selected="${e=>this.sendSelectedElementIdToRenderer(e.detail)}"
                         .elements="${this.selectedHexElements}" 
                         .userId="${this.user.uid}" 
                         .actionId="${this.selectedAction ? this.selectedAction.id : ''}">

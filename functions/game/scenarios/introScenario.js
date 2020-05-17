@@ -20,6 +20,9 @@ module.exports = class{
     load(elements, scenario){
         this._elements = elements;
         this._scenario = scenario;
+        if(!this._scenario.config.toEliminate){
+            this._scenario.config.toEliminate = [];
+        }
         this.updatePositionedElement();
     }
 
@@ -348,6 +351,10 @@ module.exports = class{
         }]
     }
 
+    get toEliminate(){
+        return this._scenario.config.toEliminate;
+    }
+
     playTurn(players){
         let actifs = new Map();
         for(let element of this._elements){
@@ -393,7 +400,7 @@ module.exports = class{
             }
         }
         for(let player of players){
-            if(!activePlayer[player.uid]){
+            if(!activePlayer[player.uid] || this.toEliminate.includes(player.uid)){
                 player.eliminated = true;
             }
         }
@@ -418,6 +425,22 @@ module.exports = class{
         }
     }
 
+    get reportLogAction(){
+        if(this._scenario.config.weaponsAvailable){
+            return {
+                types:["attack"],
+                reportLog: (entry, ship)=>{
+                    if(ship.owner !== entry.initiator.owner && !this.toEliminate.includes(entry.initiator.owner)){
+                        this.addMessage(`${entry.target.name} reported the aggression of ${entry.initiator.name}. ${entry.initiator.name} is eliminated from the race`);
+                        this.toEliminate.push(entry.initiator.owner);
+                    }
+                }
+            }
+        }else{
+            return false;
+        }
+    }
+
     init(players, config){
         let elements = [];
         for(let base of baseMap.elements){
@@ -429,6 +452,7 @@ module.exports = class{
 
         for(let player of players){
             let role = this.getRole(player, config);
+            config.toEliminate = [];
             for(let ship of role.shipList){
                 let shipInstance = getElement("ship");
                 shipInstance.init(ship.base, "shi"+shipList.length, ship.type, player);
@@ -465,11 +489,13 @@ module.exports = class{
         }
 
         shipList = shipList.map(ship=>{
+            ship.finishInit(positionedElement, this);
             ship.calculateActions(positionedElement, this);
             return ship.jsonDesc;
         })
 
         baseList = baseList.map(base=>{
+            base.finishInit(positionedElement, this);
             base.calculateActions(positionedElement, this);
             return base.jsonDesc;
         })
@@ -665,12 +691,11 @@ module.exports = class{
     }
 
     checkVictory(players){
-
         for(let player of players){
             let temoin = true;
             for(let obj of player.objectives){
                 temoin = temoin && obj.done
-            }
+            };;
             if(temoin){
                 return {
                     name:player.name,

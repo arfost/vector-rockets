@@ -24,7 +24,8 @@ module.exports = class {
             },
             type: "ship",
             name: player.name + " - 1",
-            owner: player.uid
+            owner: player.uid,
+            logs:[]
         }))
         this._ship.apparence.color = player.color;
     }
@@ -38,7 +39,14 @@ module.exports = class {
         
     }
 
+    finishInit(positionedElements, scenario){
+        
+    }
+
     load(ship) {
+        if(!ship.logs){
+            ship.logs = [];
+        }
         this._ship = ship;
     }
 
@@ -83,8 +91,6 @@ module.exports = class {
             this._ship.doneAction = false;
         }
 
-        
-
         if (!this._ship.landed) {
             for (let displacement of this._ship.displacement || []) {
                 this._ship.inertia.q = this._ship.inertia.q + displacement.q;
@@ -93,7 +99,6 @@ module.exports = class {
             }
 
             this._ship.displacement = [];
-
         }
         this._actualHex = Hex(this._ship.x, this._ship.y);
         this.futurHex = inertiaToHex(this._ship.inertia, this.actualHex, Hex);
@@ -159,21 +164,43 @@ module.exports = class {
             let attackResult = this.calcFireAt(this._ship.fireAt);
             scenario.addMessage(` - Attack of ${this._ship.name} on ${this._ship.fireAt.name}, range : ${attackResult.range}, relative speed : ${attackResult.relativeSpeedMalus}, combat strenght : ${attackResult.combatStrenght}, dice : ${attackResult.dice}, final result : ${attackResult.dice - (attackResult.range + attackResult.relativeSpeedMalus)} for ${attackResult.damage} damage(s)`)
             this._ship.fireAt.damageTaken = this._ship.fireAt.damageTaken + attackResult.damage;
-            delete this._ship.fireAt;
+            this._ship.logs.push({
+                type:"attack",
+                turn: scenario.scenario.turn,
+                target:{
+                    id: this._ship.fireAt.id,
+                    owner: this._ship.owner,
+                    name: this._ship.fireAt.name
+                },
+                initiator:{
+                    id: this._ship.id,
+                    owner: this._ship.owner,
+                    name: this._ship.name
+                },
+                result:{
+                    damage: attackResult.damage
+                }
+            })
+            this._ship.fireAt.logs.push({
+                type:"attack",
+                target:{
+                    id: this._ship.fireAt.id,
+                    owner: this._ship.owner,
+                    name: this._ship.fireAt.name
+                },
+                initiator:{
+                    id: this._ship.id,
+                    owner: this._ship.owner,
+                    name: this._ship.name
+                },
+                result:{
+                    damage: attackResult.damage
+                }
+            });
         }
     }
     
     finishTurn(scenario) {
-        this._ship.x = this.futurHex.x;
-        this._ship.y = this.futurHex.y;
-
-        if (this._ship.takeoff) {
-            this._ship.inertia.q = 0;
-            this._ship.inertia.r = 0;
-            this._ship.inertia.s = 0;
-
-            this._ship.takeoff = false;
-        }
 
         let trail = {
             x: this._ship.x,
@@ -188,6 +215,17 @@ module.exports = class {
             this._ship.trails.push(trail);
         } else {
             this._ship.trails = [trail];
+        }
+
+        this._ship.x = this.futurHex.x;
+        this._ship.y = this.futurHex.y;
+
+        if (this._ship.takeoff) {
+            this._ship.inertia.q = 0;
+            this._ship.inertia.r = 0;
+            this._ship.inertia.s = 0;
+
+            this._ship.takeoff = false;
         }
 
         if (this._ship.damageTaken > 0) {
@@ -205,6 +243,7 @@ module.exports = class {
         this._ship.hasBurn = false;
         delete this._ship.futurHex;
         delete this._ship.traversedHexs;
+        delete this._ship.fireAt;
     }
 
     calcFireAt(attackedShip){
