@@ -41,13 +41,35 @@ module.exports = class {
     return this._base
   }
 
+  set futurHex(futurHex){
+    this._base.futurHex = futurHex;
+}
+
+get futurHex() {
+    if (this._base.futurHex) {
+        return this._base.futurHex;
+    }
+    throw new Error('futurHex no value for this time')
+}
+
+get traversedHexs() {
+    if (this._base.traversedHexs) {
+        return this._base.traversedHexs;
+    }
+    throw new Error('traversed hex no value for this time')
+}
+
+set traversedHexs(traversedHexs) {
+    this._base.traversedHexs = traversedHexs;
+}
+
   resolveTurn(positionedElements, scenario) {
     let aboveHex = inertiaToHex(this._base.direction, Hex(this._base.x, this._base.y), Hex);
     if (positionedElements[aboveHex.x + ":" + aboveHex.y]) {
         for (let el of positionedElements[
             aboveHex.x + ":" + aboveHex.y
         ]) {
-            if (el.type === "ship" && el.doneAction === false && (Math.abs(el.inertia.q) <= 1 && Math.abs(el.inertia.r) <= 1 && Math.abs(el.inertia.s) <= 1)) {
+            if (el.type === "ship" && el.doneAction === false && (Math.abs(el.inertia.q) <= 1 && Math.abs(el.inertia.r) <= 1 && Math.abs(el.inertia.s) <= 1) && !el.destroyed) {
                 this.reSupply(el, scenario);
             }
         }
@@ -56,11 +78,15 @@ module.exports = class {
         for (let el of positionedElements[
             this.x + ":" + this.y
         ]) {
-            if (el.type === "ship" && el.doneAction === false) {
+            if (el.type === "ship" && el.doneAction === false && !el.destroyed) {
                 this.reSupply(el, scenario);
             }
         }
     }
+  }
+
+  finishTurn(scenario) {
+    
   }
 
   reSupply(ship, scenario){

@@ -27,7 +27,17 @@ export class Game extends FireReference {
 
             playAction: (action) => {
                 let actionnable = this.data.elements.find(cell => cell.id == action.elementId);
-                actionnable.actions = actionnable.actions.filter(a=>a.id !== action.id)
+                actionnable.actions = actionnable.actions.filter(a=>a.id !== action.id);
+                if(action.isUniquePerTurn){
+                    let deactivatedActions = actionnable.actions.filter(a=>a.type === action.type);
+                    actionnable.actions = actionnable.actions.filter(a=>a.type !== action.type);
+
+                    if(actionnable.deactivatedActions){
+                        actionnable.deactivatedActions = [...actionnable.deactivatedActions, ...deactivatedActions]
+                    }else{
+                        actionnable.deactivatedActions = deactivatedActions;
+                    }
+                }
                 if(actionnable.plannedActions){
                     actionnable.plannedActions.push(action)
                 }else{
@@ -44,6 +54,13 @@ export class Game extends FireReference {
                 }else{
                     actionnable.actions = [action]
                 }
+                if(action.isUniquePerTurn){
+                    let deactivatedActions = actionnable.deactivatedActions.filter(a=>a.type === action.type);
+                    actionnable.deactivatedActions = actionnable.deactivatedActions.filter(a=>a.type !== action.type);
+
+                    actionnable.actions = [...actionnable.actions, ...deactivatedActions]
+                }
+                
                 this.save();
             },
             validateTurn: async (key) => {

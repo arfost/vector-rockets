@@ -1,5 +1,6 @@
 const shipReference = require('./shipReference.json');
-const { inertiaToHex, hexToInertia, getDice } = require('../tools.js');
+const { inertiaToHex, hexToInertia, getDice, reduce, getFromPositionedElements } = require('../tools.js');
+const { getDamage } = require('../tables.js');
 const Honeycomb = require("honeycomb-grid");
 var collide = require('line-circle-collision');
 
@@ -45,95 +46,26 @@ module.exports = class {
         return this._ship
     }
 
+    set futurHex(futurHex){
+        this._ship.futurHex = futurHex;
+    }
+
     get futurHex() {
-        if (this._futurHex) {
-            return this._futurHex;
+        if (this._ship.futurHex) {
+            return this._ship.futurHex;
         }
         throw new Error('futurHex no value for this time')
     }
-    get traversedHex() {
-        if (this._traversedHexs) {
-            return this._traversedHexs;
+
+    get traversedHexs() {
+        if (this._ship.traversedHexs) {
+            return this._ship.traversedHexs;
         }
         throw new Error('traversed hex no value for this time')
     }
 
-    resolveTurn(positionedElements, scenario) {
-
-        if (!this._ship.landed) {
-            
-            let destPoint = this.futurHex.toPoint()
-            .add(this.futurHex.center());
-            
-            let startPoint = this.actualHex.toPoint()
-            .add(this.actualHex.center());
-
-            let trajectoryLine = {
-                start:[startPoint.x, startPoint.y],
-                end:[destPoint.x, destPoint.y]
-            } 
-            for (let traversedHex of this._traversedHexs) {
-                if (!traversedHex) {
-                    continue;
-                }
-                if (positionedElements[traversedHex.x + ":" + traversedHex.y]) {
-                    for (let el of positionedElements[
-                        traversedHex.x + ":" + traversedHex.y
-                    ]) {
-                        if (el.type === "gravArrow") {
-                            this._ship.displacement.push(el.direction);
-                        }
-                        if (el.type === "dirtySpace") {
-                            if (!(Math.abs(this._ship.inertia.q) <= 1 && Math.abs(this._ship.inertia.r) <= 1 && Math.abs(this._ship.inertia.s) <= 1)) {
-                                let result = getDice(1, 6) - 4;
-                                if (result > 0) {
-                                    this._ship.damage = result;
-                                    this._ship.damageTaken = true;
-                                }
-                            }
-                        }
-                        if(el.type === "planet" || el.type === "star"){
-                            let planetCenter = traversedHex.toPoint().add(this.futurHex.center());
-                            let colision = collide(trajectoryLine.start, trajectoryLine.end, [planetCenter.x, planetCenter.y], el.apparence.radius)
-                            if(colision){
-                                this._ship.destroyed = true;
-                                this._ship.destroyedReason = 'damage';
-                                scenario.addMessage(this._ship.name + ' was destroyed in a violent lithobraking');
-                            }
-                        }
-                    }
-                }
-            }
-            if ((this._futurHex.x < 0 || this._futurHex.x > scenario.scenario.mapInfos.width || this._futurHex.y < 0 || this._futurHex.y > scenario.scenario.mapInfos.height) && !this._ship.destroyed) {
-                this._ship.destroyed = true;
-                this._ship.destroyedReason = 'outbound';
-                scenario.addMessage(this._ship.name + ' was lost in space')
-            }
-
-
-        }
-
-        this._ship.x = this._futurHex.x;
-        this._ship.y = this._futurHex.y;
-
-        if (this._ship.takeoff) {
-            this._ship.inertia.q = 0;
-            this._ship.inertia.r = 0;
-            this._ship.inertia.s = 0;
-
-            this._ship.takeoff = false;
-        }
-
-        if (this._ship.damageTaken) {
-            if (this._ship.damage > 6 && !this._ship.destroyed) {
-                this._ship.destroyed = true;
-                this._ship.destroyedReason = 'damage';
-                scenario.addMessage(this._ship.name + ' was destroyed in a;')
-            }
-            this._ship.damageTaken = false;
-        } else {
-            if (this._ship.damage > 0) this._ship.damage--;
-        }
+    set traversedHexs(traversedHexs) {
+        this._ship.traversedHexs = traversedHexs;
     }
 
     prepareActions(positionedElement, scenario) {
@@ -151,23 +83,7 @@ module.exports = class {
             this._ship.doneAction = false;
         }
 
-        let trail = {
-            x: this._ship.x,
-            y: this._ship.y,
-            inertia: this._ship.inertia
-        };
-
-        if (
-            this._ship.plannedActions &&
-            this._ship.plannedActions.find(pa => pa.type === "burn")
-        ) {
-            trail.burnType = "burn";
-        }
-        if (this._ship.trails) {
-            this._ship.trails.push(trail);
-        } else {
-            this._ship.trails = [trail];
-        }
+        
 
         if (!this._ship.landed) {
             for (let displacement of this._ship.displacement || []) {
@@ -180,16 +96,164 @@ module.exports = class {
 
         }
         this._actualHex = Hex(this._ship.x, this._ship.y);
-        this._futurHex = inertiaToHex(this._ship.inertia, this.actualHex, Hex);
+        this.futurHex = inertiaToHex(this._ship.inertia, this.actualHex, Hex);
 
-        this._traversedHexs = grid.hexesBetween(this.actualHex, this._futurHex);
-        this._traversedHexs.shift();
+        this.traversedHexs = grid.hexesBetween(this.actualHex, this.futurHex);
+        this.traversedHexs.shift();
 
         this._ship.plannedActions = [];
+        this._ship.damageTaken = 0;
     }
+
+    resolveTurn(positionedElements, scenario) {
+
+        if (!this._ship.landed) {
+            
+            let destPoint = this.futurHex.toPoint()
+            .add(this.futurHex.center());
+            
+            let startPoint = this.actualHex.toPoint()
+            .add(this.actualHex.center());
+
+            let trajectoryLine = {
+                start:[startPoint.x, startPoint.y],
+                end:[destPoint.x, destPoint.y]
+            } 
+            for (let traversedHex of this.traversedHexs) {
+                if (!traversedHex) {
+                    continue;
+                }
+                for (let el of getFromPositionedElements(positionedElements, traversedHex.x + ":" + traversedHex.y, ["gravArrow", "dirtySpace", "planet", "star"])) {
+                    if (el.type === "gravArrow") {
+                        this._ship.displacement.push(el.direction);
+                    }
+                    if (el.type === "dirtySpace") {
+                        if (!(Math.abs(this._ship.inertia.q) <= 1 && Math.abs(this._ship.inertia.r) <= 1 && Math.abs(this._ship.inertia.s) <= 1)) {
+                            let result = getDice(1, 6) - 4;
+                            if (result > 0) {
+                                this._ship.damage = result;
+                                this._ship.damageTaken = true;
+                            }
+                        }
+                    }
+                    if(el.type === "planet" || el.type === "star"){
+                        let planetCenter = traversedHex.toPoint().add(traversedHex.center());
+                        let colision = collide(trajectoryLine.start, trajectoryLine.end, [planetCenter.x, planetCenter.y], el.apparence.radius)
+                        if(colision){
+                            this._ship.destroyed = true;
+                            this._ship.destroyedReason = 'damage';
+                            scenario.addMessage(this._ship.name + ' was destroyed in a violent lithobraking');
+                        }
+                    }
+                }
+                
+            }
+            if ((this.futurHex.x < 0 || this.futurHex.x > scenario.scenario.mapInfos.width || this.futurHex.y < 0 || this.futurHex.y > scenario.scenario.mapInfos.height) && !this._ship.destroyed) {
+                this._ship.destroyed = true;
+                this._ship.destroyedReason = 'outbound';
+                scenario.addMessage(this._ship.name + ' was lost in space')
+            }
+        }
+
+        if(this._ship.fireAt){
+            let attackResult = this.calcFireAt(this._ship.fireAt);
+            scenario.addMessage(` - Attack of ${this._ship.name} on ${this._ship.fireAt.name}, range : ${attackResult.range}, relative speed : ${attackResult.relativeSpeedMalus}, combat strenght : ${attackResult.combatStrenght}, dice : ${attackResult.dice}, final result : ${attackResult.dice - (attackResult.range + attackResult.relativeSpeedMalus)} for ${attackResult.damage} damage(s)`)
+            this._ship.fireAt.damageTaken = this._ship.fireAt.damageTaken + attackResult.damage;
+            delete this._ship.fireAt;
+        }
+    }
+    
+    finishTurn(scenario) {
+        this._ship.x = this.futurHex.x;
+        this._ship.y = this.futurHex.y;
+
+        if (this._ship.takeoff) {
+            this._ship.inertia.q = 0;
+            this._ship.inertia.r = 0;
+            this._ship.inertia.s = 0;
+
+            this._ship.takeoff = false;
+        }
+
+        let trail = {
+            x: this._ship.x,
+            y: this._ship.y,
+            inertia: this._ship.inertia
+        };
+
+        if (this._ship.hasBurn) {
+            trail.burnType = "burn";
+        }
+        if (this._ship.trails) {
+            this._ship.trails.push(trail);
+        } else {
+            this._ship.trails = [trail];
+        }
+
+        if (this._ship.damageTaken > 0) {
+            this._ship.damage = this._ship.damage + this._ship.damageTaken;
+            if (this._ship.damage > 6 && !this._ship.destroyed) {
+                this._ship.destroyed = true;
+                this._ship.destroyedReason = 'damage';
+                scenario.addMessage(this._ship.name + ' was destroyed in a;')
+            }
+            this._ship.damageTaken = false;
+        } else {
+            if (this._ship.damage > 0) this._ship.damage--;
+        }
+
+        this._ship.hasBurn = false;
+        delete this._ship.futurHex;
+        delete this._ship.traversedHexs;
+    }
+
+    calcFireAt(attackedShip){
+        //range calc
+        let range = 10;
+        let hexCible = Hex(attackedShip.futurHex.x, attackedShip.futurHex.y);
+        for(let hex of [...this.traversedHexs, Hex(this.x, this.y)]){
+            let dist = grid.hexesBetween(hex, hexCible).length - 1;
+            if(range>dist){
+                range = dist;
+            }
+        }
+        //relative speed calc
+        let arriveTarget = inertiaToHex(attackedShip.inertia, hexCible, Hex);
+        let arriveAttacker = inertiaToHex(this._ship.inertia, hexCible, Hex);
+        let relativeSpeed = grid.hexesBetween(arriveAttacker, arriveTarget).length - 1;
+        let relativeSpeedMalus = 0;
+        if(relativeSpeed>2){
+            relativeSpeedMalus = relativeSpeed -2;
+        }
+        //combat strength relative
+        let combatStrenght = reduce([this._ship.combatStrenght, attackedShip.combatStrenght]);
+        
+        let dice = getDice(6);
+        
+        let finalResult = dice - (range + relativeSpeedMalus);
+        let damage = getDamage(combatStrenght.join("/"), finalResult);
+        return {
+            range,
+            relativeSpeedMalus,
+            combatStrenght: combatStrenght.join("/"),
+            finalResult,
+            dice,
+            damage
+        };
+    }
+
+    
 
     get actualHex(){
         return this._actualHex;
+    }
+
+    get inertia(){
+        return this._ship.inertia;
+    }
+
+    set inertia(inertia){
+        this._ship.inertia = inertia;
     }
 
     get actions() {
@@ -211,6 +275,9 @@ module.exports = class {
                     return ship;
                 },
                 canDo(positionedElements, ship) {
+                    if (ship._ship.fuel === 0 || ship._ship.damage !== 0) {
+                        return []
+                    }
                     let actions = [];
                     let inertia = {
                         q: ship.inertia.q,
@@ -228,19 +295,15 @@ module.exports = class {
                             if (!hex) {
                                 continue;
                             }
-                            if (positionedElements[hex.x + ':' + hex.y]) {
-                                for (let el of positionedElements[hex.x + ':' + hex.y]) {
-                                    if (el.type === 'planet') {
-                                        let action = this._representation;
-                                        action.name = action.name + '(' + el.name + ')';
-                                        action.target = {
-                                            x: hex.x,
-                                            y: hex.y
-                                        }
-                                        actions.push(action)
+                                for (let el of getFromPositionedElements(positionedElements, hex.x + ':' + hex.y, "planet")) {
+                                    let action = this._representation;
+                                    action.name = action.name + '(' + el.name + ')';
+                                    action.target = {
+                                        x: hex.x,
+                                        y: hex.y
                                     }
+                                    actions.push(action);
                                 }
-                            }
                         }
                     }
                     return actions;
@@ -265,20 +328,19 @@ module.exports = class {
                     return ship;
                 },
                 canDo(positionedElements, ship) {
-                    if (ship.landed) {
-                        if (!ship.landedDirection) {
+                    if (ship._ship.landed) {
+                        if (!ship._ship.landedDirection) {
                             return [{
                                 ...this._representation,
                                 free: true,
                                 direct: false
                             }];
                         }
-                        for (let el of positionedElements[ship.x + ':' + ship.y]) {
+                        for (let el of getFromPositionedElements(positionedElements, ship.x + ':' + ship.y, "base")) {
                             if (
-                                el.type === "base" &&
-                                el.direction.q === ship.landedDirection.q &&
-                                el.direction.r === ship.landedDirection.r &&
-                                el.direction.s === ship.landedDirection.s) {
+                                el.direction.q === ship._ship.landedDirection.q &&
+                                el.direction.r === ship._ship.landedDirection.r &&
+                                el.direction.s === ship._ship.landedDirection.s) {
                                 return [this._representation];
                             }
                         }
@@ -305,13 +367,15 @@ module.exports = class {
                         s: ship.inertia.s - result.s
                     };
 
+                    ship.hasBurn = true;
+
                     return ship;
                 },
                 canDo(positionedElements, ship) {
-                    if (ship.fuel > 0 && !ship.landed && ship.damage === 0) {
-                        return [this._representation]
+                    if (ship._ship.fuel === 0 || ship._ship.landed || ship._ship.damage !== 0) {
+                        return []
                     }
-                    return []
+                    return [this._representation]
                 },
                 get _representation() {
                     return {
@@ -342,9 +406,74 @@ module.exports = class {
                     }
                 }
             },
+            attack: {
+                execute(ship, result, pe, scenario) {
+                    let target = pe[result.x+":"+result.y].find(el=>el.id === result.id);
+                    if(!target){
+                        throw new Error('target is not defined');
+                    }
+                    ship.fireAt = target;
+                    scenario.addMessage(ship.name + ' is firing is guns');
+                    return ship;
+                },
+                canDo(positionedElements, ship) {
+                    if(ship._ship.landed || ship._ship.damage !== 0){
+                        return []
+                    }
+                    let rangeHexes = grid.hexesInRange(Hex(ship.x, ship.y), ship._ship.range, true);
+                    let canAttack = [];
+                    for(let rhex of rangeHexes){
+                        for (let el of getFromPositionedElements(positionedElements, rhex.x + ':' + rhex.y, ["ship"])) {
+                            if(el.owner !== ship.owner && !el.landed && !el.destroyed){
+                                let obstruction = false;
+                                let destPoint = Hex(el.x, el.y).toPoint()
+                                .add(Hex(el.x, el.y).center());
+                                
+                                let startPoint = Hex(ship.x, ship.y).toPoint()
+                                .add(Hex(ship.x, ship.y).center());
+
+                                let trajectoryLine = {
+                                    start:[startPoint.x, startPoint.y],
+                                    end:[destPoint.x, destPoint.y]
+                                } 
+                                let traversedHexs = grid.hexesBetween(Hex(ship.x, ship.y), Hex(el.x, el.y));
+                                for (let traversedHex of traversedHexs) {
+                                    if (!traversedHex) {
+                                        continue;
+                                    }
+                                    for (let el of getFromPositionedElements(positionedElements, traversedHex.x + ":" + traversedHex.y, ["planet", "star"])) {
+                                        let planetCenter = traversedHex.toPoint().add(traversedHex.center());
+                                        let hasColision = collide(trajectoryLine.start, trajectoryLine.end, [planetCenter.x, planetCenter.y], el.apparence.radius);
+                                        if(hasColision){
+                                            obstruction = true;
+                                        }
+                                    }
+                                }
+                                if(!obstruction){
+                                    canAttack.push({
+                                        ...this._representation,
+                                        name: `${this._representation.name} ${el.name}`,
+                                        result:{x:el.x, y:el.y, id:el.id}
+                                    });
+                                }
+                            }
+                        }
+                        
+                    }
+                    return canAttack
+                },
+                get _representation() {
+                    return {
+                        type: "attack",
+                        overtip: "Fire on target with all your ship guns.",
+                        name: "Attack",
+                        direct: true,
+                        isUniquePerTurn: true
+                    }
+                }
+            }
         }
     }
-
 
     get x() {
         return this._ship.x;
@@ -369,8 +498,11 @@ module.exports = class {
             return;
         }
 
-        for (let action of Object.values(this.actions)) {
-            actions = [...actions, ...action.canDo(positionedElements, this._ship)]
+        for (let actionKey in this.actions) {
+            if(!scenario.forbiddenAction.includes(actionKey)){
+                let action = this.actions[actionKey]
+                actions = [...actions, ...action.canDo(positionedElements, this, scenario)]
+            }
         }
 
 

@@ -365,11 +365,29 @@ module.exports = class{
             }
         }
         for(let instance of actifs.values()){
-            instance.resolveTurn(this.positionedElement, this);
+            try{
+                instance.resolveTurn(this.positionedElement, this);
+            }catch(e){
+                console.error("fail resolve turn for : " + instance.jsonDesc.name)
+                throw e;
+            }
+        }
+        for(let instance of actifs.values()){
+            try{
+                instance.finishTurn(this);
+            }catch(e){
+                console.error("fail finish turn for : " + instance.jsonDesc.name)
+                throw e;
+            }
         }
         let activePlayer = {};
         for(let instance of actifs.values()){
-            instance.calculateActions(this.positionedElement, this);
+            try{
+                instance.calculateActions(this.positionedElement, this);
+            }catch(e){
+                console.error("fail resolve turn calculateActions : " + instance.jsonDesc.name)
+                throw e;
+            }
             if(!instance.destroyed && instance.owner){
                 activePlayer[instance.owner] = true;
             }
@@ -392,7 +410,15 @@ module.exports = class{
         this._scenario.turn++;
     }
 
-    init(players, scenario){
+    get forbiddenAction(){
+        if(this._scenario.config.weaponsAvailable){
+            return []
+        }else{
+            return ["attack"]
+        }
+    }
+
+    init(players, config){
         let elements = [];
         for(let base of baseMap.elements){
             elements = [...elements, ...inflateMapElement(base, elements.length)]
@@ -402,7 +428,7 @@ module.exports = class{
         let baseList = [];
 
         for(let player of players){
-            let role = this.getRole(player, scenario);
+            let role = this.getRole(player, config);
             for(let ship of role.shipList){
                 let shipInstance = getElement("ship");
                 shipInstance.init(ship.base, "shi"+shipList.length, ship.type, player);
@@ -429,6 +455,15 @@ module.exports = class{
             return acc
         }, {});
         
+        this._scenario = {
+            messages:["Starting"],
+            name: "The solar race",
+            desc: "A fast race in the solar system",
+            mapInfos:baseMap.infos,
+            turn: 1,
+            config
+        }
+
         shipList = shipList.map(ship=>{
             ship.calculateActions(positionedElement, this);
             return ship.jsonDesc;
@@ -440,13 +475,6 @@ module.exports = class{
         })
 
         this._elements = [...elements, ...shipList, ...baseList];
-        this._scenario = {
-            messages:["Starting"],
-            name: "The solar race",
-            desc: "A fast race in the solar system",
-            mapInfos:baseMap.infos,
-            turn: 1
-        }
     }
 
     getStartingPoints(config){
@@ -585,28 +613,28 @@ module.exports = class{
                 return Boolean(ship.jsonDesc.landed && onObj)
             },
             cbvenus:function(ship, positionedElements){
-                return this._checkCloseBy('venus', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('venus', ship.traversedHexs, positionedElements)
             },
             cbmars:function(ship, positionedElements){
-                return this._checkCloseBy('mars', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('mars', ship.traversedHexs, positionedElements)
             },
             cbmercury:function(ship, positionedElements){
-                return this._checkCloseBy('mercury', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('mercury', ship.traversedHexs, positionedElements)
             },
             cbganymede:function(ship, positionedElements){
-                return this._checkCloseBy('ganymede', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('ganymede', ship.traversedHexs, positionedElements)
             },
             cbcallisto:function(ship, positionedElements){
-                return this._checkCloseBy('callisto', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('callisto', ship.traversedHexs, positionedElements)
             },
             cbjupiter:function(ship, positionedElements){
-                return this._checkCloseBy('jupiter', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('jupiter', ship.traversedHexs, positionedElements)
             },
             cbsun:function(ship, positionedElements){
-                return this._checkCloseBy('sol', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('sol', ship.traversedHexs, positionedElements)
             },
             cbterra:function(ship, positionedElements){
-                return this._checkCloseBy('terra', ship.traversedHex, positionedElements)
+                return this._checkCloseBy('terra', ship.traversedHexs, positionedElements)
             },
             bterra:function(ship, positionedElements){
                 return this._checkBackTo('terra', ship, positionedElements);

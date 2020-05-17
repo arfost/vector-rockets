@@ -20,6 +20,8 @@
           }
         ]
       },
+      "range":10,
+      "combatStrenght":2,
       "fuel": 20,
       "fuelMax": 20,
       "damage": 0,
