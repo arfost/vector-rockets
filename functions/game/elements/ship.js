@@ -532,7 +532,7 @@ module.exports = class {
 
     calculateActions(positionedElements, scenario) {
         let actions = [];
-        if (this._ship.destroyed) {
+        if (this._ship.destroyed || scenario.toEliminate.includes(this._ship.owner)) {
             this._ship.actions = actions;
             return;
         }
