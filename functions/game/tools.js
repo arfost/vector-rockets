@@ -6,6 +6,7 @@ const inertiaToHex = function (inertia, oldHex, Hex) {
         s: oldHex.s + inertia.s
     });
 };
+
 const hexToInertia = function (oldHex, newHex, Hex) {
     let hex = Hex(oldHex);
     let fhex = Hex(newHex);
@@ -15,6 +16,36 @@ const hexToInertia = function (oldHex, newHex, Hex) {
         s:fhex.s-hex.s
     };
 };
+
+const getFromPositionedElements = function (positionedElements, pos, type) {
+    if(!Array.isArray(type)){
+        type = [type];
+    }
+    if(!positionedElements[pos]){
+        return [];
+    }
+    let elements = [];
+    for(el of positionedElements[pos]){
+        if(type.includes(el.type)){
+            elements.push(el);
+        }
+    }
+    return elements;
+};
+
+const reduce = function (fraction){
+    // This would be quicker if we were looping through primes.
+    // Since to determine a prime would take an `additional` 2 calculations, 
+    // it's more efficient to perform the 2 here on each number
+    for (var i = fraction[0]; i > 0; i--) {
+      if (0 === fraction[0] % i && 0 === fraction[1] % i) {
+        var numerator = (fraction[0] / i);
+        var denominator = (fraction[1] / i)
+        return [numerator, denominator];
+      }
+    }
+    throw new Error("Can't reduce fraction")
+  }
 
 const getPlayerColorList = function(){
     let colorList = ['00ff00', 'ff0000', '0000ff', '000000', 'ffff00', '00ffff', 'ff00ff'];
@@ -45,5 +76,7 @@ module.exports = {
     getDice: getDice,
     getPlayerColorList: getPlayerColorList,
     inertiaToHex: inertiaToHex,
-    hexToInertia: hexToInertia
+    hexToInertia: hexToInertia,
+    reduce: reduce,
+    getFromPositionedElements: getFromPositionedElements
 }

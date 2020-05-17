@@ -104,7 +104,6 @@ class IconOvertip extends LitElement {
     `;
     }
     render() {
-        console.log("render ; ", this.src)
         return html`
     <style>
         ${this.styles}

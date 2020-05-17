@@ -130,12 +130,90 @@ describe('Testing intro scenario', () => {
                 "uid": "uid"
               }]
             scenario = getScenario("intro");
-            scenario.init(players, {ss:true});
+            scenario.init(players, {ss:false});
         });
-        test('ship has moved', () => {
+        test('ship is in one of random start point', () => {
             let ship = scenario.elements.find(el=>el.owner === players[0].uid);
             let startPoint = [{x:31,y:5},{x:17,y:26},{x:10,y:8},{x:47,y:13}].find(coord=>coord.x===ship.x && coord.y === ship.y)
             expect(startPoint).toBeDefined();
         })
-    })  
+    })
+
+    describe('complete attack', () => {
+        
+        beforeAll(() => {
+            players = [{
+                "name" : "Arfost",
+                "color" : "red",
+                "uid": "uid"
+              },{
+                "name" : "Dummy",
+                "color" : "blue",
+                "uid": "dummuid"
+              }]
+            scenario = getScenario("intro");
+            scenario.init(players, {ss:true, weaponsAvailable:true});
+            
+            let jsonScenar = scenario.scenario;
+            let jsonElement = scenario.elements;
+
+            let ship = jsonElement.find(el=>el.owner === players[0].uid);
+            let takeoff = ship.actions.find(a=>a.type === "takeoff");
+            ship.plannedActions = [{
+                ...takeoff,
+                result:{
+                    q:1,
+                    r:-1,
+                    s:0
+                }
+            }]
+            ship = jsonElement.find(el=>el.owner === players[1].uid);
+            takeoff = ship.actions.find(a=>a.type === "takeoff");
+            ship.plannedActions = [{
+                ...takeoff,
+                result:{
+                    q:0,
+                    r:-1,
+                    s:1
+                }
+            }]
+            scenario.load(jsonElement, jsonScenar);
+            scenario.playTurn(players);
+        });
+        test('ships can attack', () => {
+            let ship = scenario.elements.find(el=>el.owner === players[0].uid);
+            let attack = ship.actions.find(a=>a.type === "attack");
+            expect(attack).toBeDefined();
+        })
+        test('actions can work correctly', () => {
+            let jsonScenar = scenario.scenario;
+            let jsonElement = scenario.elements;
+
+            let ship = jsonElement.find(el=>el.owner === players[0].uid);
+            let ship2 = jsonElement.find(el=>el.owner === players[1].uid);
+
+            let attack = ship.actions.find(a=>a.type === "attack");
+            ship.plannedActions = [{
+                ...attack,
+                result:{
+                    x:ship2.x,
+                    y:ship2.y,
+                    id:ship2.id
+                }
+            }]
+            let attack2 = ship2.actions.find(a=>a.type === "attack");
+            ship2.plannedActions = [{
+                ...attack2,
+                result:{
+                    x:ship.x,
+                    y:ship.y,
+                    id:ship.id
+                }
+            }]
+            scenario.load(jsonElement, jsonScenar);
+            scenario.playTurn(players);
+            console.log(scenario.scenario.messages);
+            expect(scenario.scenario.messages).toContain("Arfost - 1 is firing is guns");
+        })
+    })
 })

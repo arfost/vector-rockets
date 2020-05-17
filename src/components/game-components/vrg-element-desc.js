@@ -93,6 +93,7 @@ export class VrgElementDesc extends VrgBase {
             let elem = this.elements.find(elem=>elem.id===this.elementViewedId);
             if(!elem){
                 this.elementViewedId = undefined;
+                this.emit('element-selected', undefined);
                 return ''
             }
             return html`<h4>
@@ -102,6 +103,7 @@ export class VrgElementDesc extends VrgBase {
                             <p>${elem.desc}</p>
                             ${elem.fuel !== undefined ? html`<div>fuel : ${elem.fuel}/${elem.fuelMax} <icon-overtip class="fas fa-question-circle ml-1" color="white" size="1em" overtip="When there is no fuel left, you can't burn anymore. Land on a planet to refuel."></icon-overtip></div>` : ``}
                             ${elem.damage ? html`<div>damage : ${elem.damage} <icon-overtip class="fas fa-question-circle ml-1" color="white" size="1em" overtip="crew is repairing and ship can't burn for this number of turn"></icon-overtip></div>` : ``}
+                            ${elem.type === "base" ? html`<div>Detection range : ${elem.range+1} <icon-overtip class="fas fa-question-circle ml-1" color="white" size="1em" overtip="The detection range is the distance in hex where the base can see ship actions. It's shown in grey on the map."></icon-overtip></div>` : ``}
                             ${this.drawActions(elem)}
                             ${this.drawPlannedActions(elem)}
                         </div>`
@@ -139,13 +141,16 @@ export class VrgElementDesc extends VrgBase {
             let elem = this.elements.find(elem=>elem.id===this.elementViewedId);
             if(!elem){
                 this.elementViewedId = undefined;
+                this.emit('element-selected', undefined);
             }
             if(this.elements.length === 1){
                 this.elementViewedId = this.elements[0].id;
+                this.emit('element-selected', this.elements[0].id);
             }else{
                 let elem = this.elements.find(elem=>elem.owner == this.userId);
                 if(elem && this.elementViewedId === undefined){
                     this.elementViewedId = elem.id;
+                    this.emit('element-selected', elem.id);
                 }
             }
             let elementWithCatTitle = {};
@@ -169,12 +174,17 @@ export class VrgElementDesc extends VrgBase {
                 html`<div class="list-cat">
                     <h5>${cat.name}</h5>
                     <ul>
-                        ${cat.list.map(element=>html`<li @click="${e=>this.elementViewedId=element.id}" class="list-element ${element.owner == this.userId ? 'self' : ''} ${element.id == this.elementViewedId ? 'selected' : ''}">${element.name}</li>`)}
+                        ${cat.list.map(element=>html`<li @click="${e=>this.selectElementFromList(element.id)}" class="list-element ${element.owner == this.userId ? 'self' : ''} ${element.id == this.elementViewedId ? 'selected' : ''}">${element.name}</li>`)}
                     </ul>
                 </div>`)
         } else {
             return html``;
         }
+    }
+
+    selectElementFromList(id){
+        this.emit('element-selected', id);
+        this.elementViewedId = id
     }
 
     drawPlannedActions(selectedElement) {

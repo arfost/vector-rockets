@@ -1,0 +1,2520 @@
+{
+    "players":[ {
+        "color" : "ffff00",
+        "name" : "Arfost",
+        "objectives" : [ {
+          "code" : "bterra",
+          "desc" : "return to terra after passing near all important bodies of the map",
+          "done" : false,
+          "name" : "back to terra"
+        }, {
+          "code" : "cbvenus",
+          "desc" : "fly in a least one gravity hex of venus",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by venus"
+        }, {
+          "code" : "cbmars",
+          "desc" : "fly in a least one gravity hex of mars",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by mars"
+        }, {
+          "code" : "cbcallisto",
+          "desc" : "fly in a least one gravity hex of callisto",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by callisto"
+        }, {
+          "code" : "cbganymede",
+          "desc" : "fly in a least one gravity hex of ganymede",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by ganymede"
+        }, {
+          "code" : "cbmercury",
+          "desc" : "fly in a least one gravity hex of mercury",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by mercury"
+        }, {
+          "code" : "cbsun",
+          "desc" : "fly in a least one gravity hex of the sun",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by sun"
+        }, {
+          "code" : "cbjupiter",
+          "desc" : "fly in a least one gravity hex of jupiter",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by jupiter"
+        } ],
+        "uid" : "1I73C02Ot4h4LZXqrLbHdS0Qq9o2",
+        "validated" : false
+      }, {
+        "color" : "00ffff",
+        "name" : "Clement Chevalier",
+        "objectives" : [ {
+          "code" : "bterra",
+          "desc" : "return to terra after passing near all important bodies of the map",
+          "done" : false,
+          "name" : "back to terra"
+        }, {
+          "code" : "cbvenus",
+          "desc" : "fly in a least one gravity hex of venus",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by venus"
+        }, {
+          "code" : "cbmars",
+          "desc" : "fly in a least one gravity hex of mars",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by mars"
+        }, {
+          "code" : "cbcallisto",
+          "desc" : "fly in a least one gravity hex of callisto",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by callisto"
+        }, {
+          "code" : "cbganymede",
+          "desc" : "fly in a least one gravity hex of ganymede",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by ganymede"
+        }, {
+          "code" : "cbmercury",
+          "desc" : "fly in a least one gravity hex of mercury",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by mercury"
+        }, {
+          "code" : "cbsun",
+          "desc" : "fly in a least one gravity hex of the sun",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by sun"
+        }, {
+          "code" : "cbjupiter",
+          "desc" : "fly in a least one gravity hex of jupiter",
+          "done" : false,
+          "durable" : true,
+          "name" : "close by jupiter"
+        } ],
+        "uid" : "HkxrzbqZGfT1xrPNktV9r63xrVC2",
+        "validated" : false
+      } ],
+    "scenario":{
+        "config" : {
+          "id" : "intro",
+          "ss" : true,
+          "weaponsAvailable" : true
+        },
+        "desc" : "A fast race in the solar system",
+        "mapInfos" : {
+          "height" : 35,
+          "navigable" : true,
+          "width" : 55
+        },
+        "messages" : [ "Starting", "Turn 1 finished", "Turn 2 finished", "Arfost - 1 is ressuplied by terra base 5", "Turn 3 finished", "Turn 4 finished", "Arfost - 1 is firing is guns", "Clement Chevalier - 1 is firing is guns", "Turn 5 finished" ],
+        "name" : "The solar race",
+        "turn" : 6,
+        "winner" : false
+      },
+    "elements":[ {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 0,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 35,
+        "y" : 0
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 1,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 35,
+        "y" : 1
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 2,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 35,
+        "y" : 2
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 3,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 2
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 4,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 2
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 5,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 2
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 6,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 39,
+        "y" : 3
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 7,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 39,
+        "y" : 1
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 8,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 39,
+        "y" : 0
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 9,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 41,
+        "y" : 1
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 10,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 41,
+        "y" : 0
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 11,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 40,
+        "y" : 2
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 12,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 4
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 13,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 5
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 14,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 38,
+        "y" : 6
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 15,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 38,
+        "y" : 8
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 16,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 38,
+        "y" : 11
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 17,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 35,
+        "y" : 11
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 18,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 11
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 19,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 35,
+        "y" : 13
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 20,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 13
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 21,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 31,
+        "y" : 12
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 22,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 32,
+        "y" : 14
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 23,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 30,
+        "y" : 14
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 24,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 15
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 25,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 26,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 32,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 27,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 28,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 17
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 29,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 18
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 30,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 20
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 31,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 31,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 32,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 30,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 33,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 19
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 34,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 32,
+        "y" : 19
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 35,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 31,
+        "y" : 19
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 36,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 37,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 19
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 38,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 31,
+        "y" : 21
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 39,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 31,
+        "y" : 22
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 40,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 32,
+        "y" : 22
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 41,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 22
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 42,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 23
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 43,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 24
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 44,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 35,
+        "y" : 23
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 45,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 20
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 46,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 39,
+        "y" : 21
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 47,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 38,
+        "y" : 23
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 48,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 21
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 49,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 26
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 50,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 27
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 51,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 35,
+        "y" : 26
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 52,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 25
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 53,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 38,
+        "y" : 26
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 54,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 38,
+        "y" : 27
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 55,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 27
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 56,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 26
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 57,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 24
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 58,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 32,
+        "y" : 25
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 59,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 28
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 60,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 32,
+        "y" : 28
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 61,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 28
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 62,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 36,
+        "y" : 29
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 63,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 30
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 64,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 30
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 65,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 32,
+        "y" : 31
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 66,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 33,
+        "y" : 31
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 67,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 35,
+        "y" : 31
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 68,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 31
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 69,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 32
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 70,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 37,
+        "y" : 33
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 71,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 33
+      }, {
+        "actif" : false,
+        "desc" : "this space is dirty, dispersed mining debris are scatttered all across it, and passing through at high speed can be risky.",
+        "id" : 72,
+        "name" : "dirty space",
+        "overtip" : "Crossing this space with a speed greater than one has a risk of damaging your ship. Damaged ship keep their inertia but can't do burn.",
+        "type" : "dirtySpace",
+        "x" : 34,
+        "y" : 34
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "0066ff",
+          "radius" : 6
+        },
+        "desc" : "the cradle of humanity, still heavily populated and powerful, but years of ressources exploitation have leave it polluted and tired, and humanity is searching new frontiers.",
+        "id" : 73,
+        "name" : "terra",
+        "overtip" : "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base.",
+        "type" : "planet",
+        "x" : 17,
+        "y" : 26
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 74,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 18,
+        "y" : 27
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 75,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 17,
+        "y" : 27
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 76,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 16,
+        "y" : 27
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 77,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 18,
+        "y" : 26
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 78,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 16,
+        "y" : 26
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 79,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 17,
+        "y" : 25
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "aaaaaa",
+          "radius" : 2
+        },
+        "desc" : "the natural satelite of the earth, first to see a permanent human occupation after earth, and now first h3 exploitation for earth energy",
+        "id" : 80,
+        "name" : "luna",
+        "overtip" : "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base.",
+        "type" : "planet",
+        "x" : 18,
+        "y" : 29
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 81,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 19,
+        "y" : 29
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 82,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 18,
+        "y" : 30
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 83,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 17,
+        "y" : 29
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 84,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 19,
+        "y" : 28
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 85,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 17,
+        "y" : 28
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 86,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 18,
+        "y" : 28
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "88ee00",
+          "radius" : 3
+        },
+        "desc" : "second largest moon of jupiter, tidally locked to jupiter, outside her radiation zone and containing water ice and organic compounds, it naturally became the greenhouse of jupiters activities.",
+        "id" : 87,
+        "name" : "callisto",
+        "overtip" : "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base.",
+        "type" : "planet",
+        "x" : 47,
+        "y" : 13
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 88,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 48,
+        "y" : 14
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 89,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 47,
+        "y" : 14
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 90,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 46,
+        "y" : 14
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 91,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 48,
+        "y" : 13
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 92,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 46,
+        "y" : 13
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 93,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 47,
+        "y" : 12
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "c88409",
+          "radius" : 8
+        },
+        "desc" : "the biggest planet of the solar system, the closest of the gaz giants, with almost 80 notables satelites and still more ressources in his rings, it was bound to attract human activities.",
+        "id" : 94,
+        "name" : "jupiter",
+        "type" : "star",
+        "x" : 47,
+        "y" : 17
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 95,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 48,
+        "y" : 18
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 96,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 47,
+        "y" : 18
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 97,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 46,
+        "y" : 18
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 98,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 48,
+        "y" : 17
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 99,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 46,
+        "y" : 17
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 100,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 47,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "cccccc",
+          "radius" : 2
+        },
+        "desc" : "the innermost moon of jupiter, and third biggest. The radiation and heavy gravitic influence and the giant make it both a living hell of sulfur volcanoes and scorching tidal heating and a paradise for mining rare element and studying extreme physics events.",
+        "id" : 101,
+        "name" : "Io",
+        "overtip" : "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base.",
+        "type" : "planet",
+        "x" : 45,
+        "y" : 18
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 102,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 46,
+        "y" : 19
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 103,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 45,
+        "y" : 19
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 104,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 44,
+        "y" : 19
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 105,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 46,
+        "y" : 18
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 106,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 44,
+        "y" : 18
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 107,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 45,
+        "y" : 17
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "bbbbbb",
+          "radius" : 2
+        },
+        "desc" : "the biggest satelite of the solar system, bigger than mercury.",
+        "id" : 108,
+        "name" : "ganymede",
+        "overtip" : "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base.",
+        "type" : "planet",
+        "x" : 49,
+        "y" : 20
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 109,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 50,
+        "y" : 21
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 110,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 49,
+        "y" : 21
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 111,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 48,
+        "y" : 21
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 112,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 50,
+        "y" : 20
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 113,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 48,
+        "y" : 20
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 114,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 49,
+        "y" : 19
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "a30808",
+          "radius" : 4
+        },
+        "desc" : "to small to retain an atmosphere and her water, it is now a desert but underground, protected from suns rays and using deep ice cities are growing on it.",
+        "id" : 115,
+        "name" : "mars",
+        "overtip" : "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base.",
+        "type" : "planet",
+        "x" : 31,
+        "y" : 5
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 116,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 32,
+        "y" : 6
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 117,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 31,
+        "y" : 6
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 118,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 30,
+        "y" : 6
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 119,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 32,
+        "y" : 5
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 120,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 30,
+        "y" : 5
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 121,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 31,
+        "y" : 4
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "34bdeb",
+          "radius" : 6
+        },
+        "desc" : "the twins of the earth, if this one had a runaway global warming. Living in the 400° acide cloud of the surface is not yet possible, but some floatting cities exist in her sky.",
+        "id" : 122,
+        "name" : "venus",
+        "overtip" : "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base.",
+        "type" : "planet",
+        "x" : 10,
+        "y" : 8
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 123,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 11,
+        "y" : 8
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 124,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 10,
+        "y" : 9
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 125,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 9,
+        "y" : 8
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 126,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 11,
+        "y" : 7
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 127,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 9,
+        "y" : 7
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 128,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 10,
+        "y" : 7
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "ebb734",
+          "radius" : 3
+        },
+        "desc" : "desolate, scorching hot and metal rich, living here is hard, but it as is rewards.",
+        "id" : 129,
+        "name" : "mercury",
+        "overtip" : "You can land on planet if your speed is of one hex by turn. Beware, you can only take off from a friendly base.",
+        "type" : "planet",
+        "x" : 8,
+        "y" : 17
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 130,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 9,
+        "y" : 17
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 131,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 8,
+        "y" : 18
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 132,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 7,
+        "y" : 17
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 133,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 9,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 134,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 7,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 135,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 8,
+        "y" : 16
+      }, {
+        "actif" : false,
+        "apparence" : {
+          "color" : "f6ff00",
+          "radius" : 10
+        },
+        "desc" : "The star of the solar system",
+        "id" : 136,
+        "name" : "sol",
+        "type" : "star",
+        "x" : 11,
+        "y" : 14
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : 137,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 12,
+        "y" : 15
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : 138,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 11,
+        "y" : 15
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : 139,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 10,
+        "y" : 15
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : 140,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 12,
+        "y" : 14
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : 141,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 10,
+        "y" : 14
+      }, {
+        "actif" : false,
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : 142,
+        "name" : "gravity arrow",
+        "overtip" : "gravity arrow are here to represent the pull of gravity when near a heavy body",
+        "type" : "gravArrow",
+        "x" : 11,
+        "y" : 13
+      }, {
+        "actif" : true,
+        "actions" : [ {
+          "elementId" : "shi0",
+          "id" : 0,
+          "name" : "burn",
+          "overtip" : "Burn to modify your direction, but don't forget that in space you keep your inertia and braking will requiere has much fuel has accelareting.",
+          "type" : "burn"
+        }, {
+          "elementId" : "shi0",
+          "id" : 1,
+          "name" : "sabotage",
+          "overtip" : "The ship's crew decide for no good reason to destroy it, and inflige damage to itself.",
+          "type" : "sabotage"
+        }, {
+          "direct" : true,
+          "elementId" : "shi0",
+          "id" : 2,
+          "isUniquePerTurn" : true,
+          "name" : "Attack Clement Chevalier - 1",
+          "overtip" : "Fire on target with all your ship guns.",
+          "result" : {
+            "id" : "shi1",
+            "x" : 16,
+            "y" : 24
+          },
+          "type" : "attack"
+        } ],
+        "apparence" : {
+          "color" : "ffff00",
+          "path" : [ {
+            "x" : 0,
+            "y" : -8
+          }, {
+            "x" : 5,
+            "y" : 8
+          }, {
+            "x" : 0,
+            "y" : 0
+          }, {
+            "x" : -5,
+            "y" : 8
+          } ]
+        },
+        "combatStrenght" : 2,
+        "damage" : 0,
+        "damageTaken" : false,
+        "desc" : "a small uniplace ship build for long fast race.",
+        "doneAction" : true,
+        "fuel" : 19,
+        "fuelMax" : 20,
+        "id" : "shi0",
+        "inertia" : {
+          "q" : 2,
+          "r" : 0,
+          "s" : -2
+        },
+        "name" : "Arfost - 1",
+        "owner" : "1I73C02Ot4h4LZXqrLbHdS0Qq9o2",
+        "range" : 10,
+        "takeoff" : false,
+        "trails" : [ {
+          "inertia" : {
+            "q" : 0,
+            "r" : 0,
+            "s" : 0
+          },
+          "x" : 17,
+          "y" : 26
+        }, {
+          "burnType" : "burn",
+          "inertia" : {
+            "q" : 1,
+            "r" : -1,
+            "s" : 0
+          },
+          "x" : 16,
+          "y" : 26
+        }, {
+          "inertia" : {
+            "q" : 1,
+            "r" : 0,
+            "s" : -1
+          },
+          "x" : 17,
+          "y" : 25
+        }, {
+          "burnType" : "burn",
+          "inertia" : {
+            "q" : 1,
+            "r" : 0,
+            "s" : -1
+          },
+          "x" : 18,
+          "y" : 26
+        }, {
+          "inertia" : {
+            "q" : 1,
+            "r" : 0,
+            "s" : -1
+          },
+          "x" : 19,
+          "y" : 26
+        } ],
+        "type" : "ship",
+        "x" : 20,
+        "y" : 27
+      }, {
+        "actif" : true,
+        "actions" : [ {
+          "elementId" : "shi1",
+          "id" : 0,
+          "name" : "burn",
+          "overtip" : "Burn to modify your direction, but don't forget that in space you keep your inertia and braking will requiere has much fuel has accelareting.",
+          "type" : "burn"
+        }, {
+          "elementId" : "shi1",
+          "id" : 1,
+          "name" : "sabotage",
+          "overtip" : "The ship's crew decide for no good reason to destroy it, and inflige damage to itself.",
+          "type" : "sabotage"
+        }, {
+          "direct" : true,
+          "elementId" : "shi1",
+          "id" : 2,
+          "isUniquePerTurn" : true,
+          "name" : "Attack Arfost - 1",
+          "overtip" : "Fire on target with all your ship guns.",
+          "result" : {
+            "id" : "shi0",
+            "x" : 20,
+            "y" : 27
+          },
+          "type" : "attack"
+        } ],
+        "apparence" : {
+          "color" : "00ffff",
+          "path" : [ {
+            "x" : 0,
+            "y" : -8
+          }, {
+            "x" : 5,
+            "y" : 8
+          }, {
+            "x" : 0,
+            "y" : 0
+          }, {
+            "x" : -5,
+            "y" : 8
+          } ]
+        },
+        "combatStrenght" : 2,
+        "damage" : 0,
+        "damageTaken" : false,
+        "desc" : "a small uniplace ship build for long fast race.",
+        "doneAction" : true,
+        "fuel" : 17,
+        "fuelMax" : 20,
+        "id" : "shi1",
+        "inertia" : {
+          "q" : 0,
+          "r" : 2,
+          "s" : -2
+        },
+        "name" : "Clement Chevalier - 1",
+        "owner" : "HkxrzbqZGfT1xrPNktV9r63xrVC2",
+        "range" : 10,
+        "takeoff" : false,
+        "trails" : [ {
+          "inertia" : {
+            "q" : 0,
+            "r" : 0,
+            "s" : 0
+          },
+          "x" : 17,
+          "y" : 26
+        }, {
+          "burnType" : "burn",
+          "inertia" : {
+            "q" : 0,
+            "r" : -1,
+            "s" : 1
+          },
+          "x" : 18,
+          "y" : 27
+        }, {
+          "burnType" : "burn",
+          "inertia" : {
+            "q" : 0,
+            "r" : -1,
+            "s" : 1
+          },
+          "x" : 18,
+          "y" : 26
+        }, {
+          "burnType" : "burn",
+          "inertia" : {
+            "q" : -1,
+            "r" : 0,
+            "s" : 1
+          },
+          "x" : 18,
+          "y" : 25
+        }, {
+          "inertia" : {
+            "q" : -1,
+            "r" : 0,
+            "s" : 1
+          },
+          "x" : 17,
+          "y" : 24
+        } ],
+        "type" : "ship",
+        "x" : 20,
+        "y" : 20
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : "bas0",
+        "name" : "terra base 1",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 17,
+        "y" : 26
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : "bas1",
+        "name" : "terra base 2",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 17,
+        "y" : 26
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : "bas2",
+        "name" : "terra base 3",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 17,
+        "y" : 26
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : "bas3",
+        "name" : "terra base 4",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 17,
+        "y" : 26
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : "bas4",
+        "name" : "terra base 5",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 17,
+        "y" : 26
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : "bas5",
+        "name" : "terra base 6",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 17,
+        "y" : 26
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : "bas6",
+        "name" : "luna base 1",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 18,
+        "y" : 29
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : "bas7",
+        "name" : "luna base 2",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 18,
+        "y" : 29
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : "bas8",
+        "name" : "luna base 3",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 18,
+        "y" : 29
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : "bas9",
+        "name" : "luna base 4",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 18,
+        "y" : 29
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : "bas10",
+        "name" : "luna base 5",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 18,
+        "y" : 29
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : "bas11",
+        "name" : "luna base 6",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 18,
+        "y" : 29
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : "bas12",
+        "name" : "venus base 1",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 10,
+        "y" : 8
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : "bas13",
+        "name" : "venus base 2",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 10,
+        "y" : 8
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : "bas14",
+        "name" : "venus base 3",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 10,
+        "y" : 8
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : "bas15",
+        "name" : "venus base 4",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 10,
+        "y" : 8
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : "bas16",
+        "name" : "venus base 5",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 10,
+        "y" : 8
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : "bas17",
+        "name" : "venus base 6",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 10,
+        "y" : 8
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : "bas18",
+        "name" : "mars base 1",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 31,
+        "y" : 5
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : "bas19",
+        "name" : "mars base 2",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 31,
+        "y" : 5
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : "bas20",
+        "name" : "mars base 3",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 31,
+        "y" : 5
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : "bas21",
+        "name" : "mars base 4",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 31,
+        "y" : 5
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : "bas22",
+        "name" : "mars base 5",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 31,
+        "y" : 5
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : "bas23",
+        "name" : "mars base 6",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 31,
+        "y" : 5
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 0,
+          "s" : 1
+        },
+        "id" : "bas24",
+        "name" : "callisto base 1",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 47,
+        "y" : 13
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : "bas25",
+        "name" : "callisto base 2",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 47,
+        "y" : 13
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : "bas26",
+        "name" : "callisto base 3",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 47,
+        "y" : 13
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : "bas27",
+        "name" : "callisto base 4",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 47,
+        "y" : 13
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : -1,
+          "s" : 1
+        },
+        "id" : "bas28",
+        "name" : "callisto base 5",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 47,
+        "y" : 13
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : 0,
+          "s" : -1
+        },
+        "id" : "bas29",
+        "name" : "callisto base 6",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 47,
+        "y" : 13
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : "bas30",
+        "name" : "mercure base 1",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 8,
+        "y" : 17
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 1,
+          "r" : -1,
+          "s" : 0
+        },
+        "id" : "bas31",
+        "name" : "mercure base 2",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 8,
+        "y" : 17
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : -1,
+          "r" : 1,
+          "s" : 0
+        },
+        "id" : "bas32",
+        "name" : "io base 1",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 45,
+        "y" : 18
+      }, {
+        "actif" : true,
+        "apparence" : {
+          "color" : "DDDDDD",
+          "size" : 3
+        },
+        "desc" : "A resupply base",
+        "direction" : {
+          "q" : 0,
+          "r" : 1,
+          "s" : -1
+        },
+        "id" : "bas33",
+        "name" : "ganymede base 2",
+        "overtip" : "A neutral base that can resupply you when orbiting above doing no action, or when landed on. Also give the boosters necessary for take off.",
+        "type" : "base",
+        "x" : 49,
+        "y" : 20
+      } ]
+      
+}

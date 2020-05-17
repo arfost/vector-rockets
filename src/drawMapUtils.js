@@ -21,11 +21,11 @@ export default class MapRenderer {
         this.hexGraphics = new PIXI.Graphics();
         this.app.stage.addChild(this.hexGraphics);
 
-        this.clickGraphics = new PIXI.Graphics();
-        this.app.stage.addChild(this.clickGraphics);
-
         this.elementsGraphics = new PIXI.Graphics();
         this.app.stage.addChild(this.elementsGraphics);
+
+        this.clickGraphics = new PIXI.Graphics();
+        this.app.stage.addChild(this.clickGraphics);
 
         this.actionsGraphics = new PIXI.Graphics();
         this.app.stage.addChild(this.actionsGraphics);
@@ -265,6 +265,11 @@ export default class MapRenderer {
         this.setClickedHex(this.clickHex);
     }
 
+    setSelectedDetailsId(id) {
+        this.selectedDetailsId = id;
+        this.draw();
+    }
+
     setMapInfos(mapInfos) {
         if (!mapInfos) {
             return;
@@ -281,13 +286,14 @@ export default class MapRenderer {
         this.drawHex();
         this.drawElements();
         this.drawAction();
+        this.drawClick();
     }
 
     drawClick() {
         this.clickGraphics.clear();
         if (this.clickHex) {
             this.clickGraphics.lineStyle(1, 0xff0000);
-            this.clickGraphics.beginFill(0xcccccc, 1);
+            this.clickGraphics.beginFill(0xcccccc, 0.3);
 
             const point = this.clickHex.toPoint();
             // add the hex's position to each of its corner points
@@ -354,8 +360,7 @@ export default class MapRenderer {
         this.elements.forEach(element => {
             let hex = this.grid.get([element.x, element.y]);
             if (hex) {
-                let selected =
-                    this.clickHex && hex.x == this.clickHex.x && hex.y == this.clickHex.y;
+                let selected = this.selectedDetailsId === element.id;
                 this.elementRenderer.render(
                     this.elementsGraphics,
                     element.type,
@@ -473,8 +478,11 @@ class ElementRenderer {
             .multiply(camera.zoom, camera.zoom)
             .add(camera.x, camera.y);
         let base = new PIXI.Graphics();
-
-        base.lineStyle(1, 0x999999);
+        if(selected){
+            base.lineStyle(2, 0x777777);
+        }else{
+            base.lineStyle(1, 0x999999);
+        }
         base.beginFill("0x" + element.apparence.color, 1);
         base.drawCircle(0, -10 * camera.zoom, element.apparence.size * camera.zoom);
         base.endFill();
@@ -494,6 +502,35 @@ class ElementRenderer {
         let angle = Math.atan2(destPoint.x - point.x, point.y - destPoint.y);
         var degrees = (180 * angle) / Math.PI;
         base.angle = degrees;
+        console.log(selected);
+        if (selected && element.surveyRange) {
+            let baseSurvey = new PIXI.Graphics();
+            baseSurvey.lineStyle(1, 0x999999);
+            baseSurvey.beginFill(0x999999, 0.5);
+            element.surveyRange.forEach(coord => {
+                let hexSurvey = this.Hex(coord.x, coord.y)
+                const point = hexSurvey.toPoint();
+                // add the hex's position to each of its corner points
+                const corners = hexSurvey.corners().map(corner =>
+                    corner
+                        .add(point)
+                        .multiply(camera.zoom, camera.zoom)
+                        .add(camera.x, camera.y)
+                );
+                // separate the first from the other corners
+                const [firstCorner, ...otherCorners] = corners;
+
+                // move the "pen" to the first corner
+                baseSurvey.moveTo(firstCorner.x, firstCorner.y);
+                // draw lines to the other corners
+                otherCorners.forEach(({ x, y }) => baseSurvey.lineTo(x, y));
+                // finish at the first corner
+                baseSurvey.lineTo(firstCorner.x, firstCorner.y);
+            });
+
+            baseSurvey.endFill();
+            ctx.addChild(baseSurvey);
+        }
 
         ctx.addChild(base);
     }
@@ -614,7 +651,7 @@ class ElementRenderer {
         let burn = element.plannedActions
             ? element.plannedActions.find(a => a.type == "burn" || a.type == "takeoff")
             : undefined;
-        if (burn && element.owner === this.playerUid) {
+        if (burn && element.owner === this.playerUid && selected) {
             let burnDestHex = grid.get([element.x, element.y]);
             if (burn.type === "burn") {
                 burnDestHex = inertiaToHex({

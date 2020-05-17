@@ -18,6 +18,12 @@ export class VrgScenarioPreparation extends VrgBase {
                 name:"same start",
                 desc:"All players began on the earth, otherwise they are spread on different starting planet",
                 default:false
+            },{
+                type:"boolean",
+                id:"weaponsAvailable",
+                name:"Weapon available",
+                desc:"There is weapon on your ship, and you can use them on the others players.",
+                default:false
             }]
         }]
     }
