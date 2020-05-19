@@ -17,21 +17,42 @@ const hexToInertia = function (oldHex, newHex, Hex) {
     };
 };
 
-const getFromPositionedElements = function (positionedElements, pos, type) {
-    if(!Array.isArray(type)){
-        type = [type];
+const ElementsReference = class {
+    constructor(elements){
+        this._elements = elements.reduce((acc, el)=>{
+            acc.pos[el.x+':'+el.y] = acc.pos[el.x+':'+el.y] ? [el, ...acc.pos[el.x+':'+el.y]] : [el];
+            acc.type[el.type] = acc.type[el.type] ? [el, ...acc.type[el.type]] : [el];
+            acc.owner[el.owner] = acc.owner[el.owner] ? [el, ...acc.owner[el.owner]] : [el];
+            return acc
+        }, {
+            pos:{},
+            type:{},
+            owner:{}
+        });
     }
-    if(!positionedElements[pos]){
-        return [];
-    }
-    let elements = [];
-    for(el of positionedElements[pos]){
-        if(type.includes(el.type)){
-            elements.push(el);
+
+    getElement(pos, type){
+        if(type && !Array.isArray(type)){
+            type = [type];
         }
+        let elements = [];
+        if(pos){
+            if(!this._elements.pos[pos]){
+                return [];
+            }
+            for(let el of this._elements.pos[pos]){
+                if(!type || type.includes(el.type)){
+                    elements.push(el);
+                }
+            }
+        }else{
+            elements = this._elements.type[type[0]] || [];
+        }
+        
+        return elements;
     }
-    return elements;
-};
+
+}
 
 const reduce = function (fraction){
     // This would be quicker if we were looping through primes.
@@ -78,5 +99,5 @@ module.exports = {
     inertiaToHex: inertiaToHex,
     hexToInertia: hexToInertia,
     reduce: reduce,
-    getFromPositionedElements: getFromPositionedElements
+    ElementsReference: ElementsReference
 }

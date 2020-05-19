@@ -1,4 +1,4 @@
-const { inertiaToHex, hexToInertia, getDice, getFromPositionedElements } = require('../tools.js')
+const { inertiaToHex, hexToInertia, getDice } = require('../tools.js')
 var collide = require('line-circle-collision');
 const Honeycomb = require("honeycomb-grid");
 
@@ -43,49 +43,28 @@ module.exports = class {
         return this._base
     }
 
-    set futurHex(futurHex) {
-        this._base.futurHex = futurHex;
-    }
-
-    get futurHex() {
-        if (this._base.futurHex) {
-            return this._base.futurHex;
-        }
-        throw new Error('futurHex no value for this time')
-    }
-
-    get traversedHexs() {
-        if (this._base.traversedHexs) {
-            return this._base.traversedHexs;
-        }
-        throw new Error('traversed hex no value for this time')
-    }
-
-    set traversedHexs(traversedHexs) {
-        this._base.traversedHexs = traversedHexs;
-    }
-
-    resolveTurn(positionedElements, scenario) {
+    resolveTurn(elementsReference, scenario) {
         let aboveHex = inertiaToHex(this._base.direction, Hex(this._base.x, this._base.y), Hex);
-        for (let el of getFromPositionedElements(positionedElements, aboveHex.x + ":" + aboveHex.y, "ship")) {
+        for (let el of elementsReference.getElement(aboveHex.x + ":" + aboveHex.y, "ship")) {
             if (el.doneAction === false && (Math.abs(el.inertia.q) <= 1 && Math.abs(el.inertia.r) <= 1 && Math.abs(el.inertia.s) <= 1) && !el.destroyed) {
                 this.reSupply(el, scenario);
             }
         }
-        if (positionedElements[this.x + ":" + this.y]) {
-            for (let el of getFromPositionedElements(positionedElements, this.x + ":" + this.y, "ship")) {
+        if (elementsReference[this.x + ":" + this.y]) {
+            for (let el of elementsReference.getElement(this.x + ":" + this.y, "ship")) {
                 if (el.doneAction === false && !el.destroyed) {
                     this.reSupply(el, scenario);
                 }
             }
         }
         if(scenario.reportLogAction){
-            for(let surHex of this._base.surveyRange){
-                for (let el of getFromPositionedElements(positionedElements, surHex.x + ":" + surHex.y, "ship")) {
-                    for(let entry of el.logs){
-                        if(scenario.reportLogAction.types.includes(entry.type)){
-                            scenario.reportLogAction.reportLog(entry, el);
-                        }
+            let joinedPos = this._base.surveyRange.map(c=>c.x+":"+c.y);
+            console.log("loulou")
+            for(let ship of elementsReference.getElement(undefined, ['ship'])){
+                console.log("coucou")
+                if(joinedPos.includes(ship.x+":"+ship.y)){
+                    for(let entry of ship.logs){
+                        scenario.reportLogAction.reportLog(entry, ship);
                     }
                 }
             }
@@ -101,7 +80,7 @@ module.exports = class {
         }
     }
 
-    finishInit(positionedElements, scenario){
+    finishInit(elementsReference, scenario){
         let aboveHex = inertiaToHex(this._base.direction, Hex(this._base.x, this._base.y), Hex);
         let surveyedHexs = grid.hexesInRange(aboveHex, this._base.range, false);
         let startPoint = aboveHex.toPoint().add(aboveHex.center());
@@ -118,7 +97,7 @@ module.exports = class {
                 if (!traversedHex) {
                     continue;
                 }
-                for (let el of getFromPositionedElements(positionedElements, traversedHex.x + ":" + traversedHex.y, ["planet", "star"])) {
+                for (let el of elementsReference.getElement(traversedHex.x + ":" + traversedHex.y, ["planet", "star"])) {
                     let planetCenter = traversedHex.toPoint().add(traversedHex.center());
                     let hasColision = collide(trajectoryLine.start, trajectoryLine.end, [planetCenter.x, planetCenter.y], el.apparence.radius);
                     if(hasColision){
@@ -132,7 +111,7 @@ module.exports = class {
         this._base.surveyRange = surveyedHexs;
     }
 
-    prepareActions(positionedElements, scenario) {}
+    prepareActions(elementsReference, scenario) {}
 
     get actions() {
         return {}
@@ -158,7 +137,7 @@ module.exports = class {
         return this._base.destroyed
     }
 
-    calculateActions(positionedElements, scenario) {
+    calculateActions(elementsReference, scenario) {
         let actions = [];
         if (this._base.destroyed) {
             this._base.actions = actions;
@@ -166,7 +145,7 @@ module.exports = class {
         }
 
         for (let action of Object.values(this.actions)) {
-            actions = [...actions, ...action.canDo(positionedElements, this._base)]
+            actions = [...actions, ...action.canDo(elementsReference, this._base)]
         }
 
 

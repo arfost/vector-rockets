@@ -80,7 +80,7 @@ describe('Testing intro scenario', () => {
     describe('scenario can function normally', () => {
         
         beforeAll(()=>{
-            scenario.updatePositionedElement();
+            scenario.updateElementsReference();
             scenario.playTurn(players);
         })
         test('end turn message in message', () => {

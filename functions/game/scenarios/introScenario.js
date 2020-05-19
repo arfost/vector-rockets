@@ -1,6 +1,6 @@
 const baseMap = require("./maps/baseMap.json");
 const inflateMapElement = require("../elements/mapElements.js");
-const { getPlayerColorList, shuffleArray } = require("../tools.js");
+const { getPlayerColorList, shuffleArray, ElementsReference } = require("../tools.js");
 const getElement = require("../elements");
 const Honeycomb = require("honeycomb-grid");
 const Hex = Honeycomb.extendHex({ size: 14, orientation: "flat" });
@@ -23,14 +23,11 @@ module.exports = class{
         if(!this._scenario.config.toEliminate){
             this._scenario.config.toEliminate = [];
         }
-        this.updatePositionedElement();
+        this.updateElementsReference();
     }
 
-    updatePositionedElement(){
-        this.positionedElement = this._elements.reduce((acc, el)=>{
-            acc[el.x+':'+el.y] = acc[el.x+':'+el.y] ? [el, ...acc[el.x+':'+el.y]] : [el];
-            return acc
-        }, {});
+    updateElementsReference(){
+        this.elementsReference = new ElementsReference(this._elements);
     }
 
     get elements(){
@@ -361,19 +358,19 @@ module.exports = class{
             if(element.actif){
                 let instance = getElement(element.type);
                 instance.load(element);
-                instance.prepareActions(this.positionedElement, this);
+                instance.prepareActions(this.elementsReference, this);
                 actifs.set(instance.id, instance);
             }
         }
         for(let instance of actifs.values()){
             if(instance.owner){
                 let owner = players.find(player=>player.uid === instance.owner);
-                this.checkObjectives(owner, instance, this.positionedElement);
+                this.checkObjectives(owner, instance, this.elementsReference);
             }
         }
         for(let instance of actifs.values()){
             try{
-                instance.resolveTurn(this.positionedElement, this);
+                instance.resolveTurn(this.elementsReference, this);
             }catch(e){
                 console.error("fail resolve turn for : " + instance.jsonDesc.name)
                 throw e;
@@ -390,7 +387,7 @@ module.exports = class{
         let activePlayer = {};
         for(let instance of actifs.values()){
             try{
-                instance.calculateActions(this.positionedElement, this);
+                instance.calculateActions(this.elementsReference, this);
             }catch(e){
                 console.error("fail resolve turn calculateActions : " + instance.jsonDesc.name)
                 throw e;
@@ -474,10 +471,8 @@ module.exports = class{
             baseList.push(baseInstance);
         }
 
-        let positionedElement = [...elements, ...shipList, ...baseList].reduce((acc, el)=>{
-            acc[el.x+':'+el.y] = acc[el.x+':'+el.y] ? [el, ...acc[el.x+':'+el.y]] : [el];
-            return acc
-        }, {});
+        this._elements = [...elements, ...shipList, ...baseList];
+        this.updateElementsReference();
         
         this._scenario = {
             messages:["Starting"],
@@ -489,14 +484,14 @@ module.exports = class{
         }
 
         shipList = shipList.map(ship=>{
-            ship.finishInit(positionedElement, this);
-            ship.calculateActions(positionedElement, this);
+            ship.finishInit(this.elementsReference, this);
+            ship.calculateActions(this.elementsReference, this);
             return ship.jsonDesc;
         })
 
         baseList = baseList.map(base=>{
-            base.finishInit(positionedElement, this);
-            base.calculateActions(positionedElement, this);
+            base.finishInit(this.elementsReference, this);
+            base.calculateActions(this.elementsReference, this);
             return base.jsonDesc;
         })
 
@@ -606,7 +601,7 @@ module.exports = class{
 
     get objectivesCheck(){
         return {
-            _checkCloseBy(planet, traversedHex, positionedElements){
+            _checkCloseBy(planet, traversedHex, elementsReference){
                 let closeBy = false;
                 for(let thex of traversedHex){
                     if(!thex){
@@ -616,8 +611,8 @@ module.exports = class{
                         if (!hex) {
                           continue;
                         }
-                        if (positionedElements[hex.x + ':' + hex.y]) {
-                          for (let el of positionedElements[hex.x + ':' + hex.y]) {
+                        if (elementsReference.getElement(hex.x + ':' + hex.y)) {
+                          for (let el of elementsReference.getElement(hex.x + ':' + hex.y)) {
                             if (el.name === planet) {
                             closeBy = true;
                             }   
@@ -627,10 +622,10 @@ module.exports = class{
                 }
                 return closeBy
             },
-            _checkBackTo(planet, ship, positionedElements){
+            _checkBackTo(planet, ship, elementsReference){
                 let onObj = false;
-                if (positionedElements[ship.x + ':' + ship.y]) {
-                    for (let el of positionedElements[ship.x + ':' + ship.y]) {
+                if (elementsReference.getElement(ship.x + ':' + ship.y)) {
+                    for (let el of elementsReference.getElement(ship.x + ':' + ship.y)) {
                       if (el.name === planet) {
                         onObj = true;
                       }   
@@ -638,46 +633,46 @@ module.exports = class{
                   }
                 return Boolean(ship.jsonDesc.landed && onObj)
             },
-            cbvenus:function(ship, positionedElements){
-                return this._checkCloseBy('venus', ship.traversedHexs, positionedElements)
+            cbvenus:function(ship, elementsReference){
+                return this._checkCloseBy('venus', ship.traversedHexs, elementsReference)
             },
-            cbmars:function(ship, positionedElements){
-                return this._checkCloseBy('mars', ship.traversedHexs, positionedElements)
+            cbmars:function(ship, elementsReference){
+                return this._checkCloseBy('mars', ship.traversedHexs, elementsReference)
             },
-            cbmercury:function(ship, positionedElements){
-                return this._checkCloseBy('mercury', ship.traversedHexs, positionedElements)
+            cbmercury:function(ship, elementsReference){
+                return this._checkCloseBy('mercury', ship.traversedHexs, elementsReference)
             },
-            cbganymede:function(ship, positionedElements){
-                return this._checkCloseBy('ganymede', ship.traversedHexs, positionedElements)
+            cbganymede:function(ship, elementsReference){
+                return this._checkCloseBy('ganymede', ship.traversedHexs, elementsReference)
             },
-            cbcallisto:function(ship, positionedElements){
-                return this._checkCloseBy('callisto', ship.traversedHexs, positionedElements)
+            cbcallisto:function(ship, elementsReference){
+                return this._checkCloseBy('callisto', ship.traversedHexs, elementsReference)
             },
-            cbjupiter:function(ship, positionedElements){
-                return this._checkCloseBy('jupiter', ship.traversedHexs, positionedElements)
+            cbjupiter:function(ship, elementsReference){
+                return this._checkCloseBy('jupiter', ship.traversedHexs, elementsReference)
             },
-            cbsun:function(ship, positionedElements){
-                return this._checkCloseBy('sol', ship.traversedHexs, positionedElements)
+            cbsun:function(ship, elementsReference){
+                return this._checkCloseBy('sol', ship.traversedHexs, elementsReference)
             },
-            cbterra:function(ship, positionedElements){
-                return this._checkCloseBy('terra', ship.traversedHexs, positionedElements)
+            cbterra:function(ship, elementsReference){
+                return this._checkCloseBy('terra', ship.traversedHexs, elementsReference)
             },
-            bterra:function(ship, positionedElements){
-                return this._checkBackTo('terra', ship, positionedElements);
+            bterra:function(ship, elementsReference){
+                return this._checkBackTo('terra', ship, elementsReference);
             },
-            bmars:function(ship, positionedElements){
-                return this._checkBackTo('mars', ship, positionedElements);
+            bmars:function(ship, elementsReference){
+                return this._checkBackTo('mars', ship, elementsReference);
             },
-            bvenus:function(ship, positionedElements){
-                return this._checkBackTo('venus', ship, positionedElements);
+            bvenus:function(ship, elementsReference){
+                return this._checkBackTo('venus', ship, elementsReference);
             },
-            bcallisto:function(ship, positionedElements){
-                return this._checkBackTo('callisto', ship, positionedElements);
+            bcallisto:function(ship, elementsReference){
+                return this._checkBackTo('callisto', ship, elementsReference);
             }
         }
     }
 
-    checkObjectives(player, ship, positionedElement){
+    checkObjectives(player, ship, elementsReference){
         if(!player){
             return
         }
@@ -685,7 +680,7 @@ module.exports = class{
             if(obj.durable && obj.done){
                 continue;
             }
-            let toto = this.objectivesCheck[obj.code](ship, positionedElement, player);
+            let toto = this.objectivesCheck[obj.code](ship, elementsReference, player);
             obj.done = toto;
         }
     }

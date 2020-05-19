@@ -1,5 +1,5 @@
 const shipReference = require('./shipReference.json');
-const { inertiaToHex, hexToInertia, getDice, reduce, getFromPositionedElements } = require('../tools.js');
+const { inertiaToHex, hexToInertia, getDice, reduce } = require('../tools.js');
 const { getDamage } = require('../tables.js');
 const Honeycomb = require("honeycomb-grid");
 var collide = require('line-circle-collision');
@@ -39,7 +39,7 @@ module.exports = class {
         
     }
 
-    finishInit(positionedElements, scenario){
+    finishInit(elementsReference, scenario){
         
     }
 
@@ -76,13 +76,13 @@ module.exports = class {
         this._ship.traversedHexs = traversedHexs;
     }
 
-    prepareActions(positionedElement, scenario) {
+    prepareActions(elementsReference, scenario) {
         if (this._ship.plannedActions) {
             for (let pa of this._ship.plannedActions) {
                 this._ship = this.actions[pa.type].execute(
                     this._ship,
                     pa.result,
-                    positionedElement,
+                    elementsReference,
                     scenario
                 );
             }
@@ -110,7 +110,7 @@ module.exports = class {
         this._ship.damageTaken = 0;
     }
 
-    resolveTurn(positionedElements, scenario) {
+    resolveTurn(elementsReference, scenario) {
 
         if (!this._ship.landed) {
             
@@ -128,7 +128,7 @@ module.exports = class {
                 if (!traversedHex) {
                     continue;
                 }
-                for (let el of getFromPositionedElements(positionedElements, traversedHex.x + ":" + traversedHex.y, ["gravArrow", "dirtySpace", "planet", "star"])) {
+                for (let el of elementsReference.getElement(traversedHex.x + ":" + traversedHex.y, ["gravArrow", "dirtySpace", "planet", "star"])) {
                     if (el.type === "gravArrow") {
                         this._ship.displacement.push(el.direction);
                     }
@@ -313,7 +313,7 @@ module.exports = class {
 
                     return ship;
                 },
-                canDo(positionedElements, ship) {
+                canDo(elementsReference, ship) {
                     if (ship._ship.fuel === 0 || ship._ship.damage !== 0) {
                         return []
                     }
@@ -334,7 +334,7 @@ module.exports = class {
                             if (!hex) {
                                 continue;
                             }
-                                for (let el of getFromPositionedElements(positionedElements, hex.x + ':' + hex.y, "planet")) {
+                                for (let el of elementsReference.getElement( hex.x + ':' + hex.y, "planet")) {
                                     let action = this._representation;
                                     action.name = action.name + '(' + el.name + ')';
                                     action.target = {
@@ -366,7 +366,7 @@ module.exports = class {
 
                     return ship;
                 },
-                canDo(positionedElements, ship) {
+                canDo(elementsReference, ship) {
                     if (ship._ship.landed) {
                         if (!ship._ship.landedDirection) {
                             return [{
@@ -375,7 +375,7 @@ module.exports = class {
                                 direct: false
                             }];
                         }
-                        for (let el of getFromPositionedElements(positionedElements, ship.x + ':' + ship.y, "base")) {
+                        for (let el of elementsReference.getElement(ship.x + ':' + ship.y, "base")) {
                             if (
                                 el.direction.q === ship._ship.landedDirection.q &&
                                 el.direction.r === ship._ship.landedDirection.r &&
@@ -410,7 +410,7 @@ module.exports = class {
 
                     return ship;
                 },
-                canDo(positionedElements, ship) {
+                canDo(elementsReference, ship) {
                     if (ship._ship.fuel === 0 || ship._ship.landed || ship._ship.damage !== 0) {
                         return []
                     }
@@ -434,7 +434,7 @@ module.exports = class {
 
                     return ship;
                 },
-                canDo(positionedElements) {
+                canDo(elementsReference) {
                     return [this._representation]
                 },
                 get _representation() {
@@ -446,8 +446,8 @@ module.exports = class {
                 }
             },
             attack: {
-                execute(ship, result, pe, scenario) {
-                    let target = pe[result.x+":"+result.y].find(el=>el.id === result.id);
+                execute(ship, result, elementsReference, scenario) {
+                    let target = elementsReference.getElement(result.x+":"+result.y).find(el=>el.id === result.id);
                     if(!target){
                         throw new Error('target is not defined');
                     }
@@ -455,14 +455,14 @@ module.exports = class {
                     scenario.addMessage(ship.name + ' is firing is guns');
                     return ship;
                 },
-                canDo(positionedElements, ship) {
+                canDo(elementsReference, ship) {
                     if(ship._ship.landed || ship._ship.damage !== 0){
                         return []
                     }
                     let rangeHexes = grid.hexesInRange(Hex(ship.x, ship.y), ship._ship.range, true);
                     let canAttack = [];
                     for(let rhex of rangeHexes){
-                        for (let el of getFromPositionedElements(positionedElements, rhex.x + ':' + rhex.y, ["ship"])) {
+                        for (let el of elementsReference.getElement(rhex.x + ':' + rhex.y, ["ship"])) {
                             if(el.owner !== ship.owner && !el.landed && !el.destroyed){
                                 let obstruction = false;
                                 let destPoint = Hex(el.x, el.y).toPoint()
@@ -480,7 +480,7 @@ module.exports = class {
                                     if (!traversedHex) {
                                         continue;
                                     }
-                                    for (let el of getFromPositionedElements(positionedElements, traversedHex.x + ":" + traversedHex.y, ["planet", "star"])) {
+                                    for (let el of elementsReference.getElement(traversedHex.x + ":" + traversedHex.y, ["planet", "star"])) {
                                         let planetCenter = traversedHex.toPoint().add(traversedHex.center());
                                         let hasColision = collide(trajectoryLine.start, trajectoryLine.end, [planetCenter.x, planetCenter.y], el.apparence.radius);
                                         if(hasColision){
@@ -530,7 +530,7 @@ module.exports = class {
         return this._ship.destroyed
     }
 
-    calculateActions(positionedElements, scenario) {
+    calculateActions(elementsReference, scenario) {
         let actions = [];
         if (this._ship.destroyed || scenario.toEliminate.includes(this._ship.owner)) {
             this._ship.actions = actions;
@@ -540,7 +540,7 @@ module.exports = class {
         for (let actionKey in this.actions) {
             if(!scenario.forbiddenAction.includes(actionKey)){
                 let action = this.actions[actionKey]
-                actions = [...actions, ...action.canDo(positionedElements, this, scenario)]
+                actions = [...actions, ...action.canDo(elementsReference, this, scenario)]
             }
         }
 

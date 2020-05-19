@@ -1,4 +1,5 @@
 const ShipClass = require('../functions/game/elements/ship.js');
+const { ElementsReference } = require('../functions/game/tools.js')
 
 describe('Testing base property initialisation on ship', () => {
 
@@ -52,7 +53,7 @@ describe('Testing base property initialisation on ship', () => {
             test('valid for attack', () => {
                 other.x = 20;
                 other.y = 20;
-                let result = ship.actions.attack.canDo({"20:20":[other]}, ship)[0];
+                let result = ship.actions.attack.canDo(new ElementsReference([other]), ship)[0];
                 expect(result).toBeDefined();
                 expect(result.type).toBe("attack");
             })
@@ -60,7 +61,7 @@ describe('Testing base property initialisation on ship', () => {
             test('to far for attack', () => {
                 other.x = 20;
                 other.y = 16;
-                let result = ship.actions.attack.canDo({"20:16":[other]}, ship);
+                let result = ship.actions.attack.canDo(new ElementsReference([other]), ship);
                 expect(result.length).toBe(0);
             })
 
@@ -75,10 +76,7 @@ describe('Testing base property initialisation on ship', () => {
                         radius: 10
                     }
                 }
-                let result = ship.actions.attack.canDo({
-                    "20:20":[other],
-                    "20:24": [planet] 
-                }, ship);
+                let result = ship.actions.attack.canDo(new ElementsReference([other, planet]), ship);
                 expect(result.length).toBe(0);
             })
         })
